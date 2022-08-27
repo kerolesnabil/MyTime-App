@@ -43,18 +43,18 @@ class Service extends Model
         return self::query()
             ->select(
                 'services.service_id', 'services.cat_id',
-                'categories.cat_id as categories_id',
+                'categories.cat_id as category_id',
                 'categories.has_children',
                 self::getValueWithSpecificLang(
                     'categories.cat_name',
                     app()->getLocale(),
                     'categories_name'
                 ),
-                'parent_cat.cat_id as categories_parent_id',
+                'parent_cat.cat_id as category_parent_id',
                 self::getValueWithSpecificLang(
                     'parent_cat.cat_name',
                     app()->getLocale(),
-                    'categories_parent_name'
+                    'category_parent_name'
                 ),
                 'parent_cat.has_children as parent_has_child',
                 self::getValueWithSpecificLang(
