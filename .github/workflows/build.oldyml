@@ -1,0 +1,21 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ master ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Laravel APP
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          port: ${{ secrets.port }}
+
+          script: |
+            cd /var/www/html/new_deployment/laravel_ci_cd
+            git pull https://AbanoubMetyasBTM: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@github.com/AbanoubMetyasBTM/laravel_ci_cd
+            php artisan migrate
