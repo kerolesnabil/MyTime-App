@@ -20,7 +20,8 @@ class ServiceController extends Controller
         $rootCategories = Category::getAllCategoriesTree();
         $allServices    = Service::getAllCategoriesServicesTree();
         $newCatsArr = [];
-        foreach ($rootCategories[""] as $parentId=>$parentCat){
+
+        foreach ($rootCategories["0"] as $parentId=>$parentCat){
             $childCats = isset($rootCategories[$parentCat["cat_id"]]) ? $rootCategories[$parentCat["cat_id"]] : [];
             $parentCat["child_cats"] = [];
             $parentCat["services"]   = isset($allServices[$parentCat["cat_id"]]) ? $allServices[$parentCat["cat_id"]] : [];;
@@ -53,7 +54,6 @@ class ServiceController extends Controller
         }
 
         $rules = [
-            "cat_id"                            => "required|exists:categories,cat_id",
             "service_id"                        => "required|exists:services,service_id",
             "service_title"                     => "string",
             "service_price_at_salon"            => "nullable|numeric",

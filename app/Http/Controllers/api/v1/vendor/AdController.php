@@ -68,13 +68,13 @@ class AdController extends Controller
 
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
 
-        if($request->ad_at_location=='tax_in_homepage'){
-            $type='tax_in_homepage';
+        if($request->ad_at_location=='ad_in_homepage'){
+            $type='ad_in_homepage';
             $request->request->add(['ad_at_homepage' => true]);
             $request->request->add(['ad_at_discover_page' => false]);
         }
-        if ($request->ad_at_location=='tax_in_discover_page'){
-            $type='tax_in_discover_page';
+        if ($request->ad_at_location=='add_in_discover_page'){
+            $type='add_in_discover_page';
             $request->request->add(['ad_at_homepage' => false]);
             $request->request->add(['ad_at_discover_page' => true]);
         }
