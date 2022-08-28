@@ -186,7 +186,6 @@ class VendorDetail extends Model
 
     }
 
-
     public static function updateVendorDetails($data)
     {
 
@@ -200,5 +199,11 @@ class VendorDetail extends Model
 
     }
 
+    public static function countVendorsByType($vendorType)
+    {
+        // $vendorType => salon or specialist
+        return count(self::where('vendor_type', '=', $vendorType)->get());
+
+    }
 
 }

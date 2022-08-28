@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\ImgHelper;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -103,12 +104,12 @@ class User extends Authenticatable
                 ));
         }
 
-
-
     }
 
-    public static function countUsers()
+    public static function countNewUsers($days)
     {
-        return  count(self::where('user_type', '=', 'user')->get());
+        $currentTime =  Carbon::now();
+        $time = $currentTime->subDays($days);
+        return  count(self::where('user_type', '=', 'user')->where('created_at', '>', $time)->get());
     }
 }

@@ -92,4 +92,13 @@ class Ad extends Model
         return true;
     }
 
+    public static function countAvailableAds()
+    {
+        $current_day = Carbon::today();
+
+        return count(self::whereDate('ad_start_at','<=', $current_day)
+            ->whereDate('ad_end_at','>=', $current_day)
+            ->get());
+    }
+
 }
