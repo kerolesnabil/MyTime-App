@@ -55,8 +55,8 @@ class Setting extends Model
     public static function getCostOfAds()
     {
         return self::query()->select('setting_value','setting_key')
-            ->orWhere('setting_key','=','tax_in_discover_page')
-            ->orWhere('setting_key','=','tax_in_homepage')
+            ->orWhere('setting_key','=','ad_in_homepage')
+            ->orWhere('setting_key','=','add_in_discover_page')
             ->get()->toArray();
 
     }
