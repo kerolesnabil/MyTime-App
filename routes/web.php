@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', 'Dashboard\DashboardController@index')->name('welcome');
-
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
 Route::get('/login', function () {
     return [
         "message" => "please login"
     ];
 })->name("login");
+
+
+Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
+    Route::get('/', 'DashboardController@index')->name('admin.homepage');
+
+});

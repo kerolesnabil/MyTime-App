@@ -32,7 +32,7 @@ class SettingsSeeder extends Seeder
         }
 
 
-        $settingCheck = DB::table('settings')->where('setting_key', 'whatsapp_number')->get();
+        $settingCheck = DB::table('settings')->where('setting_key', 'whatsapp')->get();
         if (!count($settingCheck)) {
             DB::table('settings')->insert(
 
@@ -46,26 +46,23 @@ class SettingsSeeder extends Seeder
             );
         }
 
-        $settingCheck = DB::table('settings')->where('setting_key', 'ad_in_homepage')->get();
+
         if (!count($settingCheck)) {
             DB::table('settings')->insert(
 
                 [
-                    'setting_name'  => '{"ar":"سعر الاعلان داخل الصفحه الرئيسيه", "en":"price ad in homepage"}',
-                    'setting_key'   => 'ad_in_homepage',
-                    'setting_value' => '10',
+
                     'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                 ]
             );
         }
-        $settingCheck = DB::table('settings')->where('setting_key', 'add_in_discover_page')->get();
+      
         if (!count($settingCheck)) {
             DB::table('settings')->insert(
 
                 [
-                    'setting_name'  => '{"ar":"سعر الاعلان داخل صفحه اكتشف", "en":"price in discover page"}',
-                    'setting_key'   => 'add_in_discover_page',
+
                     'setting_value' => '15',
                     'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),

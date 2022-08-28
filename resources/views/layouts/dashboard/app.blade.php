@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Blank Page</title>
+    <title>My Time | Dashboard</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     {{--<!-- Bootstrap 3.3.7 -->--}}
@@ -91,8 +91,8 @@
         {{--<!-- Logo -->--}}
         <a href="{{ asset('dashboard') }}/index2.html" class="logo">
             {{--<!-- mini logo for sidebar mini 50x50 pixels -->--}}
-            <span class="logo-mini"><b>A</b>LT</span>
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-mini"><b>My</b>T</span>
+            <span class="logo-lg"><b>My</b> Time</span>
         </a>
 
         <nav class="navbar navbar-static-top">
@@ -231,10 +231,10 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 2.4.0
+            <b>Version</b> 1.0
         </div>
-        <strong>Copyright &copy; 2014-2016
-            <a href="https://adminlte.io">Keroles Nabil</a>.</strong> All rights
+        <strong>Copyright &copy; 2021-2022
+            <a href="#">K2 Team</a>.</strong> All rights
         reserved.
     </footer>
 

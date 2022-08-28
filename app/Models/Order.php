@@ -293,12 +293,14 @@ class Order extends Model
 
     }
 
-    public static function countDoneOrders()
+    public static function countNewOrders($days)
     {
-        return count(self::where('order_status', '=', 'done')->get());
+        $currentTime =  Carbon::now();
+        $time = $currentTime->subDays($days);
+        return count(self::where('updated_at', '>', $time)->get());
     }
 
-    public static function updateIsRatedColIfOrderReviewed($orderId)
+    public static function updateRatedColIfOrderReviewed($orderId)
     {
         self::where('order_id', '=', $orderId)
             ->update(array(
