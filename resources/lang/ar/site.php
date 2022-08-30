@@ -14,5 +14,5 @@ return [
     'action'             => 'الحدث',
     'activeBtn'          => 'تفعيل',
     'deactivateBtn'      => 'الغاء تفعيل',
-    'categories'         => 'الفئات'
+    'categories'         => 'الفئات',
 ];

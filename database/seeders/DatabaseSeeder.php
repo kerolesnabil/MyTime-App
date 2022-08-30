@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             VendorServicesSeeder::class,
             PagesSeeder::class,
             SettingsSeeder::class,
+            LangsSeeder::class,
         ]);
 
     }

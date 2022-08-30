@@ -41,7 +41,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
     Route::prefix('categories')->group(function (){
         Route::get('/', 'CategoryController@index')->name('category.index');
         Route::get('destroy', 'CategoryController@destroy')->name('category.destroy');
-        Route::get('save', 'CategoryController@save')->name('category.save');
+        Route::get('save/{id?}', 'CategoryController@save')->name('category.save');
         Route::post('update_category_activation', 'CategoryController@updateActivateCategory')->name('category.update_activation');
 
     });
