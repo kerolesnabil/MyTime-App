@@ -140,6 +140,7 @@ class VendorDetail extends Model
         $recentVendors =
             self::query()
                 ->select(
+                    'users.user_id as vendor_id',
                     'users.user_name as vendor_name',
                     'users.user_address as vendor_address',
                     'users.user_img as vendor_logo'

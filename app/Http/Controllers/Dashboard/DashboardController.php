@@ -18,7 +18,6 @@ class DashboardController
         $data['vendor_type_specialist'] = VendorDetail::countVendorsByType('specialist');
         $data['new_orders']             = Order::countNewOrders(20);
         $data['available_ads']          = Ad::countAvailableAds();
-
         return view('dashboard.index', $data);
     }
 

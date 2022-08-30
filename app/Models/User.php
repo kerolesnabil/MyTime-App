@@ -62,7 +62,6 @@ class User extends Authenticatable
         return $userData;
     }
 
-
     public static function updateUserProfile($data, $image = null)
     {
         if (is_null($image)){
@@ -111,5 +110,41 @@ class User extends Authenticatable
         $currentTime =  Carbon::now();
         $time = $currentTime->subDays($days);
         return  count(self::where('user_type', '=', 'user')->where('created_at', '>', $time)->get());
+    }
+
+    public static function getUsersByType($type)
+    {
+        // $type => user || vendor
+
+        $users =
+            self::query()
+                ->select
+                (
+                    'users.user_id',
+                    'users.user_name',
+                    'users.user_phone',
+                    'users.user_email',
+                    'users.user_address',
+                    'users.user_is_active'
+                )
+                ->where('user_type', $type);
+
+        if ($type == 'vendor'){
+
+            $users = $users->addSelect('vendor_details.vendor_type')->join('vendor_details', 'vendor_details.user_id', 'users.user_id');
+        }
+
+        return $users->paginate(15);
+    }
+
+    public static function updateActivationStatus($userId, $status)
+    {
+        //$status => 0 || 1
+        self::where('user_id', '=', $userId)
+            ->update(array(
+                'user_is_active' => $status,
+                'updated_at'     => now()
+            ));
+
     }
 }
