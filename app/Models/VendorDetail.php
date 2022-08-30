@@ -7,7 +7,6 @@ use App\Helpers\ImgHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\Self_;
 
 class VendorDetail extends Model
 {

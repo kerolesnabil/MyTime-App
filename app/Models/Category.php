@@ -65,7 +65,7 @@ class Category extends Model
     }
 
 
-    public static function subCategoriesOfVendorByCatId1($catId)
+    public static function subCategoriesOfVendorByCatId($catId)
     {
         $servicesOfVendor =
             self::query()
@@ -101,23 +101,59 @@ class Category extends Model
 
         return $mainCategories;
     }
-    public static function get_all_categories_with_parent()
+    public static function getAllCategoriesWithParent()
     {
-        $Categories=
+        return
             DB::table('categories')
                 ->select
                 ('categories.cat_id',
                     'categories.cat_img',
                     'categories.parent_id',
+                    self::getValueWithSpecificLang('parent_categories.cat_name', app()->getLocale(), 'parent_cat_name'),
                     self::getValueWithSpecificLang('categories.cat_name', app()->getLocale(), 'cat_name'),
                     self::getValueWithSpecificLang('categories.cat_description', app()->getLocale(), 'cat_description'),
                     'categories.cat_is_active',
                     'categories.has_children',
-                      self::getValueWithSpecificLang('parent_categories.cat_name', app()->getLocale(), 'parent_cat_name'),
                     self::getValueWithSpecificLang('parent_categories.cat_description', app()->getLocale(), 'parent_cat_description')
-                )->leftJoin('categories as parent_categories','categories.parent_id', '=', 'parent_categories.cat_id');
+                )->leftJoin('categories as parent_categories','categories.parent_id', '=', 'parent_categories.cat_id')->get();
 
-        return $Categories;
+    }
+
+    public static function updateCatActivationStatus($catId, $status)
+    {
+        //$status => 0 || 1
+        self::where('cat_id', '=', $catId)
+            ->update(array(
+                'cat_is_active' => $status,
+                'updated_at'     => now()
+            ));
+
+
+    }
+
+    public static function getCategoryByCatId($catId)
+    {
+        $category =
+            self::query()
+                ->select(
+                    'cat_id',
+                    'parent_id',
+                    'cat_name',
+                    'cat_description',
+                    'cat_img',
+                    'cat_is_active',
+                    'has_children'
+                )
+                ->where('cat_id', '=', $catId)
+                ->first();
+
+
+
+
+        $category["cat_img"] = ImgHelper::returnImageLink($category["cat_img"]);
+
+
+        return $category;
     }
 
 
