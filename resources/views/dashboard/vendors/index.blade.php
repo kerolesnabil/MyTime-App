@@ -6,11 +6,11 @@
 
         <section class="content-header">
 
-            <h1>@lang('site.users')</h1>
+            <h1>@lang('site.vendors')</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.homepage') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.users')</li>
+                <li class="active">@lang('site.vendors')</li>
             </ol>
         </section>
 
@@ -20,9 +20,9 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.users')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.vendors')</h3>
 
-                    <form action="{{ route('user.index') }}" method="get">
+                    <form action="{{ route('vendor.index') }}" method="get">
 
                         <div class="row">
 
@@ -32,7 +32,7 @@
 
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                    <a href="{{ route('user.save') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                    <a href="{{ route('vendor.save') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
 
                             </div>
 
@@ -43,18 +43,19 @@
 
                 <div class="box-body">
 
-                    @if ($users->count() > 0)
+                    @if ($vendors->count() > 0)
 
                         <table class="table table-bordered table-hover">
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
                                 <th>#</th>
-                                <th>@lang('site_user.user_name')</th>
-                                <th>@lang('site_user.user_phone')</th>
-                                <th>@lang('site_user.user_email')</th>
-                                <th>@lang('site_user.user_address')</th>
-                                <th style="text-align: center">@lang('site_user.user_is_active')</th>
+                                <th>@lang('site_vendor.vendor_name')</th>
+                                <th>@lang('site_vendor.vendor_type')</th>
+                                <th>@lang('site_vendor.vendor_phone')</th>
+                                <th>@lang('site_vendor.vendor_email')</th>
+                                <th>@lang('site_vendor.vendor_address')</th>
+                                <th style="text-align: center">@lang('site_vendor.vendor_is_active')</th>
                                 <th style="text-align: center">@lang('site.action')</th>
                             </tr>
                             </thead>
@@ -64,30 +65,31 @@
                                 $activeBtn = __("site.activeBtn");
                                 $deactivateBtn = __("site.deactivateBtn");
                             ?>
-                            @foreach ($users as $index=>$user)
+                            @foreach ($vendors as $index => $vendor)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $user->user_name }}</td>
-                                    <td>{{ $user->user_phone }}</td>
-                                    <td>{{ $user->user_email }}</td>
-                                    <td>{{ $user->user_address }}</td>
-                                    <td id="user_status_{{$user->user_id}}" style="text-align: center">
+                                    <td>{{ $vendor->user_name }}</td>
+                                    <td>{{ $vendor->vendor_type}}</td>
+                                    <td>{{ $vendor->user_phone }}</td>
+                                    <td>{{ $vendor->user_email }}</td>
+                                    <td>{{ $vendor->user_address }}</td>
+                                    <td id="user_status_{{$vendor->user_id}}" style="text-align: center">
                                         <?php
-                                            echo $user->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
+                                            echo $vendor->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?></td>
                                     <td>
 
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
-                                            <input type="hidden" name="user_id" value="{{$user->user_id}}">
+                                            <input type="hidden" name="user_id" value="{{$vendor->user_id}}">
                                             <?php
-                                                echo $user->user_is_active == 1 ?
+                                                echo $vendor->user_is_active == 1 ?
                                                     "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
-                                                     <input type='hidden' id= 'hidden_btn_$user->user_id' name='active_status' value='false'>
+                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='false'>
                                                     "
                                                     :
                                                     "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
-                                                     <input type='hidden' id= 'hidden_btn_$user->user_id' name='active_status' value='true'>
+                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
@@ -98,9 +100,9 @@
                             </tbody>
 
                         </table><!-- end of table -->
-                    {!! $users->links() !!}
+                    {!! $vendors->links() !!}
 
-                        {{ $users->appends(request()->query())->links() }}
+                        {{ $vendors->appends(request()->query())->links() }}
 
                     @else
 

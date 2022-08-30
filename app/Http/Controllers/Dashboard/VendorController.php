@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class VendorController extends Controller
 {
 
     public function index()
     {
-        $users= User::getUsersByType('user');
-        return view('dashboard.users.index')->with(['users'=>$users]);
+        $vendors = User::getUsersByType('vendor');
+        return view('dashboard.vendors.index')->with(['vendors'=>$vendors]);
     }
 
 
@@ -21,38 +21,7 @@ class UserController extends Controller
 
     }
 
-    public function create()
-    {
-        return view('dashboard.users.create');
-    }
-
-
-    public function store(ValidationUsers $request)
-    {
-        //
-        dd($request->all());
-
-    }
-
-
-    public function edit(User $user)
-    {
-        //
-    }
-
-
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-
-    public function destroy(User $user)
-    {
-        //
-    }
-
-    public function updateActivateUser(Request $request)
+    public function updateActivateVendor(Request $request)
     {
 
         if (isset($request->active_status) && isset($request->user_id)){
