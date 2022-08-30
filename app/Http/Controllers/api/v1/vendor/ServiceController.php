@@ -74,6 +74,16 @@ class ServiceController extends Controller
 
     public function showService(Request $request, $service_id)
     {
+        $request->request->add(['service_id' => $service_id]);
+
+        $rules=[
+            'service_id' =>"required|exists:services,service_id"
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
        $service=VendorServices::getServiceById($service_id);
 
        if(empty($service_id))
