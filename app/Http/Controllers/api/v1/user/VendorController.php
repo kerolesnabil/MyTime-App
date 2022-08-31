@@ -75,6 +75,7 @@ class VendorController extends Controller
         $request->request->add(['vendor_id' => $vendorId]);
         $rules = [
             "vendor_id" => "required|numeric|exists:vendor_details,user_id",
+            "service_type" => "required|string"
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -83,16 +84,26 @@ class VendorController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-
-        $vendorPackages = VendorServices::packagesOfVendor($vendorId);
+        $vendorPackages = VendorServices::packagesOfVendor($vendorId, $request->service_type);
 
         if (empty($vendorPackages)) {
             return ResponsesHelper::returnError('400', 'not found package for this vendor right now !');
         }
 
-        return ResponsesHelper::returnData($vendorPackages, '200', '');
+        $data = [];
+        foreach ($vendorPackages as $key => $package)
+        {
+            if (strval($package["package_price"]) == 0 || is_null(strval($package["package_price"]))){
+                unset($vendorPackages[$key]);
+            }
+            else {
+                $package['package_services']  = array_merge($package['package_services']);
+                $data[] = $package;
+            }
 
+        }
 
+        return ResponsesHelper::returnData($data, '200', '');
     }
 
     public function getVendorSubCategoriesOfCategory(Request $request, $vendorId, $cat_id)

@@ -300,7 +300,7 @@ class Order extends Model
         return count(self::where('updated_at', '>', $time)->get());
     }
 
-    public static function updateRatedColIfOrderReviewed($orderId)
+    public static function updateRatedStatusOfOrder($orderId)
     {
         self::where('order_id', '=', $orderId)
             ->update(array(

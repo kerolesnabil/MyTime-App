@@ -51,7 +51,7 @@ class VendorServices extends Model
         return $mainCatObjs;
     }
 
-    public static function packagesOfVendor($vendorId){
+    public static function packagesOfVendor($vendorId, $serviceType){
 
         $packagesOfVendor =
             self::query()
@@ -59,17 +59,13 @@ class VendorServices extends Model
                     'vendor_services.vendor_service_id as package_id',
                     self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'package_name'),
                     'services.package_services_ids',
-                    'vendor_services.service_price_at_salon as package_price_at_salon',
-                    'vendor_services.service_discount_price_at_salon as package_discount_price_at_salon',
-                    'vendor_services.service_price_at_home as package_price_at_home ',
-                    'vendor_services.service_discount_price_at_home as package_discount_price_at_home '
+                    "vendor_services.service_price_at_$serviceType as package_price",
+                    "vendor_services.service_discount_price_at_$serviceType as package_discount_price"
                 )
                 ->join('services', 'services.service_id', '=', 'vendor_services.service_id')
                 ->where('vendor_services.vendor_id','=',$vendorId)
                 ->where('services.service_type','=','package')
                 ->get()->toArray();
-
-
 
         $serviceIds = [];
         foreach ($packagesOfVendor as $package){
@@ -83,13 +79,13 @@ class VendorServices extends Model
 
 
         foreach ($packagesOfVendor as $key=>$package){
-            $packagesOfVendor[$key]['package_services'] = $serviceObjs->whereIn("service_id",explode(',' , $package['package_services_ids']));
+            $packagesOfVendor[$key]['package_services'] = collect($serviceObjs->whereIn("service_id",explode(',' , $package['package_services_ids'])))->toArray();
         }
 
         return $packagesOfVendor;
     }
 
-    public static function servicesOfVendorByCatId($catId, $vendorId, $service_type){
+    public static function servicesOfVendorByCatId($catId, $vendorId, $serviceType){
 
         $servicesOfCategory =
             self::query()
@@ -97,8 +93,8 @@ class VendorServices extends Model
                 (
                     'vendor_services.vendor_service_id as service_id',
 
-                    "vendor_services.service_price_at_$service_type as service_price",
-                    "vendor_services.service_discount_price_at_$service_type as service_discount_price",
+                    "vendor_services.service_price_at_$serviceType as service_price",
+                    "vendor_services.service_discount_price_at_$serviceType as service_discount_price",
                     self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'service_name')
                 )
                 ->join('services', 'services.service_id', '=', 'vendor_services.service_id')
