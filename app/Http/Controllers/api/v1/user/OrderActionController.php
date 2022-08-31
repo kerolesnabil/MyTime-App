@@ -50,7 +50,7 @@ class OrderActionController extends Controller
             return ResponsesHelper::returnError('400', 'This order has already been reviewed by this user');
         }
 
-        Order::updateRatedColIfOrderReviewed($request->order_id);
+        Order::updateRatedStatusOfOrder($request->order_id);
 
         $review = OrderReview::addOrderReview($request, $user['user']->user_id);
         return ResponsesHelper::returnData(['order_review_id' => $review], '200', 'Review added successfully');
