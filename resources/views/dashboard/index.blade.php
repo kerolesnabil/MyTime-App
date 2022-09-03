@@ -17,7 +17,7 @@
                     <div class="small-box bg-aqua">
                         <div class="inner">
                             <h3>{{$new_orders}}</h3>
-                            <p>New Orders</p>
+                            <p>@lang('site.new_orders')</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
@@ -31,8 +31,7 @@
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{$available_ads}}</h3>
-
-                            <p>Available Ads</p>
+                            <p>@lang('site.available_ads')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-bullhorn" aria-hidden="true"></i>
@@ -46,8 +45,7 @@
                     <div class="small-box bg-yellow">
                         <div class="inner">
                             <h3>{{$new_users}}</h3>
-
-                            <p>New Users</p>
+                            <p>@lang('site.new_users')</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
@@ -61,8 +59,7 @@
                     <div class="small-box bg-red">
                         <div class="inner">
                             <h3>{{$vendor_type_specialist}}</h3>
-
-                            <p>Specialists</p>
+                            <p>@lang('site.specialists')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-user" aria-hidden="true"></i>
@@ -78,7 +75,7 @@
                     <div class="small-box bg-fuchsia">
                         <div class="inner">
                             <h3>{{$vendor_type_salon}}</h3>
-                            <p>Salons</p>
+                            <p>@lang('site.salons')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-scissors" aria-hidden="true"></i>

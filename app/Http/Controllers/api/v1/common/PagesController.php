@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\v1\common;
 
 use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Pages;
+use App\Models\Page;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -34,8 +34,8 @@ class PagesController extends Controller
         }
 
 
-        $data['first_pages']     = Pages::getPageByPosition($request->type, 'first');
-        $data['last_pages']      = Pages::getPageByPosition($request->type, 'last');
+        $data['first_pages']     = Page::getPageByPosition($request->type, 'first');
+        $data['last_pages']      = Page::getPageByPosition($request->type, 'last');
         $data['social_media']    = SettingsController::getSocialMedia();
         $data['whatsapp_number'] = SettingsController::getWhatsAppNumber();
 

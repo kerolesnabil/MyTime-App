@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\v1\common;
 
 use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Pages;
+use App\Models\Page;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
