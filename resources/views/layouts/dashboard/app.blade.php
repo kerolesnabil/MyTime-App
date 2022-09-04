@@ -6,6 +6,7 @@
     <title>My Time | Dashboard</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
+
     {{--<!-- Bootstrap 3.3.7 -->--}}
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/ionicons.min.css') }}">
@@ -63,6 +64,20 @@
             }
         }
 
+        .img_preview{
+            display:inline-block;
+            width:350px;
+            height:350px;
+            padding:4px;
+            line-height:1.42857143;
+            background-color:#fff;
+            border:1px solid #ddd;
+            border-radius:4px;
+            -webkit-transition:all .2s ease-in-out;
+            -o-transition:all .2s ease-in-out;
+            transition:all .2s ease-in-out
+        }
+
     </style>
     {{--<!-- jQuery 3 -->--}}
     <script src="{{ asset('dashboard_files/js/jquery.min.js') }}"></script>
@@ -81,6 +96,7 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
+    <script src="{{ asset('dashboard_files/js/images_preview_v1.js') }}"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -284,7 +300,6 @@
         $('.delete').click(function (e) {
 
             var that = $(this)
-
             e.preventDefault();
 
             var n = new Noty({
@@ -296,12 +311,11 @@
                         that.closest('form').submit();
                     }),
 
-                    Noty.button("@lang('site.no')", 'btn btn-primary mr-2', function () {
+                    Noty.button("@lang('site.no')", 'btn btn-danger mr-2', function () {
                         n.close();
                     })
                 ]
             });
-
             n.show();
 
         });//end of delete

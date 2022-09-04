@@ -91,6 +91,8 @@ class VendorController extends Controller
         }
 
         $data = [];
+
+
         foreach ($vendorPackages as $key => $package)
         {
             if (strval($package["package_price"]) == 0 || is_null(strval($package["package_price"]))){
@@ -98,9 +100,17 @@ class VendorController extends Controller
             }
             else {
                 $package['package_services']  = array_merge($package['package_services']);
+
+                if ($package['package_services_ids'][0] === ','){
+                    $package['package_services_ids'] = ltrim($package['package_services_ids'], $package['package_services_ids'][0]);
+                }
+
+                if($package['package_services_ids'][-1] === ','){
+                    $package['package_services_ids'] = rtrim($package['package_services_ids'], $package['package_services_ids'][-1]);
+                }
+
                 $data[] = $package;
             }
-
         }
 
         return ResponsesHelper::returnData($data, '200', '');

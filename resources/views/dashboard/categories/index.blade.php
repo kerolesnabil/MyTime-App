@@ -6,11 +6,11 @@
 
         <section class="content-header">
 
-            <h1>@lang('site.vendors')</h1>
+            <h1>@lang('site.categories')</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.homepage') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.vendors')</li>
+                <li class="active">@lang('site.categories')</li>
             </ol>
         </section>
 
@@ -20,9 +20,9 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.vendors')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.categories')</h3>
 
-                    <form action="{{ route('vendor.index') }}" method="get">
+                    <form action="{{ route('category.index') }}" method="get">
 
                         <div class="row">
 
@@ -32,6 +32,7 @@
 
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                    <a href="{{ route('category.get_category') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                             </div>
 
                         </div>
@@ -41,19 +42,17 @@
 
                 <div class="box-body">
 
-                    @if ($vendors->count() > 0)
+                    @if ($categories->count() > 0)
 
                         <table class="table table-bordered table-hover">
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
                                 <th>#</th>
-                                <th>@lang('site_vendor.vendor_name')</th>
-                                <th>@lang('site_vendor.vendor_type')</th>
-                                <th>@lang('site_vendor.vendor_phone')</th>
-                                <th>@lang('site_vendor.vendor_email')</th>
-                                <th>@lang('site_vendor.vendor_address')</th>
-                                <th style="text-align: center">@lang('site_vendor.vendor_is_active')</th>
+                                <th>@lang('site_category.cat_name')</th>
+                                <th style="text-align: center">@lang('site_category.parent_cat_name')</th>
+                                <th style="text-align: center">@lang('site_category.has_children')</th>
+                                <th style="text-align: center">@lang('site_category.cat_is_active')</th>
                                 <th style="text-align: center">@lang('site.action')</th>
                             </tr>
                             </thead>
@@ -63,44 +62,56 @@
                                 $activeBtn = __("site.activeBtn");
                                 $deactivateBtn = __("site.deactivateBtn");
                             ?>
-                            @foreach ($vendors as $index => $vendor)
+                            @foreach ($categories as $index => $category)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $vendor->user_name }}</td>
-                                    <td>{{ $vendor->vendor_type}}</td>
-                                    <td>{{ $vendor->user_phone }}</td>
-                                    <td>{{ $vendor->user_email }}</td>
-                                    <td>{{ $vendor->user_address }}</td>
-                                    <td id="user_status_{{$vendor->user_id}}" style="text-align: center">
+                                    <td>{{ $category->cat_name }}</td>
+                                    <td style="text-align: center"><?php echo is_null($category->parent_cat_name) ? '-----' : $category->parent_cat_name ?></td>
+                                    <td style="text-align: center">
                                         <?php
-                                            echo $vendor->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
-                                        ?></td>
+                                            echo $category->has_children == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
+                                        ?>
+                                    </td>
+
+
+                                    <td id="cat_status_{{$category->cat_id}}" style="text-align: center">
+                                        <?php
+                                            echo $category->cat_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
+                                        ?>
+                                    </td>
                                     <td>
 
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
-                                            <input type="hidden" name="user_id" value="{{$vendor->user_id}}">
+                                            <input type="hidden" name="cat_id" value="{{$category->cat_id}}">
                                             <?php
-                                                echo $vendor->user_is_active == 1 ?
+                                                echo $category->cat_is_active == 1 ?
                                                     "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
-                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='false'>
+                                                     <input type='hidden' id= 'hidden_btn_$category->cat_id' name='active_status' value='false'>
                                                     "
                                                     :
                                                     "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
-                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='true'>
+                                                     <input type='hidden' id= 'hidden_btn_$category->cat_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
+
+                                        <a href="{{ route('category.get_category', $category->cat_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+
+
+                                        <form action="{{ route('category.destroy', $category->cat_id) }}" method="post" style="display: inline-block">
+                                            {{ csrf_field() }}
+                                            {{ method_field('delete') }}
+                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                        </form>
+
                                     </td>
                                 </tr>
 
                             @endforeach
                             </tbody>
 
-                        </table><!-- end of table -->
-                    {!! $vendors->links() !!}
-
-                        {{ $vendors->appends(request()->query())->links() }}
+                        </table>
 
                     @else
 
@@ -118,37 +129,38 @@
                             let formData = new FormData($(this).parent()[0]);
                             let form = $(this).parent();
 
-                            console.log(form.find('#hidden_btn_'+7));
+
                             $.ajax({
                                 type: 'post',
                                 enctype: 'multipart/form-data',
-                                url: "{{route('user.update_activation')}}",
+                                url: "{{route('category.update_activation')}}",
                                 data : formData,
                                 processData: false,
                                 contentType: false,
                                 cache: false,
                                 success: function (data) {
 
+                                    console.log(data);
                                     if (data['status'] == 'activate'){
 
-                                        let user_status = 'user_status_' +data['user_id'];
-                                        $('#'+user_status+'> i').remove();
-                                        $('#'+user_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
+                                        let cat_status = 'cat_status_' +data['cat_id'];
+                                        $('#'+cat_status+'> i').remove();
+                                        $('#'+cat_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
-                                        form.find('#hidden_btn_'+data['user_id']).remove();
+                                        form.find('#hidden_btn_'+data['cat_id']).remove();
                                         form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
-                                        form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='false'>");
+                                        form.append("<input type='hidden' id= 'hidden_btn_"+ data['cat_id'] +"' name='active_status' value='false'>");
 
                                     }
                                     if (data['status'] == 'deactivate'){
-                                        let user_status = 'user_status_' +data['user_id'];
-                                        $('#'+user_status+'> i').remove();
-                                        $('#'+user_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
+                                        let cat_status = 'cat_status_' +data['cat_id'];
+                                        $('#'+cat_status+'> i').remove();
+                                        $('#'+cat_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
-                                        form.find('#hidden_btn_'+data['user_id']).remove();
+                                        form.find('#hidden_btn_'+data['cat_id']).remove();
                                         form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 
-                                        form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='true'>");
+                                        form.append("<input type='hidden' id= 'hidden_btn_"+ data['cat_id'] +"' name='active_status' value='true'>");
                                     }
                                 },
                                 error: function (data) {

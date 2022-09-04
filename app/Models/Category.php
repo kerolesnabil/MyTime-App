@@ -85,7 +85,6 @@ class Category extends Model
             )->get()->groupBy('parent_id')->toArray();
     }
 
-
     public static function mainCategoryByCatIds($catIds)
     {
         $mainCategories=
@@ -101,6 +100,7 @@ class Category extends Model
 
         return $mainCategories;
     }
+
     public static function getAllCategoriesWithParent()
     {
         return
@@ -123,6 +123,7 @@ class Category extends Model
     {
         //$status => 0 || 1
         self::where('cat_id', '=', $catId)
+            ->orWhere('parent_id', '=', $catId)
             ->update(array(
                 'cat_is_active' => $status,
                 'updated_at'     => now()
@@ -154,6 +155,54 @@ class Category extends Model
 
 
         return $category;
+    }
+
+    public static function updateCategoryData($data, $img =null)
+    {
+        if (is_null($img)){
+            return self::where('cat_id', '=', $data['cat_id'])
+                ->update(array(
+                    'parent_id'       => $data['parent_id'],
+                    'cat_name'        => $data['cat_name'],
+                    'cat_description' => $data['cat_description'],
+                    'cat_is_active'   => $data['cat_is_active'],
+                ));
+        }
+        else {
+
+            return self::where('cat_id', '=', $data['cat_id'])
+                ->update(array(
+                    'parent_id'       => $data['parent_id'],
+                    'cat_name'        => $data['cat_name'],
+                    'cat_description' => $data['cat_description'],
+                    'cat_is_active'   => $data['cat_is_active'],
+                    'cat_img'         => $img,
+                ));
+        }
+
+    }
+
+    public static function updateHasChildrenColOfCategory($catId)
+    {
+        return self::where('cat_id', '=', $catId)
+            ->update(array(
+                'has_children'       => 1,
+            ));
+    }
+
+    public static function createCategory($data)
+    {
+        return self::create([
+            'parent_id'       => $data['parent_id'],
+            'cat_name'        => $data['cat_name'],
+            'cat_description' => $data['cat_description'],
+            'cat_img'         => $data['cat_img'],
+            'cat_is_active'   => $data['cat_is_active'],
+            'has_children'    => 0,
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+
     }
 
 
