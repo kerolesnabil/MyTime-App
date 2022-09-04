@@ -180,7 +180,11 @@ class VendorDetail extends Model
                 ->groupBy('vendor_details.user_id')
                 ->get()->first()->toArray();
 
-        $vendorDetails["vendor_slider"] = ImgHelper::returnSliderLinks($vendorDetails["vendor_slider"]);
+        if (!is_null($vendorDetails["vendor_slider"])){
+
+            $vendorDetails["vendor_slider"] = ImgHelper::returnSliderLinks($vendorDetails["vendor_slider"]);
+        }
+
 
         return (object)$vendorDetails;
 
@@ -191,12 +195,12 @@ class VendorDetail extends Model
 
         self::where('user_id', '=', $data->user_id)
             ->update(array(
-                'vendor_available_days'    => $data->user_name,
-                'vendor_start_time'   => $data->user_email,
-                'vendor_end_time'   => $data->user_email,
-                'vendor_description'   => $data->user_email,
+                'vendor_available_days' => $data->vendor_available_days,
+                'vendor_start_time'     => $data->vendor_start_time,
+                'vendor_end_time'       => $data->vendor_end_time,
+                'vendor_description'    => $data->vendor_description,
+                'vendor_slider'         => $data->vendor_slider,
             ));
-
     }
 
     public static function countVendorsByType($vendorType)
@@ -206,4 +210,20 @@ class VendorDetail extends Model
 
     }
 
+    public static function getVendorSlider($vendorId)
+    {
+        $slider =
+            self::query()
+                ->select('vendor_slider')
+
+                ->where('user_id', '=', $vendorId)
+                ->get()->first()->toArray();
+
+        if (!is_null($slider['vendor_slider'])){
+            $slider["vendor_slider"] = ImgHelper::returnSliderLinks($slider["vendor_slider"]);
+        }
+
+        return $slider;
+
+    }
 }

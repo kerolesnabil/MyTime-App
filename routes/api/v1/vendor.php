@@ -51,7 +51,7 @@ Route::group([
 
     Route::get('/get-vendor-profile', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'getVendorProfile']);
 
-    Route::post('/update-vendor-profile', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'updateUserProfile']);
+    Route::post('/update-vendor-profile', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'updateVendorProfile']);
 
     Route::post('/reschedule-order-date', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rescheduleOrderDate']);
     Route::post('/reject-order', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rejectOrder']);
