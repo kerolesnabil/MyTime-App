@@ -15,43 +15,6 @@ class UserController extends Controller
         return view('dashboard.users.index')->with(['users'=>$users]);
     }
 
-
-    public function save()
-    {
-
-    }
-
-    public function create()
-    {
-        return view('dashboard.users.create');
-    }
-
-
-    public function store(ValidationUsers $request)
-    {
-        //
-        dd($request->all());
-
-    }
-
-
-    public function edit(User $user)
-    {
-        //
-    }
-
-
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-
-    public function destroy(User $user)
-    {
-        //
-    }
-
     public function updateActivateUser(Request $request)
     {
 

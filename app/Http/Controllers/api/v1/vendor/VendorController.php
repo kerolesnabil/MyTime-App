@@ -140,18 +140,24 @@ class VendorController extends Controller
 
     public function updateVendorProfile(Request $request)
     {
+        $vendor['vendor']=Auth::user();
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
+
+
         $rules = [
-            'user_name'                          => 'required|string',
-            'user_email'                         => 'required|string|email',
+            'vendor_name'                        => 'required|string',
+            'vendor_email'                       => 'required|string|email',
             'vendor_available_days'              => 'required|string',
-            'vendor_start_time'                  => 'required|date_format:H:i:s',
-            'vendor_end_time'                    => 'required|date_format:H:i:s|after:time_start',
+            'vendor_start_time'                  => 'required|date_format:H:i',
+            'vendor_end_time'                    => 'required|date_format:H:i|after:time_start',
             'vendor_logo'                        => 'image|mimes:jpg,jpeg,png|max:10240',
             'vendor_address'                     => 'required',
             'vendor_description'                 => 'required|string',
             'vendor_commercial_registration_num' => 'required|string',
             'vendor_tax_num'                     => 'required|string',
-            'slider_old_images.*'                => 'string|string',
+            'slider_not_removed_images.*'        => 'string',
             'slider_new_images.*'                => 'image|mimes:jpg,jpeg,png|max:10240',
         ];
 
@@ -161,19 +167,84 @@ class VendorController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        if (!is_null($request->vendor_logo)) {
 
-            $image = ImgHelper::uploadImage('images', $request->vendor_logo);
-            User::updateUserProfile($request, $image);
+        $sliderInDB = VendorDetail::getVendorSlider($vendor['vendor']->user_id);
+        $sliderInDB = $sliderInDB['vendor_slider'];
+
+
+        if ($sliderInDB != null) {
+            if (isset($request->slider_not_removed_images)){
+
+                $notRemovedImages = array_intersect($sliderInDB, $request->slider_not_removed_images);
+                $removedImages = array_diff($sliderInDB, $request->slider_not_removed_images);
+
+                if (count($removedImages)){
+                    foreach ($removedImages as $img){
+                        $imgPath = ImgHelper::getImgPathFromUrl($img);
+                        $imgPath = ltrim($imgPath,'uploads/');
+                        ImgHelper::deleteImage('images', $imgPath);
+                    }
+                }
+            }
+            else{
+                $notRemovedImages = null;
+            }
         }
         else {
-            User::updateUserProfile($request);
+            $notRemovedImages = null;
         }
 
 
+        if ($notRemovedImages  != null){
+            $notRemovedImages = ImgHelper::getSliderPathFromUrl($notRemovedImages);
+        }
 
 
+        $allImages = $notRemovedImages;
+        $newImages = [];
+        if (isset($request->slider_new_images)){
 
+            foreach ($request->slider_new_images as $image){
+                $newImages[] = ImgHelper::uploadImage('images', $image);
+            }
+
+            if ($allImages !=null){
+                $allImages = array_merge($allImages, $newImages);
+            }
+            else{
+                $allImages  = $newImages;
+            }
+        }
+
+        !empty($allImages)  ? $allImages = json_encode($allImages) : $allImages = null;
+
+        $data['user_id']                            = $vendor['vendor']->user_id;
+        $data['user_name']                          = $request->vendor_name;
+        $data['user_email']                         = $request->vendor_email;
+        $data['vendor_available_days']              = $request->vendor_available_days;
+        $data['vendor_start_time']                  = $request->vendor_start_time;
+        $data['vendor_end_time']                    = $request->vendor_end_time;
+        $data['user_address']                       = $request->vendor_address;
+        $data['vendor_description']                 = $request->vendor_description;
+        $data['vendor_commercial_registration_num'] = $request->vendor_commercial_registration_num;
+        $data['vendor_tax_num']                     = $request->vendor_tax_num;
+        $data['vendor_slider']                      = $allImages;
+
+        $data = (object) $data;
+
+
+        VendorDetail::updateVendorDetails($data);
+
+        if (!is_null($request->vendor_logo)) {
+            $image = ImgHelper::uploadImage('images', $request->vendor_logo);
+            User::updateUserProfile($data, $image);
+        }
+        else {
+            User::updateUserProfile($data);
+        }
+
+
+        return ResponsesHelper::returnData([], '200', 'Updated successfully');
 
     }
 

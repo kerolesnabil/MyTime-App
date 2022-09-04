@@ -16,7 +16,7 @@ class ImgHelper
         return $filename;
     }
 
-    public static function deleteImage($folder,$oldImg)
+    public static function deleteImage($folder, $oldImg)
     {
        try{
            \Illuminate\Support\Facades\Storage::disk($folder)->delete($oldImg);
@@ -56,6 +56,23 @@ class ImgHelper
 
         return $returnLinks;
 
+    }
+
+    public static function getImgPathFromUrl($link)
+    {
+        $path  = parse_url($link);
+        $path = ltrim($path['path'],'/');
+        return $path;
+    }
+
+    public static function getSliderPathFromUrl($links)
+    {
+        $data = [];
+        foreach ($links as $link){
+            $data[] = self::getImgPathFromUrl($link);
+        }
+
+        return $data;
     }
 
 }

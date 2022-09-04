@@ -77,6 +77,8 @@
                                         ?></td>
                                     <td>
 
+                                        <a href="{{ route('vendor.show_vendor', $vendor->user_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="user_id" value="{{$vendor->user_id}}">
@@ -91,6 +93,8 @@
                                                     ";
                                             ?>
                                         </form>
+
+
                                     </td>
                                 </tr>
 
