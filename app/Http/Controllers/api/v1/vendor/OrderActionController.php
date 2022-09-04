@@ -6,6 +6,7 @@ use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderRejection;
+use App\Models\OrderRejectionReason;
 use App\Models\OrderReview;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +70,7 @@ class OrderActionController extends Controller
 
         $rules = [
             "order_id"         => "required|numeric|exists:orders,order_id",
-            "rejection_reason" => "required|string",
+            "rejection_reason_id" => "required|numeric|exists:order_rejections_reasons,rejection_reason_id",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -90,7 +91,7 @@ class OrderActionController extends Controller
 
 
         $data['order_id']         = $request->order_id;
-        $data['rejection_reason'] = $request->rejection_reason;
+        $data['rejection_reason'] = $request->rejection_reason_id;
         $data['created_at']       = now();
         $data['updated_at']       = now();
 
@@ -165,6 +166,16 @@ class OrderActionController extends Controller
        // make order done
        // process on app profit
 
+    }
+
+    public function getAllOrderRejectionReasons()
+    {
+        $allReasons = OrderRejectionReason::getAllReasons();
+
+        if(empty($allReasons)){
+            return ResponsesHelper::returnData($allReasons, '200', 'There are no reasons for rejection yet');
+        }
+        return ResponsesHelper::returnData($allReasons, '200', '');
     }
 
 }

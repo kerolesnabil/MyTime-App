@@ -56,6 +56,8 @@ Route::group([
     Route::post('/reschedule-order-date', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rescheduleOrderDate']);
     Route::post('/reject-order', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rejectOrder']);
     Route::get('/accept-order/{order_id}', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'acceptOrder']);
+    Route::get('/get-all-order-rejection-reasons', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'getAllOrderRejectionReasons']);
+
 
 });
 
