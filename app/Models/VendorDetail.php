@@ -54,19 +54,31 @@ class VendorDetail extends Model
                     'vendor_details.vendor_description',
                     'users.user_img as vendor_logo',
                     'vendor_details.vendor_reviews_count',
-                    DB::raw('vendor_details.vendor_reviews_sum / vendor_details.vendor_reviews_count as vendor_rate')
+                    DB::raw('vendor_details.vendor_reviews_sum / vendor_details.vendor_reviews_count as vendor_rate'),
+                    'vendor_details.vendor_type',
+                    'vendor_details.vendor_views_count',
+                    'users.user_phone as vendor_phone'
                 )
                 ->join('users', 'vendor_details.user_id', '=', 'users.user_id')
                 ->where('vendor_details.user_id', '=', $vendorId)
                 ->groupBy('vendor_details.user_id')
-                ->get()->first()->toArray();
+                ->get()->first();
 
 
-        $vendorDetails['vendor_rate'] = number_format($vendorDetails['vendor_rate'],2);
-        $vendorDetails["vendor_logo"] = ImgHelper::returnImageLink($vendorDetails["vendor_logo"]);
-        $vendorDetails["vendor_slider"] = ImgHelper::returnSliderLinks($vendorDetails["vendor_slider"]);
+        if ($vendorDetails !=null){
+            $vendorDetails  = collect($vendorDetails)->toArray();
+            $vendorDetails['vendor_rate'] = number_format($vendorDetails['vendor_rate'],2);
 
-        return (object)$vendorDetails;
+            $vendorDetails["vendor_logo"] = ImgHelper::returnImageLink($vendorDetails["vendor_logo"]);
+
+            if (!is_null($vendorDetails["vendor_slider"])){
+                $vendorDetails["vendor_slider"] = ImgHelper::returnSliderLinks($vendorDetails["vendor_slider"]);
+            }
+            return (object)$vendorDetails;
+        }
+
+
+        return $vendorDetails;
 
     }
 

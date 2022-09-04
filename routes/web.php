@@ -33,6 +33,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
     Route::prefix('vendors')->group(function (){
         Route::get('/', 'VendorController@index')->name('vendor.index');
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
+        Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
 
     });
 

@@ -18,7 +18,7 @@ return [
     'updated_successfully'   => 'تم التعديل بنجاح',
     'created_successfully'   => 'تم الاضافة بنجاح',
     'pages'                  => 'الصفحات',
-    'show'                   => 'اظهار',
+    'show'                   => 'عرض',
     'hide'                   => 'اخفاء',
     'confirm_delete'         => 'هل تريد الحذف ؟',
     'yes'                    => 'نعم',
@@ -31,5 +31,6 @@ return [
     'specialists'            => 'الاخصائيين',
     'salons'                 => 'الصالونات',
     'order_rejection_reason' => 'اسباب رفض الطلبات',
+    'vendor_details'         => 'بيانات الصالون او الاخصائي'
 
 ];

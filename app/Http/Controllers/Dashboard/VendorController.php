@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\VendorDetail;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
@@ -13,12 +14,6 @@ class VendorController extends Controller
     {
         $vendors = User::getUsersByType('vendor');
         return view('dashboard.vendors.index')->with(['vendors'=>$vendors]);
-    }
-
-
-    public function save()
-    {
-
     }
 
     public function updateActivateVendor(Request $request)
@@ -35,6 +30,19 @@ class VendorController extends Controller
             return response()->json(['user_id' =>$request->user_id, 'status' => 'deactivate']);
         }
         return response()->json(false);
+
+    }
+
+    public function showVendorById($vendorId)
+    {
+        $vendorData = VendorDetail::vendorDetails($vendorId);
+
+        if (!is_null($vendorData)){
+            return view('dashboard.vendors.show_vendor')->with(['vendor'=> $vendorData]);
+        }
+
+        session()->flash('warning', __('site_vendor.vendor_id_not_valid'));
+        return redirect(route('vendor.index'));
 
     }
 }

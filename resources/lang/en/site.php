@@ -25,7 +25,9 @@ return [
     'no'                     => 'No',
     'orders'                 => 'Orders',
     'langs'                  => 'Languages',
-    'order_rejection_reason' => 'Order Rejection Reasons'
+    'order_rejection_reason' => 'Order Rejection Reasons',
+    'vendor_details'         => 'Vendor Details'
+
 
 
 

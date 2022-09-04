@@ -78,6 +78,8 @@
             transition:all .2s ease-in-out
         }
 
+
+
     </style>
     {{--<!-- jQuery 3 -->--}}
     <script src="{{ asset('dashboard_files/js/jquery.min.js') }}"></script>

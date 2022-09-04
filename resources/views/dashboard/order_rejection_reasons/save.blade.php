@@ -33,7 +33,7 @@
                     <form class="form-group" action="{{ route('order_rejection_reason.save_order_rejection_reason', $id) }}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-                        
+
                         <label>@lang('site_order_rejection_reason.rejection_reason')</label>
                         <div class="row mb-3 margin-bottom">
                             @foreach($langs as $lang)
