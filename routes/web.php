@@ -55,6 +55,9 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
 
     Route::prefix('orders')->group(function (){
         Route::get('/', 'OrderController@index')->name('order.index');
+        Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
+
+
     });
 
     Route::prefix('langs')->group(function (){

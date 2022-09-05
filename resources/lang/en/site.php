@@ -10,7 +10,7 @@ return [
     'edit'                   => 'edit',
     'delete'                 => 'delete',
     'add'                    => 'add',
-    'site.no_data_found'     => 'No data found',
+    'no_data_found'          => 'No data found',
     'action'                 => 'Action',
     'activeBtn'              => 'Activate',
     'deactivateBtn'          => 'Deactivate',
@@ -26,7 +26,13 @@ return [
     'orders'                 => 'Orders',
     'langs'                  => 'Languages',
     'order_rejection_reason' => 'Order Rejection Reasons',
-    'vendor_details'         => 'Vendor Details'
+    'new_orders'             => '',
+    'available_ads'          => '',
+    'new_users'              => '',
+    'specialists'            => '',
+    'salons'                 => '',
+    'vendor_details'         => '',
+    'of'                     => ''
 
 
 
