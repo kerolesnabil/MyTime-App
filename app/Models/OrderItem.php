@@ -47,7 +47,12 @@ class OrderItem extends Model
             ->select(
                 'orders_items.item_id',
                 'orders_items.item_count',
-                self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'service_name')
+                self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'service_name'),
+                'orders_items.item_type',
+                'orders_items.item_price_before_discount',
+                'orders_items.item_price_after_discount',
+                'orders_items.item_total_price_before_discount',
+                'orders_items.item_total_price_after_discount'
             )
             ->join('vendor_services','vendor_services.vendor_service_id','=','orders_items.item_id')
             ->join('services','services.service_id', '=', 'vendor_services.service_id')

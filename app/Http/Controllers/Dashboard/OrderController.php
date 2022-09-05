@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SavePageRequest;
+use App\Models\CouponUsed;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Page;
 use App\Models\Lang;
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::getAllOrders();
+        $orders = Order::getAllOrders(15);
         return view('dashboard.orders.index')->with(['orders' => $orders]);
     }
 
@@ -89,16 +91,23 @@ class OrderController extends Controller
 
     }
 
-
     public function destroy($id)
     {
         Page::findOrFail($id)->delete();
         return back();
     }
 
-    public function translationOrderStatus($status)
+    public function showOrderById($orderId)
     {
+        $orderData = Order::getOrderById($orderId);
+        $orderItemsData = OrderItem::getItemsOfOrderByOrderId($orderId);
+        $orderCoupon = CouponUsed::getUsedCouponByOrderId($orderId);
+
+        if (!is_null($orderData)){
+            return view('dashboard.orders.show_order')->with(['order'=> $orderData, 'items' => $orderItemsData, 'coupon' => $orderCoupon]);
+        }
+        session()->flash('warning', __('site_order.order_id_not_valid'));
+        return redirect(route('order.index'));
 
     }
-
 }
