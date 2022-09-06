@@ -43,6 +43,9 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('save/{id?}', 'CategoryController@saveCategory')->name('category.save_category');
         Route::get('get_category/{id?}', 'CategoryController@getCategory')->name('category.get_category');
         Route::post('update_category_activation', 'CategoryController@updateActivationCategory')->name('category.update_activation');
+        Route::get('get_sub_categories/{id?}', 'CategoryController@showSubCategoriesOfCategory')->name('category.get_sub_category');
+        Route::get('get_category_services/{id?}', 'CategoryController@showServicesOfCategory')->name('category.get_category_services');
+
     });
 
     Route::prefix('pages')->group(function (){
@@ -68,13 +71,20 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('update_lang_activation', 'LangController@updateActivationLang')->name('lang.update_activation');
     });
 
-    Route::prefix('order_rejection_reason')->group(function (){
+    Route::prefix('order_rejection_reasons')->group(function (){
         Route::get('/', 'OrderRejectionReasonController@index')->name('order_rejection_reason.index');
         Route::delete('destroy/{id}', 'OrderRejectionReasonController@destroy')->name('order_rejection_reason.destroy');
         Route::post('save/{id?}', 'OrderRejectionReasonController@saveOrderRejectionReason')->name('order_rejection_reason.save_order_rejection_reason');
         Route::get('get_order_rejection_reason/{id?}', 'OrderRejectionReasonController@getOrderRejectionReason')->name('order_rejection_reason.get_order_rejection_reason');
     });
 
+    Route::prefix('coupons')->group(function (){
+        Route::get('/', 'CouponController@index')->name('coupon.index');
+        Route::delete('destroy/{id}', 'CouponController@destroy')->name('coupon.destroy');
+        Route::post('save/{id?}', 'CouponController@saveCoupon')->name('coupon.save_coupon');
+        Route::get('get_coupon/{id?}', 'CouponController@getCoupon')->name('coupon.get_coupon');
+        Route::post('update_coupon_activation', 'CouponController@updateActivationCoupon')->name('coupon.update_activation');
+    });
 
 
 });

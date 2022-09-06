@@ -92,6 +92,7 @@ class PageController extends Controller
     public function destroy($id)
     {
         Page::findOrFail($id)->delete();
+        session()->flash('success', __('site.deleted_successfully'));
         return back();
     }
 

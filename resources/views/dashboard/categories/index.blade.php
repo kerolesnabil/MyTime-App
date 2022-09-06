@@ -50,10 +50,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>@lang('site_category.cat_name')</th>
-                                <th style="text-align: center">@lang('site_category.parent_cat_name')</th>
-                                <th style="text-align: center">@lang('site_category.has_children')</th>
-                                <th style="text-align: center">@lang('site_category.cat_is_active')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style="text-align: center; font-size: 16px">@lang('site_category.parent_cat_name')</th>
+                                <th style="text-align: center; font-size: 16px">@lang('site_category.has_children')</th>
+                                <th style="text-align: center; font-size: 16px">@lang('site_category.cat_is_active')</th>
+                                <th style="text-align: center; font-size: 16px">@lang('site.action')</th>
                             </tr>
                             </thead>
 
@@ -64,46 +64,53 @@
                             ?>
                             @foreach ($categories as $index => $category)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $category->cat_name }}</td>
-                                    <td style="text-align: center"><?php echo is_null($category->parent_cat_name) ? '-----' : $category->parent_cat_name ?></td>
-                                    <td style="text-align: center">
+                                    <td style="font-size: 16px">{{ $index + 1 }}</td>
+                                    <td style="font-size: 16px">{{ $category->cat_name }}</td>
+                                    <td style="text-align: center; font-size: 16px"><?php echo is_null($category->parent_cat_name) ? '-----' : $category->parent_cat_name ?></td>
+                                    <td style="text-align: center; font-size: 16px">
                                         <?php
                                             echo $category->has_children == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
                                     </td>
 
 
-                                    <td id="cat_status_{{$category->cat_id}}" style="text-align: center">
+                                    <td id="cat_status_{{$category->cat_id}}" style="text-align: center; font-size: 16px">
                                         <?php
                                             echo $category->cat_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
                                     </td>
-                                    <td>
+                                    <td style="font-size: 16px">
 
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="cat_id" value="{{$category->cat_id}}">
                                             <?php
                                                 echo $category->cat_is_active == 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 16px' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$category->cat_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='font-size: 16px' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$category->cat_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a href="{{ route('category.get_category', $category->cat_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style="font-size: 16px" href="{{ route('category.get_category', $category->cat_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('category.destroy', $category->cat_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style="font-size: 16px" type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
+
+                                        <a style="font-size: 16px" href="{{ route('category.get_category_services', $category->cat_id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_category_services')</a>
+
+                                        @if($category->has_children != 0)
+                                            <a style="font-size: 16px" href="{{ route('category.get_sub_category', $category->cat_id) }}" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_sub_cats')</a>
+                                        @endif
+
 
                                     </td>
                                 </tr>
@@ -148,7 +155,7 @@
                                         $('#'+cat_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['cat_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='font-size: 16px' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['cat_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -159,7 +166,7 @@
                                         form.find('button').remove();
 
                                         form.find('#hidden_btn_'+data['cat_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='font-size: 16px' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['cat_id'] +"' name='active_status' value='true'>");
                                     }

@@ -112,4 +112,93 @@ class Coupon extends Model
         return $couponData;
     }
 
+    public static function getAllCoupons()
+    {
+        $coupons =
+            self::query()
+                ->select
+                (
+                    'coupon_id',
+                    'coupon_code',
+                    'coupon_type',
+                    'coupon_value',
+                    'coupon_start_at',
+                    'coupon_end_at',
+                    'coupon_limited_num',
+                    'coupon_used_times',
+                    'is_active'
+                )
+                ->get();
+        return $coupons;
+
+    }
+
+
+    public static function getCouponById($couponId)
+    {
+        $coupon =
+            self::query()
+                ->select(
+
+                    'coupon_id',
+                    'coupon_code',
+                    'coupon_type',
+                    'coupon_value',
+                    'coupon_start_at',
+                    'coupon_end_at',
+                    'coupon_limited_num',
+                    'is_active'
+                )
+                ->where('coupon_id', '=', $couponId)
+                ->first();
+
+        return $coupon;
+    }
+
+
+    public static function saveCoupon($data, $couponId = null)
+    {
+        if (!is_null($couponId)){
+            self::where('coupon_id', '=', $couponId)
+                ->update(array(
+                    'coupon_code'        => $data['coupon_code'],
+                    'coupon_value'       => $data['coupon_value'],
+                    'coupon_type'        => $data['coupon_type'],
+                    'coupon_limited_num' => $data['coupon_limited_num'],
+                    'coupon_start_at'    => $data['coupon_start_at'],
+                    'coupon_end_at'      => $data['coupon_end_at'],
+                    'is_active'          => $data['is_active'],
+                ));
+        }
+        else {
+
+            self::create([
+                'coupon_code'        => $data['coupon_code'],
+                'coupon_value'       => $data['coupon_value'],
+                'coupon_type'        => $data['coupon_type'],
+                'coupon_limited_num' => $data['coupon_limited_num'],
+                'coupon_start_at'    => $data['coupon_start_at'],
+                'coupon_end_at'      => $data['coupon_end_at'],
+                'is_active'          => $data['is_active'],
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
+
+        }
+    }
+
+
+    public static function updateCouponActivationStatus($couponId, $status)
+    {
+        //$status => 0 || 1
+        self::where('coupon_id', '=', $couponId)
+            ->update(array(
+                'is_active'     => $status,
+                'updated_at'    => now()
+            ));
+
+
+    }
+
+
 }

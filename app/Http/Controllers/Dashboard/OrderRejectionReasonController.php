@@ -60,7 +60,7 @@ class OrderRejectionReasonController extends Controller
 
     public function destroy($id)
     {
-        Page::findOrFail($id)->delete();
+        OrderRejectionReason::findOrFail($id)->delete();
         return back();
     }
 

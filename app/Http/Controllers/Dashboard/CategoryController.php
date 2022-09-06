@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveCategoryRequest;
 use App\Models\Category;
 use App\Models\Lang;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,9 +16,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-
         $categories = Category::getAllCategoriesWithParent();
-
         return view('dashboard.categories.index')->with(['categories' => $categories]);
     }
 
@@ -91,12 +90,37 @@ class CategoryController extends Controller
 
     }
 
-
     public function destroy($id)
     {
         Category::findOrFail($id)->delete();
+        session()->flash('success', __('site.deleted_successfully'));
         return back();
     }
 
+    public function showSubCategoriesOfCategory($catId)
+    {
+        $subCats = collect(Category::getSubCategoriesMainCatId($catId));
+
+        if (!empty($subCats)){
+            return view('dashboard.categories.show_sub_categories')->with(['sub_cats'=> $subCats]);
+        }
+        session()->flash('warning', __('site_category.category_has_no_sub_cats'));
+        return redirect(route('category.index'));
+
+    }
+
+    public function showServicesOfCategory($catId)
+    {
+
+        $services = Service::getServicesByCatId($catId);
+
+        if (!empty($services)){
+            return view('dashboard.categories.show_order_services')->with(['services'=> $services]);
+        }
+
+        session()->flash('warning', __('site_category.category_has_no_services'));
+        return redirect(route('category.index'));
+
+    }
 
 }

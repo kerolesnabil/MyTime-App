@@ -13,7 +13,7 @@ return [
     'no_data_found'          => 'لا يوجد بيانات',
     'action'                 => 'الحدث',
     'activeBtn'              => 'تفعيل',
-    'deactivateBtn'          => 'الغاء تفعيل',
+    'deactivateBtn'          => 'الغاء التفعيل',
     'categories'             => 'الفئات',
     'updated_successfully'   => 'تم التعديل بنجاح',
     'created_successfully'   => 'تم الاضافة بنجاح',
@@ -32,6 +32,8 @@ return [
     'salons'                 => 'الصالونات',
     'order_rejection_reason' => 'اسباب رفض الطلبات',
     'vendor_details'         => 'بيانات الصالون او الاخصائي',
-    'of'                     => 'من'
+    'of'                     => 'من',
+    'coupons'                => 'الكوبونات',
+    'deleted_successfully'   => 'تم الحذف بنجاح'
 
 ];

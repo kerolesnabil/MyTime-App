@@ -22,7 +22,7 @@
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order.index')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>@lang('site.orders')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('lang.index')}}"><i class="fa fa-language"></i><span>@lang('site.langs')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order_rejection_reason.index')}}"><i class="fa fa-file-text" aria-hidden="true"></i><span>@lang('site.order_rejection_reason')</span></a></li>
-
+            <li style="font-size: 16px; font-weight: bold"><a href="{{route('coupon.index')}}"><i class="fa fa-tags" aria-hidden="true"></i><span>@lang('site.coupons')</span></a></li>
 
 
 

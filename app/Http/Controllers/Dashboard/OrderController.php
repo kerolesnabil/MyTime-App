@@ -91,11 +91,6 @@ class OrderController extends Controller
 
     }
 
-    public function destroy($id)
-    {
-        Page::findOrFail($id)->delete();
-        return back();
-    }
 
     public function showOrderById($orderId)
     {

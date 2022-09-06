@@ -88,6 +88,7 @@ class LangController extends Controller
     public function destroy($id)
     {
         Lang::findOrFail($id)->delete();
+        session()->flash('success', __('site.deleted_successfully'));
         return back();
     }
 

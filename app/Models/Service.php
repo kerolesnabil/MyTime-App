@@ -150,6 +150,19 @@ class Service extends Model
     }
 
 
+    public static function getServicesByCatId($catId)
+    {
+        return self::query()
+            ->select(
+                'service_id',
+                self::getValueWithSpecificLang('service_name', app()->getLocale(), 'service_name')
+
+            )->where('cat_id', $catId)
+            ->get()->toArray();
+
+    }
+
+
 
 
 
