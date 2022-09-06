@@ -31,6 +31,7 @@ return [
     'specialists'            => 'الاخصائيين',
     'salons'                 => 'الصالونات',
     'order_rejection_reason' => 'اسباب رفض الطلبات',
-    'vendor_details'         => 'بيانات الصالون او الاخصائي'
+    'vendor_details'         => 'بيانات الصالون او الاخصائي',
+    'of'                     => 'من'
 
 ];

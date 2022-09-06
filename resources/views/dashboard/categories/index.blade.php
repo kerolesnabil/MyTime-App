@@ -157,6 +157,7 @@
                                         $('#'+cat_status+'> i').remove();
                                         $('#'+cat_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
+
                                         form.find('#hidden_btn_'+data['cat_id']).remove();
                                         form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 

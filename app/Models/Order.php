@@ -309,7 +309,7 @@ class Order extends Model
 
     }
 
-    public static function getAllOrders()
+    public static function getAllOrders($paginate)
     {
         return self::query()
                 ->select(
@@ -331,7 +331,38 @@ class Order extends Model
                 ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
                 ->join('users', 'orders.user_id', '=', 'users.user_id')
                 ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
-                ->orderBy('orders.created_at','desc')->get();
+                ->orderBy('orders.created_at','desc')->paginate($paginate);
+    }
+
+    public static function getOrderById($orderId)
+    {
+        return self::query()
+            ->select(
+                'orders.order_id',
+                'orders.order_custom_date as order_date',
+                'orders.order_custom_time as order_time',
+                'orders.order_type',
+                'orders.order_status',
+                'orders.is_paid',
+                'vendors.user_name as vendor_name',
+                'users.user_name',
+                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method'),
+                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d _ %H:%i") as order_created_at'),
+                'orders.order_total_items_price_before_discount',
+                'orders.order_total_discount',
+                'orders.order_total_items_price_after_discount',
+                'orders.order_taxes_rate',
+                'order_taxes_cost',
+                'order_total_price',
+                'order_app_profit',
+                'order_phone',
+                'is_rated'
+            )
+            ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
+            ->join('users', 'orders.user_id', '=', 'users.user_id')
+            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
+            ->where('orders.order_id','=', $orderId)->first();
+
     }
 
 }

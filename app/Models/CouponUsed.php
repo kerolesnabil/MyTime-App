@@ -76,4 +76,19 @@ class CouponUsed extends Model
         return ResponsesHelper::returnData($usedCoupon,'200', '');
     }
 
+    public static function getUsedCouponByOrderId($orderId)
+    {
+        return self::query()
+                ->select
+                (
+                    'coupons.coupon_id',
+                    'coupons.coupon_value',
+                    'coupons.coupon_type'
+                )
+                ->join('coupons','coupons.coupon_id', '=', 'coupons_used.coupon_id')
+                ->where('coupons_used.order_id','=', $orderId)
+                ->first();
+    }
+
+
 }

@@ -40,11 +40,10 @@
                                 <th style="text-align: center">@lang('site_order.payment_method')</th>
                                 <th style="text-align: center">@lang('site_order.is_paid')</th>
                                 <th style="text-align: center">@lang('site_order.order_total_price')</th>
-                                <th style="text-align: center">@lang('site_order.order_taxes_cost')</th>
                                 <th style="text-align: center">@lang('site_order.order_app_profit')</th>
-                                <th style="text-align: center">@lang('site_order.order_date')</th>
-                                <th style="text-align: center">@lang('site_order.order_time')</th>
                                 <th style="text-align: center">@lang('site_order.order_created_at')</th>
+                                <th style="text-align: center">@lang('site.action')</th>
+
                             </tr>
                             </thead>
 
@@ -68,18 +67,25 @@
                                         ?>
                                     </td>
                                     <td>{{ $order->order_total_price}}</td>
-                                    <td>{{ $order->order_taxes_cost}}</td>
                                     <td>{{ $order->order_app_profit}}</td>
-                                    <td>{{ $order->order_date}}</td>
-                                    <td>{{ $order->order_time}}</td>
                                     <td>{{ $order->order_created_at}}</td>
+
+                                    <td>
+                                        <a href="{{ route('order.show_order', $order->order_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+                                    </td>
+
                                 </tr>
 
                             @endforeach
                             </tbody>
 
                         </table>
+                        {!! $orders->links() !!}
 
+
+                        <p>
+                            {{$orders->count()}} {{__('site.of')}} {{$orders->total()}}
+                        </p>
                     @else
 
                         <h2>@lang('site.no_data_found')</h2>
@@ -87,6 +93,7 @@
                     @endif
 
                 </div><!-- end of box body -->
+
             </div><!-- end of box -->
 
         </section><!-- end of content -->
