@@ -21,15 +21,21 @@ class PaymentMethod extends Model
 
 
 
-    public static function getPaymentMethods()
+    public static function getPaymentMethods($getIsActiveCol)
     {
+        // $getIsActiveCol => true || false
         $paymentMethods = self::query()
             ->select(
                 'payment_method_id',
                 self::getValueWithSpecificLang('payment_method_name', app()->getLocale(), 'payment_method_name')
             )
-            ->where('is_active','=', 1)
-            ->get()->toArray();
+            ->where('is_active','=', 1);
+
+        if($getIsActiveCol == true){
+            $paymentMethods = $paymentMethods->addSelect('is_active');
+        }
+
+        $paymentMethods = $paymentMethods->get();
 
         return $paymentMethods;
     }
