@@ -42,7 +42,7 @@ return [
     'item_count'                              => 'عدد الخدمة',
     'item_price_after_discount'               => 'سعر الخدمة بعد الخصم',
     'item_total_price_before_discount'        => 'السعر الكلي للخدمة قبل الخصم',
-    'item_total_price_after_discount'         => 'السعر الكلي للخدمة قبل الخصم',
+    'item_total_price_after_discount'         => 'السعر الكلي للخدمة بعد الخصم',
     'order_coupon'                            => 'الكوبون المستخدم',
 
 ];

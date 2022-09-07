@@ -65,16 +65,24 @@ class Category extends Model
     }
 
 
-    public static function subCategoriesOfVendorByCatId($catId)
+    public static function getSubCategoriesMainCatId($catId)
     {
-        $servicesOfVendor =
+        $subCats =
             self::query()
-                ->select('cat_id as sub_cat_id', 'cat_img',self::getValueWithSpecificLang('cat_name', app()->getLocale(),'sub_category_name'))
+                ->select(
+                    'cat_id as sub_cat_id',
+                    'cat_img',
+                    self::getValueWithSpecificLang('cat_name', app()->getLocale(),'sub_category_name')
+                )
                 ->where('categories.parent_id', '=', $catId)
                 ->get();
 
-        return $servicesOfVendor;
-
+        if (!empty($subCats)){
+            foreach ($subCats as $subCat){
+                $subCat["cat_img"] = ImgHelper::returnImageLink($subCat["cat_img"]);
+            }
+        }
+        return $subCats;
     }
 
     public static function getAllCategoriesTree()
