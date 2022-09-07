@@ -15,6 +15,7 @@ return [
     'order_date'                              => 'موعد الطلب',
     'order_time'                              => 'وقت الطلب',
     'order_created_at'                        => 'تاريخ انشاء الطلب',
+    'no_order_status'                         => 'لا شئ',
     'order_status_pending'                    => 'جاري المراجعة',
     'order_status_accepted'                   => 'تم الموافقة',
     'order_status_done'                       => 'تم الانتهاء',

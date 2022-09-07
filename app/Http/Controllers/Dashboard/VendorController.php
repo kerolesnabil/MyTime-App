@@ -45,4 +45,30 @@ class VendorController extends Controller
         return redirect(route('vendor.index'));
 
     }
+
+
+    public function reportVendors(Request $request)
+    {
+        if (!empty($request->date_from) && !empty($request->date_to)){
+
+            $dateFrom = date('Y-m-d H:i:s', strtotime($request->date_from));
+            $dateTo   = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($request->date_to)));
+
+            $allStatusOfOrder = ['pending', 'accepted', 'done', 'reschedule', 'canceled', 'rejected'];
+
+
+            if ($request->order_status != 'no_status' && in_array($request->order_status, $allStatusOfOrder)){
+                $vendorHaveFilteredOrders = User::getUsersHaveOrdersWithFilters('vendor',$dateFrom, $dateTo, $request->order_status);
+            }
+            else {
+                $vendorHaveFilteredOrders = User::getUsersHaveOrdersWithFilters('vendor',$dateFrom, $dateTo);
+            }
+
+            return view('dashboard.vendors.filtered_vendors')->with(['vendors' => $vendorHaveFilteredOrders]);
+        }
+
+        return response()->json(false);
+
+
+    }
 }

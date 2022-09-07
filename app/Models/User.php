@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -146,5 +147,45 @@ class User extends Authenticatable
                 'updated_at'     => now()
             ));
 
+    }
+
+
+    public static function getUsersHaveOrdersWithFilters($userType, $dateFrom, $dateTo, $orderStatus = null)
+    {
+        $users =
+            self::query()
+                ->select
+                (
+                    'users.user_id',
+                    'users.user_name',
+                    'users.user_phone',
+                    'users.user_email',
+                    'users.user_address',
+                    'users.user_is_active',
+                    DB::raw('count(order_id) as orders_count')
+                )
+
+                ->where('user_type', $userType);
+
+        if ($userType == 'vendor'){
+            $users = $users
+                    ->addSelect('vendor_details.vendor_type')
+                    ->join('vendor_details', 'vendor_details.user_id', 'users.user_id')
+                    ->join('orders','orders.vendor_id','=','users.user_id');
+        }
+        else{
+            $users = $users
+                    ->join('orders','orders.user_id','=','users.user_id');
+        }
+
+        if ($orderStatus != null){
+            $users = $users->where('orders.order_status','=', $orderStatus);
+        }
+
+        $users = $users->where('orders.created_at','>=', $dateFrom)
+                       ->where('orders.created_at','<=', $dateTo)
+                       ->groupBy('user_id');
+
+        return $users->get();
     }
 }

@@ -34,7 +34,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/', 'VendorController@index')->name('vendor.index');
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
         Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
-
+        Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
     });
 
     Route::prefix('categories')->group(function (){
@@ -59,6 +59,8 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
     Route::prefix('orders')->group(function (){
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
+        Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
+
 
 
     });
@@ -84,6 +86,14 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('save/{id?}', 'CouponController@saveCoupon')->name('coupon.save_coupon');
         Route::get('get_coupon/{id?}', 'CouponController@getCoupon')->name('coupon.get_coupon');
         Route::post('update_coupon_activation', 'CouponController@updateActivationCoupon')->name('coupon.update_activation');
+    });
+
+    Route::prefix('payment_methods')->group(function (){
+        Route::get('/', 'PaymentMethodController@index')->name('payment_method.index');
+        Route::delete('destroy/{id}', 'PaymentMethodController@destroy')->name('payment_method.destroy');
+        Route::post('save/{id?}', 'PaymentMethodController@savePaymentMethod')->name('payment_method.save_payment_method');
+        Route::get('get_payment_method/{id?}', 'PaymentMethodController@getPaymentMethod')->name('payment_method.get_payment_method');
+        Route::post('update_payment_method_activation', 'PaymentMethodController@updateActivationPaymentMethod')->name('payment_method.update_activation');
     });
 
 

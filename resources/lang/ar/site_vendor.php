@@ -4,7 +4,7 @@
 return [
 
     'vendor_name'          => 'اسم الاخصائي',
-    'vendor_type'          => 'نوع الاخصائي',
+    'vendor_type'          => 'نوع الحساب',
     'vendor_phone'         => 'الهاتف',
     'vendor_email'         => 'الايميل',
     'vendor_address'       => 'العنوان',
@@ -17,5 +17,6 @@ return [
     'vendor_description'   => 'الوصف',
     'vendor_slider'        => 'الصور',
     'vendor_id_not_valid'  => 'الرقم التعريفي غير صحيح',
-    'not_vendor_slider'    => 'لايوجد صور حتي الان !'
+    'not_vendor_slider'    => 'لايوجد صور حتي الان !',
+    'vendor_orders_count'  => 'عدد الطلبات'
 ];

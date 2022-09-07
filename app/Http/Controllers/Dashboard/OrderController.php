@@ -16,79 +16,14 @@ use Illuminate\Support\Facades\Validator;
 class OrderController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+
+        if (request()->ajax()){
+            dd($request);
+        }
         $orders = Order::getAllOrders(15);
         return view('dashboard.orders.index')->with(['orders' => $orders]);
-    }
-
-
-    public function savePage(SavePageRequest $request, $pageId= null)
-    {
-
-
-        $data['page_title']         = json_encode($request->page_title);
-        $data['page_content']       = json_encode($request->page_content);
-        $data['show_in_user_app']   = $request->show_in_user_app;
-        $data['show_in_vendor_app'] = $request->show_in_vendor_app;
-        $data['page_position']      = $request->page_position;
-        $data['is_active']          = $request->is_active;
-
-
-        if (!is_null($pageId)){
-            /**************  edit ***************/
-            $data['page_id'] = $pageId;
-            if (!is_null($request->img)) {
-                $pageImg = ImgHelper::uploadImage('images', $request->img);
-                Page::updatePageData($data, $pageImg);
-            }
-            else {
-                Page::updatePageData($data);
-            }
-
-            session()->flash('success', __('site.updated_successfully'));
-        }
-        else{
-            /**************  create ***************/
-            $pageImg = ImgHelper::uploadImage('images', $request->img);
-            $data['img'] = $pageImg;
-            Page::createPage($data);
-            session()->flash('success', __('site.created_successfully'));
-        }
-
-        return redirect(route('page.index'));
-    }
-
-    public function getPage($pageId = null)
-    {
-        $langs = Lang::getAllLangs();
-
-        if (!is_null($pageId)){
-            //edit
-            $page               = Page::getPageById($pageId);
-            $page->page_title   = json_decode($page->page_title, true);
-            $page->page_content = json_decode($page->page_content, true);
-            return view('dashboard.pages.save')->with(['page' => $page, 'langs' => $langs]);
-        }
-        //create
-        return view('dashboard.pages.save')->with(['langs' => $langs]);
-    }
-
-    public function updateActivationPage(Request $request)
-    {
-
-        if (isset($request->active_status) && isset($request->page_id)){
-
-            if ($request->active_status == 'true'){
-                Page::updatePageActivationStatus($request->page_id, 1);
-                return response()->json(['page_id' =>$request->page_id, 'status' => 'activate']);
-            }
-
-            Page::updatePageActivationStatus($request->page_id, 0);
-            return response()->json(['page_id' =>$request->page_id, 'status' => 'deactivate']);
-        }
-        return response()->json(false);
-
     }
 
 
@@ -103,6 +38,21 @@ class OrderController extends Controller
         }
         session()->flash('warning', __('site_order.order_id_not_valid'));
         return redirect(route('order.index'));
+
+    }
+
+    public function reportOrders(Request $request)
+    {
+        if (!empty($request->date_from) && !empty($request->date_to)){
+
+            $dateFrom = date('Y-m-d H:i:s', strtotime($request->date_from));
+            $dateTo   = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($request->date_to)));
+            $filteredOrders = Order::getOrdersWithFilters( $dateFrom, $dateTo);
+            return view('dashboard.orders.filtered_orders')->with(['orders' => $filteredOrders]);
+        }
+
+        return response()->json(false);
+
 
     }
 }
