@@ -75,7 +75,7 @@ class VendorController extends Controller
             'vendor_end_time'                    => 'required|date_format:H:i:s|after:time_start',
             'vendor_commercial_registration_num' => 'required|string',
             'vendor_tax_num'                     => 'required|string',
-            'vendor_logo'                        => 'required|image|mimes:jpg,jpeg,png|max:1000'
+            'vendor_logo'                        => 'required|image|mimes:jpg,jpeg,png|max:10240'
         ];
 
         $validator = Validator::make($request->all(), $rules);
