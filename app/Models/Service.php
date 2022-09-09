@@ -42,7 +42,6 @@ class Service extends Model
     {
         return self::query()
             ->select(
-                'services.service_id', 'services.cat_id',
                 'categories.cat_id as category_id',
                 'categories.has_children',
                 self::getValueWithSpecificLang(
@@ -65,7 +64,7 @@ class Service extends Model
             )->where('services.service_id', $service_id)
             ->join('categories', 'categories.cat_id', '=', 'services.cat_id')
             ->leftJoin('categories as parent_cat', 'categories.parent_id', '=', 'parent_cat.cat_id')
-            ->get()->toArray();
+            ->first()->toArray();
 
 
     }

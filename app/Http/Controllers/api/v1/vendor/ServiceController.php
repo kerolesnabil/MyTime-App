@@ -38,18 +38,20 @@ class ServiceController extends Controller
     public function saveService(Request $request,$vendor_service_id=null)
     {
 
-        $vendor['vendor']=Auth::user();
+        if(Auth::user()->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
 
         if(isset($vendor_service_id))
         {
-            $request->request->add(['vendor_service_id' => $vendor_service_id]);
+            $service= VendorServices::getServiceById($vendor_service_id);
 
-            $rules=[
-                'vendor_service_id' =>"required|exists:vendor_services,vendor_service_id"
-            ];
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return ResponsesHelper::returnValidationError('400', $validator);
+            if (empty($service)){
+                return ResponsesHelper::returnError('400',__('vendor.not_found'));
+            }
+            if($service->vendor_id!=Auth::user()->user_id)
+            {
+                return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
             }
         }
 
@@ -66,7 +68,7 @@ class ServiceController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-       $data= VendorServices::saveVendorService($request->all(), $vendor['vendor']->user_id);
+       $data= VendorServices::saveVendorService($request->all(), Auth::user()->user_id);
 
 
         return ResponsesHelper::returnData((isset($vendor_service_id)? intval($vendor_service_id) : (int) $data->vendor_service_id),'200',__('vendor.save_data'));
@@ -74,41 +76,47 @@ class ServiceController extends Controller
 
     public function showService(Request $request, $service_id)
     {
-        $request->request->add(['service_id' => $service_id]);
+        $vendor['vendor']=Auth::user();
 
-        $rules=[
-            'service_id' =>"required|exists:services,service_id"
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-       $service=VendorServices::getServiceById($service_id);
+        $service= VendorServices::getServiceById($service_id);
 
-       if(empty($service_id))
-       {
-           return ResponsesHelper::returnError('400','id not found');
-       }
+        if (empty($service)){
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+        }
+        if($service->vendor_id!=Auth::user()->user_id)
+        {
+            return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
+        }
 
         $service= Service::getService($service->service_id);
+
+        $service= array_merge(['service_id'=>(int)$service_id],$service);
 
        return ResponsesHelper::returnData($service,'200');
     }
 
     public function deleteService(Request $request ,$vendor_service_id)
     {
-        $request->request->add(['vendor_service_id' => $vendor_service_id]);
 
-        $rules = [
-            "vendor_service_id"     => "required|exists:vendor_services,vendor_service_id",
-        ];
+        $vendor['vendor']=Auth::user();
 
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
+        $service= VendorServices::getServiceById($vendor_service_id);
+
+        if (empty($service)){
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+        }
+        if($service->vendor_id!=Auth::user()->user_id)
+        {
+            return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
+        }
 
         VendorServices::deleteService($vendor_service_id);
 
@@ -129,6 +137,7 @@ class ServiceController extends Controller
 
         return ResponsesHelper::returnData($services,'200');
     }
+
 
     public function savePackage(Request $request,$package_id=null)
     {
