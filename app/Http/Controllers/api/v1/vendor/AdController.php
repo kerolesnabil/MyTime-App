@@ -35,6 +35,10 @@ class AdController extends Controller
             if (empty($ad)){
                 return ResponsesHelper::returnError('400',__('vendor.not_found'));
             }
+            if($ad->vendor_id!=Auth::user()->user_id)
+            {
+                return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
+            }
 
             $request->request->add(['ad_id' => $id]);
             $rules= [
@@ -64,8 +68,6 @@ class AdController extends Controller
             }
         }
 
-
-
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
 
         if($request->ad_at_location=='ad_in_homepage'){
@@ -74,9 +76,12 @@ class AdController extends Controller
             $request->request->add(['ad_at_discover_page' => false]);
         }
         if ($request->ad_at_location=='add_in_discover_page'){
-            $type='add_in_discover_page';
+            $type='ad_in_discover_page';
             $request->request->add(['ad_at_homepage' => false]);
             $request->request->add(['ad_at_discover_page' => true]);
+        }
+        if(!isset($type)){
+            return ResponsesHelper::returnError('400', __('vendor.ad_at_location_not_found'));
         }
         $request->request->remove('ad_at_location');
 
@@ -107,17 +112,17 @@ class AdController extends Controller
 
     public function getAd(Request $request,$id)
     {
-        $request->request->add(['ad_id' => $id]);
 
-        $rules=[
-            'ad_id' =>"required|exists:ads,ad_id"
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+
+        $ad = Ad::getAd($id);
+
+        if (empty($ad)){
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
         }
-
-        $ad=Ad::getAd($id);
+        if($ad->vendor_id!=Auth::user()->user_id)
+        {
+            return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
+        }
 
         return ResponsesHelper::returnData($ad,'200');
 
@@ -126,18 +131,14 @@ class AdController extends Controller
 
     public function deleteAd(Request $request,$id)
     {
-        if(Auth::user()->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+        $ad = Ad::getAd($id);
+
+        if (empty($ad)){
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
         }
-        $request->request->add(['ad_id' => $id]);
-
-        $rules = [
-            "ad_id"     => "required|exists:ads,ad_id",
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+        if($ad->vendor_id!=Auth::user()->user_id)
+        {
+            return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
         }
 
         Ad::deleteAd($id);

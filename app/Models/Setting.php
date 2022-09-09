@@ -56,7 +56,7 @@ class Setting extends Model
     {
         return self::query()->select('setting_value','setting_key')
             ->orWhere('setting_key','=','ad_in_homepage')
-            ->orWhere('setting_key','=','add_in_discover_page')
+            ->orWhere('setting_key','=','ad_in_discover_page')
             ->get()->toArray();
 
     }
