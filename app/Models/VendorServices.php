@@ -205,8 +205,8 @@ class VendorServices extends Model
     public static function getServiceById($service_id)
     {
       return self::query()->select(
-            'service_id'
-        )->where('service_id',$service_id)->first();
+            'service_id','vendor_id'
+        )->where('vendor_service_id',$service_id)->first();
     }
 
     public static function getAllServicesOfVendor($vendor_id)
