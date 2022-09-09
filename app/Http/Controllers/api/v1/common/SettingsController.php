@@ -16,7 +16,7 @@ class SettingsController extends Controller
 
     public static function getSocialMedia()
     {
-        $socialMedia = Setting::getSettingByKey('social_media');
+        $socialMedia = Setting::getSettingByKey('social_media','api');
 
         if (is_null($socialMedia)){
             return $data =[];
