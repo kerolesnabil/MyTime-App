@@ -96,5 +96,24 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('update_payment_method_activation', 'PaymentMethodController@updateActivationPaymentMethod')->name('payment_method.update_activation');
     });
 
+    Route::prefix('settings')->group(function (){
+
+        Route::prefix('social_media')->group(function (){
+            Route::get('/', 'SettingController@showSocialMedia')->name('setting.social_media');
+            Route::get('get_social_media/{id?}', 'SettingController@getSocialMedia')->name('setting.get_social_media');
+            Route::post('save', 'SettingController@saveSocialMedia')->name('setting.save_social_media');
+            Route::post('destroy_social_media', 'SettingController@destroySocialMedia')->name('setting.destroy_social_media');
+        });
+
+        Route::prefix('app_images')->group(function (){
+            Route::get('get_app_images', 'SettingController@getAppImages')->name('setting.get_app_images');
+            Route::post('save', 'SettingController@saveAppImages')->name('setting.save_app_images');
+        });
+
+
+
+
+    });
+
 
 });

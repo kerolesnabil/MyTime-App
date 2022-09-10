@@ -38,6 +38,7 @@ return [
     'date_from'              => 'التاريخ من',
     'date_to'                => 'التاريخ الي',
     'report'                 => 'التقرير',
-    'payment_methods'        => 'طرق الدفع'
+    'payment_methods'        => 'طرق الدفع',
+    'settings'               => 'الاعدادات'
 
 ];

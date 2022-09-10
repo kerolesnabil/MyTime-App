@@ -61,15 +61,43 @@ class Setting extends Model
 
         return  $tax->setting_value*$ad_days;
     }
+
     public static function getCostOfAds()
     {
         return self::query()->select('setting_value','setting_key')
             ->orWhere('setting_key','=','price_ad_in_homepage')
             ->orWhere('setting_key','=','price_ad_in_discover_page')
             ->get()->toArray();
-
     }
 
+    public static function saveSettingByKey($key, $settingValue, $settingName = null)
+    {
+        if (is_null($settingName) && !is_null($settingValue)) {
+
+            self::where('setting_key', '=', $key)
+                ->update(array(
+                    'setting_value' => $settingValue,
+                    'updated_at'    => now()
+                ));
+        }
+        elseif(!is_null($settingName) && !is_null($settingValue)) {
+
+            self::where('setting_key', '=', $key)
+                ->update(array(
+                    'setting_value' => $settingValue,
+                    'setting_name'  => $settingName,
+                    'updated_at'    => now()
+                ));
+
+        }
+        elseif (!is_null($settingName) && is_null($settingValue)){
+            self::where('setting_key', '=', $key)
+                ->update(array(
+                    'setting_name' => $settingName,
+                    'updated_at'    => now()
+                ));
+        }
+    }
 
 
 }
