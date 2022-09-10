@@ -71,12 +71,26 @@ class Order extends Model
 
     public static function getLastOrdersOfVendor($id)
     {
-        return self::query()
+        $lastOrders = self::query()
             ->select(
-                'order_id','order_custom_date',
-                        'order_custom_time','order_status','users.user_name'
+                'order_id',
+                'order_custom_date',
+                'order_custom_time',
+                'order_status',
+                'users.user_name',
+                'users.user_img'
             )->join('users', 'orders.user_id', '=', 'users.user_id')
             ->where('vendor_id',$id)->limit(5)->get();
+
+        if (!empty($lastOrders)){
+
+            foreach (collect($lastOrders)->toArray() as $key => $order) {
+                $lastOrders[$key]["user_img"]  = ImgHelper::returnImageLink($order["user_img"]);
+            }
+        }
+
+        return $lastOrders;
+
     }
 
     public static function countAllOrdersOfVendor($id)
