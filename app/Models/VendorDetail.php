@@ -238,4 +238,5 @@ class VendorDetail extends Model
         return $slider;
 
     }
+
 }

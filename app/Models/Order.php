@@ -365,4 +365,32 @@ class Order extends Model
 
     }
 
+    public static function getOrdersWithFilters($date_from, $date_to)
+    {
+        return self::query()
+            ->select(
+                'orders.order_id',
+                'orders.order_custom_date as order_date',
+                'orders.order_custom_time as order_time',
+                'orders.order_type',
+                'orders.order_status',
+                'orders.is_paid',
+                'vendors.user_name as vendor_name',
+                'users.user_name',
+                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method'),
+                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at'),
+                'order_taxes_cost',
+                'order_total_price',
+                'order_app_profit',
+                'order_phone'
+            )
+            ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
+            ->join('users', 'orders.user_id', '=', 'users.user_id')
+            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
+            ->orderBy('orders.created_at','desc')
+            ->where('orders.created_at','>=', $date_from)
+            ->where('orders.created_at','<=', $date_to)
+            ->get();
+    }
+
 }

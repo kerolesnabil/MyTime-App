@@ -23,7 +23,19 @@
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('lang.index')}}"><i class="fa fa-language"></i><span>@lang('site.langs')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order_rejection_reason.index')}}"><i class="fa fa-file-text" aria-hidden="true"></i><span>@lang('site.order_rejection_reason')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('coupon.index')}}"><i class="fa fa-tags" aria-hidden="true"></i><span>@lang('site.coupons')</span></a></li>
+            <li style="font-size: 16px; font-weight: bold"><a href="{{route('payment_method.index')}}"><i class="fa fa-money" aria-hidden="true"></i><span>@lang('site.payment_methods')</span></a></li>
 
+            <li class="treeview" style="font-size: 16px; font-weight: bold">
+                <a href="#">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>@lang('site.settings')<i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.social_media') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.social_media')</a></li>
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_app_images') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_images')</a></li>
+
+                </ul>
+
+            </li>
 
 
 

@@ -149,7 +149,7 @@ class OrderController extends Controller
 
 
 
-        $data['paymet_methods'] = PaymentMethod::getPaymentMethods();
+        $data['paymet_methods'] = collect(PaymentMethod::getPaymentMethods('api'));
 
         return ResponsesHelper::returnData($data,'200','');
     }

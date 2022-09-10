@@ -20,24 +20,45 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.vendors')</h3>
+                    <h3 class="box-title"  style="margin-bottom: 15px; font-size: 20px; color: red; font-weight: bold">@lang('site.vendors')</h3>
 
-                    <form action="{{ route('vendor.index') }}" method="get">
-
+                    <form id='filter_form'>
+                        {{ csrf_field() }}
                         <div class="row">
+                            <div class="col-md-8">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_from') :</label>
+                                        <input style="font-size: 16px" type="date" name="date_from" class="form-control" value="{{ request()->date_from }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_to') :</label>
+                                        <input style="font-size: 16px" type="date" name="date_to" class="form-control" value="{{ request()->date_to }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.order_status') :</label>
+                                        <select style="font-size: 17px" class="form-select form-control" name="order_status" data-placeholder="Select a State">
+                                            <option value="no_status">@lang('site_order.no_order_status')</option>
+                                            <option value="pending">@lang('site_order.order_status_pending')</option>
+                                            <option value="accepted">@lang('site_order.order_status_accepted')</option>
+                                            <option value="done">@lang('site_order.order_status_done')</option>
+                                            <option value="reschedule">@lang('site_order.order_status_reschedule')</option>
+                                            <option value="canceled">@lang('site_order.order_status_canceled')</option>
+                                            <option value="rejected">@lang('site_order.order_status_rejected')</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="margin-top: 26px">
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                    </div>
+                                </div>
 
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
                             </div>
-
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                            </div>
-
                         </div>
                     </form><!-- end of form -->
 
                 </div><!-- end of box header -->
+
+                <div id="filtered-data-holder"></div>
 
                 <div class="box-body">
 
@@ -46,7 +67,7 @@
                         <table class="table table-bordered table-hover">
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
-                            <tr>
+                            <tr style="font-size: 17px">
                                 <th>#</th>
                                 <th>@lang('site_vendor.vendor_name')</th>
                                 <th>@lang('site_vendor.vendor_type')</th>
@@ -64,7 +85,7 @@
                                 $deactivateBtn = __("site.deactivateBtn");
                             ?>
                             @foreach ($vendors as $index => $vendor)
-                                <tr>
+                                <tr style="font-size: 17px">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $vendor->user_name }}</td>
                                     <td>{{ $vendor->vendor_type}}</td>
@@ -77,18 +98,18 @@
                                         ?></td>
                                     <td>
 
-                                        <a href="{{ route('vendor.show_vendor', $vendor->user_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+                                        <a style='font-size: 17px' href="{{ route('vendor.show_vendor', $vendor->user_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
 
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="user_id" value="{{$vendor->user_id}}">
                                             <?php
                                                 echo $vendor->user_is_active == 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 17px' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='font-size: 17px' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='true'>
                                                     ";
                                             ?>
@@ -101,7 +122,7 @@
                             @endforeach
                             </tbody>
 
-                        </table><!-- end of table -->
+                        </table>
                     {!! $vendors->links() !!}
 
                         {{ $vendors->appends(request()->query())->links() }}
@@ -140,7 +161,7 @@
                                         $('#'+user_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['user_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='font-size: 17px' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -150,7 +171,7 @@
                                         $('#'+user_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['user_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='font-size: 17px' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='true'>");
                                     }
@@ -165,6 +186,35 @@
 
                 </script>
 
+                <script>
+                    $(document).ready(function () {
+                        $('form').on('click','.report_btn', function (e) {
+
+                            e.preventDefault();
+                            let formData = new FormData($('#filter_form')[0]);
+                            $.ajax({
+                                type: 'post',
+                                enctype: 'multipart/form-data',
+                                url: "{{route('vendor.report_vendors')}}",
+                                data : formData,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                success: function (data) {
+                                    if (data != false){
+                                        $('.box-body').remove();
+                                        $('#filtered-data-holder').append(data)
+                                    }
+                                },
+                                error: function (data) {
+                                    console.log(data);
+                                }
+                            })
+
+                        });
+                    });
+
+                </script>
 
             </div><!-- end of box -->
 

@@ -34,7 +34,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/', 'VendorController@index')->name('vendor.index');
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
         Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
-
+        Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
     });
 
     Route::prefix('categories')->group(function (){
@@ -59,6 +59,8 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
     Route::prefix('orders')->group(function (){
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
+        Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
+
 
 
     });
@@ -84,6 +86,33 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('save/{id?}', 'CouponController@saveCoupon')->name('coupon.save_coupon');
         Route::get('get_coupon/{id?}', 'CouponController@getCoupon')->name('coupon.get_coupon');
         Route::post('update_coupon_activation', 'CouponController@updateActivationCoupon')->name('coupon.update_activation');
+    });
+
+    Route::prefix('payment_methods')->group(function (){
+        Route::get('/', 'PaymentMethodController@index')->name('payment_method.index');
+        Route::delete('destroy/{id}', 'PaymentMethodController@destroy')->name('payment_method.destroy');
+        Route::post('save/{id?}', 'PaymentMethodController@savePaymentMethod')->name('payment_method.save_payment_method');
+        Route::get('get_payment_method/{id?}', 'PaymentMethodController@getPaymentMethod')->name('payment_method.get_payment_method');
+        Route::post('update_payment_method_activation', 'PaymentMethodController@updateActivationPaymentMethod')->name('payment_method.update_activation');
+    });
+
+    Route::prefix('settings')->group(function (){
+
+        Route::prefix('social_media')->group(function (){
+            Route::get('/', 'SettingController@showSocialMedia')->name('setting.social_media');
+            Route::get('get_social_media/{id?}', 'SettingController@getSocialMedia')->name('setting.get_social_media');
+            Route::post('save', 'SettingController@saveSocialMedia')->name('setting.save_social_media');
+            Route::post('destroy_social_media', 'SettingController@destroySocialMedia')->name('setting.destroy_social_media');
+        });
+
+        Route::prefix('app_images')->group(function (){
+            Route::get('get_app_images', 'SettingController@getAppImages')->name('setting.get_app_images');
+            Route::post('save', 'SettingController@saveAppImages')->name('setting.save_app_images');
+        });
+
+
+
+
     });
 
 

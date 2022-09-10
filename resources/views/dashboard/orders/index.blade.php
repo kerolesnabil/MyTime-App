@@ -19,9 +19,35 @@
             <div class="box box-primary">
 
                 <div class="box-header with-border">
+                    <h3 class="box-title" style="margin-bottom: 15px; font-size: 20px; color: red; font-weight: bold">@lang('site.orders')</h3>
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.orders')</h3>
+                    <form id='filter_form'>
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_from') :</label>
+                                        <input type="date" name="date_from" class="form-control" value="{{ request()->date_from }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_to') :</label>
+                                        <input type="date" name="date_to" class="form-control" value="{{ request()->date_to }}">
+                                    </div>
+                                    <div class="col-md-4" style="margin-top: 26px">
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form><!-- end of form -->
+
                 </div><!-- end of box header -->
+
+                <div id="filtered-data-holder">
+
+                </div>
 
                 <div class="box-body">
 
@@ -30,7 +56,7 @@
                         <table class="table table-bordered table-hover">
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
-                            <tr>
+                            <tr style="font-size: 17px">
                                 <th>#</th>
                                 <th>@lang('site_order.user_name')</th>
                                 <th>@lang('site_order.order_phone')</th>
@@ -53,7 +79,7 @@
                                 $deactivateBtn = __("site.deactivateBtn");
                             ?>
                             @foreach ($orders as $index => $order)
-                                <tr>
+                                <tr style="font-size: 17px">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $order->user_name }}</td>
                                     <td>{{ $order->order_phone }}</td>
@@ -71,7 +97,7 @@
                                     <td>{{ $order->order_created_at}}</td>
 
                                     <td>
-                                        <a href="{{ route('order.show_order', $order->order_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+                                        <a style="font-size: 17px" href="{{ route('order.show_order', $order->order_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
                                     </td>
 
                                 </tr>
@@ -94,11 +120,42 @@
 
                 </div><!-- end of box body -->
 
+                <script>
+                    $(document).ready(function () {
+                        $('form').on('click','.report_btn', function (e) {
+
+                            e.preventDefault();
+                            let formData = new FormData($('#filter_form')[0]);
+                            $.ajax({
+                                type: 'post',
+                                enctype: 'multipart/form-data',
+                                url: "{{route('order.report_order')}}",
+                                data : formData,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                success: function (data) {
+                                    if (data != false){
+                                        $('.box-body').remove();
+                                        $('#filtered-data-holder').append(data)
+                                    }
+                                },
+                            })
+
+                        });
+                    });
+
+                </script>
+
+
+
             </div><!-- end of box -->
 
         </section><!-- end of content -->
 
     </div><!-- end of content wrapper -->
+
+
 
 
 @endsection
