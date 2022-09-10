@@ -103,13 +103,7 @@ class VendorController extends Controller
             return ResponsesHelper::returnError('300', 'some error in send sms');
         }
 
-        return ResponsesHelper::returnData(
-            [
-                'user' => $user, 'user_detail' => $user_detail
-            ],
-            '201',
-            ''
-        );
+        return ResponsesHelper::returnData(['user' => $user, 'user_detail' => $user_detail], '200', '');
     }
 
     public function getVendorProfile(Request $request)
