@@ -16,6 +16,7 @@ class ServicesSeeder extends Seeder
     public function run()
     {
 
+        
         $servicesCheck = DB::table('services')->get();
 
         if (!count($servicesCheck)){
