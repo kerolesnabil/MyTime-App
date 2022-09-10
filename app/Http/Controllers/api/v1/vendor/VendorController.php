@@ -100,7 +100,7 @@ class VendorController extends Controller
 
         } catch (\Exception $ex) {
 
-            return ResponsesHelper::returnError('300', 'some error in send sms');
+            return ResponsesHelper::returnError('400', 'some error in send sms');
         }
 
         return ResponsesHelper::returnData(['user' => $user, 'user_detail' => $user_detail], '200', '');
