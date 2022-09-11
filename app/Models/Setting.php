@@ -59,7 +59,7 @@ class Setting extends Model
     {
         $tax = self::query()->select('setting_value')->where('setting_key','=', $key)->first();
 
-        return  $tax->setting_value*$ad_days;
+        return  $tax->setting_value * $ad_days;
     }
 
     public static function getCostOfAds()
