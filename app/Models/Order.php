@@ -78,9 +78,12 @@ class Order extends Model
                 'order_custom_time',
                 'order_status',
                 'users.user_name',
-                'users.user_img'
+                'users.user_img',
+                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at')
             )->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->where('vendor_id',$id)->limit(5)->get();
+            ->where('vendor_id',$id)
+            ->orderBy('order_created_at','desc')
+            ->limit(5)->get();
 
         if (!empty($lastOrders)){
 
@@ -97,7 +100,7 @@ class Order extends Model
     {
         return self::query()
             ->select(
-                DB::raw('count(order_id) as allCountOrder')
+                DB::raw('count(order_id) as all_count_orders')
             )
             ->where('vendor_id',$id)->first();
     }

@@ -29,21 +29,25 @@ class VendorController extends Controller
     public function getVendorHomepage(Request $request)
     {
 
-        $vendor['vendor']=Auth::user();
+        $vendor = Auth::user();
 
-        if($vendor['vendor']->user_type!='vendor'){
+        if($vendor->user_type!='vendor'){
            return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-        $vendor['vendor_information']=VendorDetail::getVendorById($vendor['vendor']->user_id);
+        $data['vendor_information']   = User::getUserTypeVendor($vendor->user_id);
+        $data['vendor_statistics']    = VendorDetail::getVendorById($vendor->user_id);
+        $countAllOrderOfVendor        = Order::countAllOrdersOfVendor($vendor->user_id);
 
-        $vendor['vendor']->user_img=ImgHelper::returnImageLink( $vendor['vendor']->user_img);
+        if (!is_null($countAllOrderOfVendor)){
+            $countAllOrderOfVendor = $countAllOrderOfVendor->all_count_orders;
+        }
 
-        $vendor['last_orders']=Order::getLastOrdersOfVendor($vendor['vendor']->user_id);
+        $data['vendor_statistics']->count_all_orders = $countAllOrderOfVendor;
+        $data['last_orders']                         = Order::getLastOrdersOfVendor($vendor->user_id);
 
-        $vendor['count_orders']=Order::countAllOrdersOfVendor($vendor['vendor']->user_id);
 
-        return ResponsesHelper::returnData($vendor,'200');
+        return ResponsesHelper::returnData($data,'200');
 
     }
 

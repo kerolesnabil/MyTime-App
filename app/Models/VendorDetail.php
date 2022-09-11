@@ -124,8 +124,10 @@ class VendorDetail extends Model
     public static function getVendorById($vendor_id)
     {
         return self::query()
-            ->select('vendor_details_id',
-                'vendor_reviews_count','vendor_type',
+            ->select(
+                'vendor_reviews_count',
+                'vendor_views_count',
+                'vendor_type',
                 DB::raw('vendor_reviews_sum / vendor_reviews_count as vendor_rate')
             )->where('vendor_details_id', '=', $vendor_id)->first();
     }
