@@ -6,6 +6,7 @@ use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Service;
+use App\Models\SuggestedServices;
 use App\Models\VendorServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class ServiceController extends Controller
 {
 
+    // unused
     public function getAllCategoriesServices()
     {
         $rootCategories = Category::getAllCategoriesTree();
@@ -34,6 +36,78 @@ class ServiceController extends Controller
 
         return ResponsesHelper::returnData($newCatsArr,'200');
     }
+
+
+    public function getMainCategoriesOfServices(Request $request)
+    {
+        $user=Auth::user();
+        if( $user->user_type!='vendor')
+        {
+            return ResponsesHelper::returnError('400','yor are not a vendor');
+        }
+
+        $data = Category::mainCategories();
+
+
+        return ResponsesHelper::returnData($data,'200','');
+    }
+
+    public function getSubCategoriesOfServices(Request $request, $parenId)
+    {
+        $user=Auth::user();
+        if( $user->user_type!='vendor')
+        {
+            return ResponsesHelper::returnError('400','yor are not a vendor');
+        }
+
+        $request->request->add(['parent_id' => $parenId]);
+        $rules = [
+            "parent_id"=> "required|exists:categories,cat_id",
+
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+        $data = Category::getSubCategoriesMainCatId($parenId);
+
+
+        if (!empty($data)){
+            foreach ($data as $item){
+                unset($item['cat_img']);
+            }
+        }
+
+        return ResponsesHelper::returnData($data,'200','');
+    }
+
+
+    public function getServicesByCatId(Request $request, $catId)
+    {
+
+        $user=Auth::user();
+        if( $user->user_type!='vendor')
+        {
+            return ResponsesHelper::returnError('400','yor are not a vendor');
+        }
+
+        $request->request->add(['cat_id' => $catId]);
+        $rules = [
+            "cat_id"=> "required|exists:categories,cat_id",
+
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+        $data = Service::getServicesByCatId($catId);
+
+        return ResponsesHelper::returnData($data,'200','');
+
+    }
+
 
     public function saveService(Request $request,$vendor_service_id=null)
     {
@@ -92,9 +166,9 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
         }
 
-        $service= Service::getService($service->service_id);
+        $service = Service::getService($service->service_id);
 
-        $service= array_merge(['service_id'=>(int)$service_id],$service);
+        $service = array_merge(['service_id'=>(int)$service_id], $service);
 
        return ResponsesHelper::returnData($service,'200');
     }
@@ -138,9 +212,13 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($services,'200');
     }
 
-
     public function savePackage(Request $request,$package_id=null)
     {
+        $vendor['vendor']=Auth::user();
+
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
 
         if(isset($package_id))
         {
@@ -178,6 +256,11 @@ class ServiceController extends Controller
 
     public function getPackage(Request $request, $package_id)
     {
+        $vendor['vendor']=Auth::user();
+
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
 
         $request->request->add(['package_id' => $package_id]);
 
@@ -203,6 +286,12 @@ class ServiceController extends Controller
 
     public function deletePackage(Request $request ,$package_id)
     {
+        $vendor['vendor']=Auth::user();
+
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
+
         $request->request->add(['package_id' => $package_id]);
 
         $rules = [
@@ -251,5 +340,28 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($packges,'200');
     }
 
+    public function addSuggestedService(Request $request)
+    {
+        $vendor['vendor'] = Auth::user();
 
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
+
+        $rules = [
+            "main_cat_name" => "required|string",
+            "sub_cat_name"  => "string",
+            "service_name"  => "required|string",
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+        SuggestedServices::createSuggestedService($request, $vendor['vendor']->user_id);
+
+        return ResponsesHelper::returnData([],'200',__('vendor.save_data'));
+
+
+    }
 }

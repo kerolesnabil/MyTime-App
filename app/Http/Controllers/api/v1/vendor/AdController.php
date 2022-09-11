@@ -59,7 +59,7 @@ class AdController extends Controller
                 "ad_days"               => "required|integer",
                 "ad_title"              => "required|string",
                 "ad_start_at"           => "required|date",
-                'ad_img'                => 'required|image|mimes:jpg,jpeg,png|max:1000',
+                'ad_img'                => 'required|image|mimes:jpg,jpeg,png|max:10240',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -72,20 +72,22 @@ class AdController extends Controller
 
         if($request->ad_at_location=='ad_in_homepage'){
             $type='ad_in_homepage';
+            $settingKey = 'price_ad_in_homepage';
             $request->request->add(['ad_at_homepage' => true]);
             $request->request->add(['ad_at_discover_page' => false]);
         }
-        if ($request->ad_at_location=='add_in_discover_page'){
+        if ($request->ad_at_location == 'add_in_discover_page'){
             $type='ad_in_discover_page';
+            $settingKey = 'price_ad_in_discover_page';
             $request->request->add(['ad_at_homepage' => false]);
             $request->request->add(['ad_at_discover_page' => true]);
         }
-        if(!isset($type)){
+        if(!isset($type) && !isset($settingKey)){
             return ResponsesHelper::returnError('400', __('vendor.ad_at_location_not_found'));
         }
         $request->request->remove('ad_at_location');
 
-        $cost=Setting::calculateCost($type,$request->ad_days);
+        $cost = Setting::calculateCost($settingKey, $request->ad_days);
         $date = Carbon::parse($request->ad_start_at)->addDay($request->ad_days);
 
         $request->request->add(['ad_end_at' => $date->toDateString()]);
@@ -106,7 +108,7 @@ class AdController extends Controller
 
         $ad=Ad::saveAd($dataArr);
 
-        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'400',__('vendor.save_data'));
+        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('vendor.save_data'));
 
     }
 

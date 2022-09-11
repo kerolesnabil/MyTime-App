@@ -17,15 +17,24 @@ Route::group([
     Route::get('/get-vendor-reviews',[\App\Http\Controllers\api\v1\vendor\VendorController::class,'getVendorReviews']);
 
 
-    Route::get('get-all-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getAllCategoriesServices']);
+    Route::get('get-main-categories-of-services',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getMainCategoriesOfServices']);
+    Route::get('get-sub-categories-of-services/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getSubCategoriesOfServices']);
+    Route::get('get-services-by-category/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getServicesByCatId']);
+
+
 
     Route::post('create-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'saveService']);
     Route::post('update-service/{id?}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'saveService']);
     Route::get('show-service/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'showService']);
     Route::post('delete-service/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'deleteService']);
 
+    Route::post('create-suggested-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'addSuggestedService']);
+
+
     Route::get('get-orders-list',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getListOrdersOfVendor']);
     Route::get('get-order-details/{order_id}',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getOrderDetailsOfVendor']);
+    Route::post('get-order-by-keyword',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getOrderByKeyword']);
+
 
     Route::get('get-all-services-vendor',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getServicesOfVendor']);
 

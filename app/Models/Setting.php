@@ -57,9 +57,9 @@ class Setting extends Model
 
     public static function calculateCost($key, $ad_days)
     {
-        $tax = self::query()->select('setting_value')->where('setting_key','=', $key)->first();
+        $price = self::query()->select('setting_value')->where('setting_key','=', $key)->first();
 
-        return  $tax->setting_value*$ad_days;
+        return  $price->setting_value * $ad_days;
     }
 
     public static function getCostOfAds()
