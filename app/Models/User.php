@@ -188,4 +188,32 @@ class User extends Authenticatable
 
         return $users->get();
     }
+
+    public static function getUserTypeVendor($userId)
+    {
+        $vendor =
+            self::query()
+                ->select
+                (
+
+                    'user_name as vendor_name',
+                    'user_phone as vendor_phone',
+                    'user_email as vendor_email',
+                    'user_address as vendor_address',
+                    'user_lat as vendor_lat',
+                    'user_long as vendor_long',
+                    'user_img as vendor_img'
+                )
+                ->where('user_id', $userId)
+                ->first();
+
+        if (!is_null($vendor)){
+            $vendor->vendor_img =  ImgHelper::returnImageLink($vendor->vendor_img);
+        }
+
+        return $vendor;
+    }
+
+
+
 }
