@@ -24,6 +24,9 @@ Route::group([
     Route::get('show-service/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'showService']);
     Route::post('delete-service/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'deleteService']);
 
+    Route::post('create-suggested-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'addSuggestedService']);
+
+
     Route::get('get-orders-list',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getListOrdersOfVendor']);
     Route::get('get-order-details/{order_id}',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getOrderDetailsOfVendor']);
 
