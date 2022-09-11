@@ -61,8 +61,6 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
         Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
 
-
-
     });
 
     Route::prefix('langs')->group(function (){
@@ -110,8 +108,10 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
             Route::post('save', 'SettingController@saveAppImages')->name('setting.save_app_images');
         });
 
-
-
+        Route::prefix('ads_price')->group(function (){
+            Route::get('get_ads_price', 'SettingController@getAppImages')->name('setting.get_app_images');
+            Route::post('save', 'SettingController@saveAppImages')->name('setting.save_app_images');
+        });
 
     });
 

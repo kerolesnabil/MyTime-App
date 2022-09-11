@@ -35,12 +35,16 @@ class VendorController extends Controller
            return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-        $data['vendor_information']   = User::getUserTypeVendor($vendor->user_id);
-        $data['vendor_statistics']    = VendorDetail::getVendorById($vendor->user_id);
-        $countAllOrderOfVendor        = Order::countAllOrdersOfVendor($vendor->user_id);
+        $data['vendor_information']                      = User::getUserTypeVendor($vendor->user_id);
+        $data['vendor_statistics']                       = VendorDetail::getVendorById($vendor->user_id);
+        $data['vendor_statistics']->vendor_reviews_count = strval($data['vendor_statistics']->vendor_reviews_count);
+        $data['vendor_statistics']->vendor_views_count   = strval($data['vendor_statistics']->vendor_views_count);
+        $data['vendor_statistics']->vendor_rate          = strval($data['vendor_statistics']->vendor_rate);
+        $data['vendor_statistics']->count_all_orders     = strval($data['vendor_statistics']->count_all_orders);
+        $countAllOrderOfVendor                           = Order::countAllOrdersOfVendor($vendor->user_id);
 
         if (!is_null($countAllOrderOfVendor)){
-            $countAllOrderOfVendor = $countAllOrderOfVendor->all_count_orders;
+            $countAllOrderOfVendor = strval($countAllOrderOfVendor->all_count_orders);
         }
 
         $data['vendor_statistics']->count_all_orders = $countAllOrderOfVendor;
