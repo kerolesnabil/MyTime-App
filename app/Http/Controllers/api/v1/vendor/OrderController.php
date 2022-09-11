@@ -84,5 +84,43 @@ class OrderController extends Controller
     }
 
 
+    public function getOrderByKeyword(Request $request)
+    {
+        $vendor['vendor']=Auth::user();
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
+        $rules = [
+            "keyword" => "required",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+
+        if (is_numeric($request->keyword)){
+            $orderId = intval($request->keyword);
+            $data = Order::getOrdersOfVendorByKeyWord($vendor['vendor']->user_id, $orderId);
+        }
+        else{
+
+            $username = strval($request->keyword);
+            $data = Order::getOrdersOfVendorByKeyWord($vendor['vendor']->user_id, null, $username);
+        }
+
+
+        $data = collect($data)->toArray();
+        if (empty($data)){
+            return ResponsesHelper::returnError( '400', 'not found data for this keyword !');
+        }
+
+        return ResponsesHelper::returnData($data, '200', '');
+
+
+    }
+
 
 }

@@ -410,4 +410,47 @@ class Order extends Model
             ->get();
     }
 
+
+    public static function getOrdersOfVendorByKeyWord($vendorId, $orderId = null, $username =null)
+    {
+        // get order by => order id or username
+        $orders =
+            self::query()
+                ->select(
+                    'orders.order_id',
+                    'orders.order_custom_date as order_date',
+                    'orders.order_custom_time as order_time',
+                    'orders.order_type',
+                    'orders.order_status',
+                    'orders.is_paid',
+                    'users.user_name',
+                    'users.user_img',
+                    DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d") as order_created_at')
+                )
+                ->join('users', 'orders.user_id', '=', 'users.user_id')
+                ->where('orders.vendor_id', '=', $vendorId);
+
+
+                if(!is_null($orderId)){
+
+                    $order = $orders->where('orders.order_id','=', $orderId);
+                }
+
+                if (!is_null($username)){
+
+                    $order = $orders->where('users.user_name','like', "%$username%");
+                }
+
+                $orders = $orders->get();
+
+        if (!empty($order)){
+
+            foreach ($orders as $order){
+                $order['user_img'] = ImgHelper::returnImageLink($order['user_img']);
+            }
+        }
+
+        return $orders;
+    }
+
 }

@@ -33,6 +33,8 @@ Route::group([
 
     Route::get('get-orders-list',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getListOrdersOfVendor']);
     Route::get('get-order-details/{order_id}',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getOrderDetailsOfVendor']);
+    Route::post('get-order-by-keyword',[\App\Http\Controllers\api\v1\vendor\OrderController::class,'getOrderByKeyword']);
+
 
     Route::get('get-all-services-vendor',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getServicesOfVendor']);
 
