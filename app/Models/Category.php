@@ -27,7 +27,8 @@ class Category extends Model
         $parentsCategories = self::query()
             ->select(
                 'cat_id',
-                self::getValueWithSpecificLang('cat_name', app()->getLocale(),'cat_name')
+                self::getValueWithSpecificLang('cat_name', app()->getLocale(),'cat_name'),
+                'has_children'
             )
             ->where('parent_id', '=', 0)
             ->get();
@@ -72,7 +73,8 @@ class Category extends Model
                 ->select(
                     'cat_id as sub_cat_id',
                     'cat_img',
-                    self::getValueWithSpecificLang('cat_name', app()->getLocale(),'sub_category_name')
+                    self::getValueWithSpecificLang('cat_name', app()->getLocale(),'sub_category_name'),
+                    'has_children'
                 )
                 ->where('categories.parent_id', '=', $catId)
                 ->get();

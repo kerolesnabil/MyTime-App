@@ -17,7 +17,11 @@ Route::group([
     Route::get('/get-vendor-reviews',[\App\Http\Controllers\api\v1\vendor\VendorController::class,'getVendorReviews']);
 
 
-    Route::get('get-all-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getAllCategoriesServices']);
+    Route::get('get-main-categories-of-services',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getMainCategoriesOfServices']);
+    Route::get('get-sub-categories-of-services/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getSubCategoriesOfServices']);
+    Route::get('get-services-by-category/{id}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'getServicesByCatId']);
+
+
 
     Route::post('create-service',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'saveService']);
     Route::post('update-service/{id?}',[\App\Http\Controllers\api\v1\vendor\ServiceController::class,'saveService']);
