@@ -81,17 +81,27 @@ class Service extends Model
 
     public static function getServicesOfVendor($servicesIds)
     {
-        return self::query()
+        $services =
+            self::query()
             ->select(
                 'service_id',
                 self::getValueWithSpecificLang(
                     'service_name',
-                    app()->getLocale(), 'service_name')
+                    app()->getLocale(), 'service_name'),
+                'cat_img'
             )
+            ->join('categories','categories.cat_id','=','services.cat_id')
             ->where('service_type','service')
-            ->whereIn('service_id',$servicesIds)->get();
+            ->whereIn('service_id',$servicesIds)
+            ->get();
 
+        if (!empty($services)){
+            foreach ($services as $service){
+                $service['cat_img'] = ImgHelper::returnImageLink($service['cat_img']);
+            }
+        }
 
+        return $services;
     }
 
     public static function savePackage($data,$package_id=null)
