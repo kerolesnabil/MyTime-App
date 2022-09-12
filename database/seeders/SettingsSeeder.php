@@ -138,6 +138,18 @@ class SettingsSeeder extends Seeder
             );
         }
 
+        $settingCheck = DB::table('settings')->where('setting_key', 'bank_account_details')->get();
+        if (!count($settingCheck)) {
+            DB::table('settings')->insert(
+                [
+                    'setting_name'  => '{"ar":"تفاصيل الحساب البنكي للتطبيق", "en":"App bank account details"}',
+                    'setting_key'   => 'bank_account_details',
+                    'setting_value' => 'details',
+                    'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                ]
+            );
+        }
 
     }
 }

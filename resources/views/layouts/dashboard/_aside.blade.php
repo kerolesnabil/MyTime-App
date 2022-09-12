@@ -34,6 +34,7 @@
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_app_images') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_images')</a></li>
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_ad_price') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.ads_prices')</a></li>
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_diameter_search') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.diameter_search')</a></li>
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_bank_account_details') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_bank_account')</a></li>
 
                 </ul>
 

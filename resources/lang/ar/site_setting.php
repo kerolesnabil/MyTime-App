@@ -13,6 +13,8 @@ return [
     'ad_price_value'                                        => 'سعر الاعلان في اليوم',
     'diameter_search'                                       => 'نطاق البحث',
     'diameter_search_value'                                 => 'قيمة نطاق البحث ( بالكيلومتر )',
+    'app_bank_account'                                      => 'الحساب البنكي للتطبيق',
+    'bank_account_details'                                  => 'تفاصيل الحساب البنكي للتطبيق',
     'rule_setting_name.required'                            => '*اسم الإعداد مطلوب',
     'rule_setting_name.string'                              => '*اسم الإعداد يجب ان يكون نص',
     'rule_setting_value.name.required'                      => '*اسم وسلية التواصل الاجتماعي مطلوب',
@@ -54,6 +56,11 @@ return [
     'rule_diameter_search_setting_name.string'              => 'اسم إعداد نطاق البحث يجب ان يكون نص',
     'rule_diameter_search_setting_value.required'           => 'قيمة إعداد نطاق البحث مطلوبة',
     'rule_diameter_search_setting_value.numeric'            => 'قيمة إعداد نطاق البحث يجب ان يكون رقم',
+    'rule_bank_account_details_setting_name.required'       => 'يرجي ادخال اسم إعداد تفاصيل الحساب البنكي للتطبيق بجميع اللغات',
+    'rule_bank_account_details_setting_name.string'         => 'اسم إعداد تفاصيل الحساب البنكي للتطبيق يجب ان يكون نص',
+    'rule_bank_account_details_setting_value.required'      => 'قيمة إعداد تفاصيل الحساب البنكي للتطبيق مطلوبة',
+    'rule_bank_account_details_setting_value.string'        => 'قيمة إعداد تفاصيل الحساب البنكي للتطبيق يجب ان تكون نص',
+
 
 
 
