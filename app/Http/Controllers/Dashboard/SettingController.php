@@ -6,6 +6,7 @@ use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveAdsPricesRequest;
 use App\Http\Requests\SaveAppImagesRequest;
+use App\Http\Requests\SaveDiameterSearchRequest;
 use App\Http\Requests\SavePageRequest;
 use App\Http\Requests\SaveSocialMediaRequest;
 use App\Models\Page;
@@ -194,4 +195,31 @@ class SettingController extends Controller
         return redirect(route('admin.homepage'));
 
     }
+
+    public function getDiameterSearch()
+    {
+        $diameterSearch                     = Setting::getSettingByKey('diameter_search', 'web');
+        $diameterSearch['setting_name']     = json_decode($diameterSearch['setting_name'], true);
+
+
+        $langs = Lang::getAllLangs();
+
+
+        return view('dashboard.settings.save_diameter_search')->with(
+            [
+                'diameter_search' => $diameterSearch,
+                'langs'           => $langs
+            ]);
+    }
+
+    public function saveDiameterSearch(SaveDiameterSearchRequest $request)
+    {
+        $diameterSearchSettingName = json_encode($request->diameter_search['setting_name']);
+        Setting::saveSettingByKey('diameter_search', $request->diameter_search['setting_value'], $diameterSearchSettingName);
+
+        session()->flash('success', __('site.updated_successfully'));
+        return redirect(route('admin.homepage'));
+
+    }
+
 }

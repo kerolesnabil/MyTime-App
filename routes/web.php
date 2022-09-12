@@ -113,6 +113,10 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
             Route::post('save', 'SettingController@saveAdsPrice')->name('setting.save_ad_price');
         });
 
+        Route::prefix('diameter_search')->group(function (){
+            Route::get('get_diameter_search', 'SettingController@getDiameterSearch')->name('setting.get_diameter_search');
+            Route::post('save', 'SettingController@saveDiameterSearch')->name('setting.save_diameter_search');
+        });
     });
 
 

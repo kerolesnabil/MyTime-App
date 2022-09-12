@@ -125,6 +125,18 @@ class SettingsSeeder extends Seeder
         }
 
 
+        $settingCheck = DB::table('settings')->where('setting_key', 'diameter_search')->get();
+        if (!count($settingCheck)) {
+            DB::table('settings')->insert(
+                [
+                    'setting_name'  => '{"ar":"نطاق البحث التطبيق", "en":"App diameter search"}',
+                    'setting_key'   => 'diameter_search',
+                    'setting_value' => 50,
+                    'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                ]
+            );
+        }
 
 
     }
