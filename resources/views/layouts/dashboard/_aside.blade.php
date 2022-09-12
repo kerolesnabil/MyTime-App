@@ -32,7 +32,7 @@
                 <ul class="treeview-menu">
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.social_media') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.social_media')</a></li>
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_app_images') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_images')</a></li>
-
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_ad_price') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.ads_prices')</a></li>
                 </ul>
 
             </li>

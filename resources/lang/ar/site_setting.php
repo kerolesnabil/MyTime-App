@@ -9,6 +9,8 @@ return [
     'social_media_name'                        => 'اسم وسيلة التواصل الاجتماعي',
     'social_media_link'                        => 'لينك',
     'social_media_class'                       => 'الايقونة',
+    'ads_prices'                               => 'اسعار الاعلانات',
+    'ad_price_value'                           => 'سعر الاعلان في اليوم',
     'rule_setting_name.required'               => '*اسم الإعداد مطلوب',
     'rule_setting_name.string'                 => '*اسم الإعداد يجب ان يكون نص',
     'rule_setting_value.name.required'         => '*اسم وسلية التواصل الاجتماعي مطلوب',
@@ -38,5 +40,17 @@ return [
     'rule_vendor_logo_img.image'               => '*لوجو الصالون او الاخصائي ملف غير صحيح',
     'rule_vendor_logo_img.mimes'               => '*لوجو الصالون او الاخصائي يجب ان يكون png,jpg,jpeg',
     'rule_vendor_logo_img.max'                 => '*مساحة لوجو الصالون او الاخصائي يجب ان تكون اقل من 2 ميجا',
+
+
+    'rule_ad_price_in_homepage_setting_name.required'       => 'يرجي ادخال اسم إعداد سعر الاعلان في الصفحة الرئيسية بجميع اللغات',
+    'rule_ad_price_in_homepage_setting_name.string'         => 'اسم إعداد سعر الاعلان في الصفحة الرئيسية يجب ان يكون نص',
+    'rule_ad_price_in_discover_page_setting_name.required'  => 'يرجي ادخال اسم إعداد سعر الاعلان في صفحة اكتشف بجميع اللغات',
+    'rule_ad_price_in_discover_page_setting_name.string'    => 'اسم إعداد سعر الاعلان في صفحة اكتشف يجب ان يكون نص',
+    'rule_ad_price_in_homepage_setting_value.required'      => 'قيمة سعر الاعلان في الصفحة الرئيسية مطلوبة',
+    'rule_ad_price_in_homepage_setting_value.numeric'       => 'قيمة سعر الاعلان في الصفحة الرئيسية يجب ان تكون رقم',
+    'rule_ad_price_in_discover_page_setting_value.required' => 'قيمة سعر الاعلان في صفحة اكتشف مطلوبة',
+    'rule_ad_price_in_discover_page_setting_value.numeric'  => 'قيمة سعر الاعلان في صفحة اكتشف  يجب ان تكون رقم',
+
+
 
 ];

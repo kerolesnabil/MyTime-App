@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveAdsPricesRequest;
 use App\Http\Requests\SaveAppImagesRequest;
 use App\Http\Requests\SavePageRequest;
 use App\Http\Requests\SaveSocialMediaRequest;
@@ -104,7 +105,6 @@ class SettingController extends Controller
 
     }
 
-
     public function saveAppImages(SaveAppImagesRequest $request)
     {
 
@@ -155,5 +155,43 @@ class SettingController extends Controller
 
         session()->flash('success', __('site.updated_successfully'));
         return redirect(route('admin.homepage'));
+    }
+
+
+    public function getAdsPrice()
+    {
+        // to do
+
+        $adPriceInHomepage                     = Setting::getSettingByKey('price_ad_in_homepage', 'web');
+        $adPriceInHomepage['setting_name']     = json_decode($adPriceInHomepage['setting_name'], true);
+
+        $adPriceInDiscoverPage                 = Setting::getSettingByKey('price_ad_in_discover_page', 'web');
+        $adPriceInDiscoverPage['setting_name'] = json_decode($adPriceInDiscoverPage['setting_name'], true);
+
+        $langs = Lang::getAllLangs();
+
+
+        return view('dashboard.settings.save_ads_price')->with(
+        [
+            'ad_price_in_homepage'      => $adPriceInHomepage,
+            'ad_price_in_discover_page' => $adPriceInDiscoverPage,
+            'langs'                     => $langs
+        ]);
+
+    }
+
+
+    public function saveAdsPrice(SaveAdsPricesRequest $request)
+    {
+
+        $adPriceInHomepageSettingName = json_encode($request->ad_price_in_homepage['setting_name']);
+        Setting::saveSettingByKey('price_ad_in_homepage', $request->ad_price_in_homepage['setting_value'], $adPriceInHomepageSettingName);
+
+        $adPriceInDiscoverPageSettingName = json_encode($request->ad_price_in_discover_page['setting_name']);
+        Setting::saveSettingByKey('price_ad_in_discover_page', $request->ad_price_in_discover_page['setting_value'], $adPriceInDiscoverPageSettingName);
+
+        session()->flash('success', __('site.updated_successfully'));
+        return redirect(route('admin.homepage'));
+
     }
 }
