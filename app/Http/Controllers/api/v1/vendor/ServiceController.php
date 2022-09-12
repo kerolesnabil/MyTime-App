@@ -135,7 +135,7 @@ class ServiceController extends Controller
             "service_price_at_salon"            => "nullable|numeric",
             "service_discount_price_at_salon"   => "nullable|numeric",
             "service_price_at_home"             => "numeric|required",
-            "service_discount_price_at_home"    => "numeric|required",
+            "service_discount_price_at_home"    => "numeric|nullable",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
