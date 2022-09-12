@@ -6,13 +6,12 @@ use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveAdsPricesRequest;
 use App\Http\Requests\SaveAppImagesRequest;
-use App\Http\Requests\SavePageRequest;
+use App\Http\Requests\SaveBankAccountDetailsRequest;
+use App\Http\Requests\SaveDiameterSearchRequest;
 use App\Http\Requests\SaveSocialMediaRequest;
-use App\Models\Page;
 use App\Models\Lang;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
@@ -189,6 +188,57 @@ class SettingController extends Controller
 
         $adPriceInDiscoverPageSettingName = json_encode($request->ad_price_in_discover_page['setting_name']);
         Setting::saveSettingByKey('price_ad_in_discover_page', $request->ad_price_in_discover_page['setting_value'], $adPriceInDiscoverPageSettingName);
+
+        session()->flash('success', __('site.updated_successfully'));
+        return redirect(route('admin.homepage'));
+
+    }
+
+    public function getDiameterSearch()
+    {
+        $diameterSearch                     = Setting::getSettingByKey('diameter_search', 'web');
+        $diameterSearch['setting_name']     = json_decode($diameterSearch['setting_name'], true);
+
+
+        $langs = Lang::getAllLangs();
+
+
+        return view('dashboard.settings.save_diameter_search')->with(
+        [
+            'diameter_search' => $diameterSearch,
+            'langs'           => $langs
+        ]);
+    }
+
+    public function saveDiameterSearch(SaveDiameterSearchRequest $request)
+    {
+        $diameterSearchSettingName = json_encode($request->diameter_search['setting_name']);
+        Setting::saveSettingByKey('diameter_search', $request->diameter_search['setting_value'], $diameterSearchSettingName);
+
+        session()->flash('success', __('site.updated_successfully'));
+        return redirect(route('admin.homepage'));
+
+    }
+
+    public function getBankAccountDetails()
+    {
+        $bankAccountDetails                     = Setting::getSettingByKey('bank_account_details', 'web');
+        $bankAccountDetails['setting_name']     = json_decode($bankAccountDetails['setting_name'], true);
+
+        $langs = Lang::getAllLangs();
+
+        return view('dashboard.settings.save_bank_account_details')->with(
+        [
+            'bank_account_details' => $bankAccountDetails,
+            'langs'           => $langs
+        ]);
+    }
+
+    public function saveBankAccountDetails(SaveBankAccountDetailsRequest $request)
+    {
+
+        $bankAccountDetailsSettingName = json_encode($request->bank_account_details['setting_name']);
+        Setting::saveSettingByKey('bank_account_details', $request->bank_account_details['setting_value'], $bankAccountDetailsSettingName);
 
         session()->flash('success', __('site.updated_successfully'));
         return redirect(route('admin.homepage'));

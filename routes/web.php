@@ -113,6 +113,15 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
             Route::post('save', 'SettingController@saveAdsPrice')->name('setting.save_ad_price');
         });
 
+        Route::prefix('diameter_search')->group(function (){
+            Route::get('get_diameter_search', 'SettingController@getDiameterSearch')->name('setting.get_diameter_search');
+            Route::post('save', 'SettingController@saveDiameterSearch')->name('setting.save_diameter_search');
+        });
+
+        Route::prefix('bank_account_details')->group(function (){
+            Route::get('get_bank_account_details', 'SettingController@getBankAccountDetails')->name('setting.get_bank_account_details');
+            Route::post('save', 'SettingController@saveBankAccountDetails')->name('setting.save_bank_account_details');
+        });
     });
 
 
