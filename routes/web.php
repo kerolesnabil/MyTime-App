@@ -109,8 +109,8 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         });
 
         Route::prefix('ads_price')->group(function (){
-            Route::get('get_ads_price', 'SettingController@getAppImages')->name('setting.get_app_images');
-            Route::post('save', 'SettingController@saveAppImages')->name('setting.save_app_images');
+            Route::get('get_ads_price', 'SettingController@getAdsPrice')->name('setting.get_ad_price');
+            Route::post('save', 'SettingController@saveAdsPrice')->name('setting.save_ad_price');
         });
 
     });
