@@ -229,14 +229,24 @@ class VendorServices extends Model
 
     public static function createVendorPackage($data,$id)
     {
+        if(isset($data['service_price_at_salon'])){
+            $service_discount_price_at_salon=$data['service_price_at_salon'];
+        }
+        if(isset($data['service_discount_price_at_salon']))
+        {
+            $service_discount_price_at_salon=$data['service_discount_price_at_salon'];
+        }
+
+
+
         self::create([
             'vendor_id'=>Auth::user()->user_id,
             'service_id'=>$id,
             'service_title'=>(isset($data['service_title']))?$data['service_title']:Null,
             'service_price_at_salon'=>(isset($data['service_price_at_salon']))?$data['service_price_at_salon']:Null,
-            'service_discount_price_at_salon'=>(isset($data['service_discount_price_at_salon']))?$data['service_discount_price_at_salon']:Null,
+            'service_discount_price_at_salon'=>(isset($service_discount_price_at_salon))?$service_discount_price_at_salon:Null,
             'service_price_at_home'=>$data['service_price_at_home'],
-            'service_discount_price_at_home'=>$data['service_discount_price_at_home']
+            'service_discount_price_at_home'=>isset($data['service_discount_price_at_home'])?$data['service_discount_price_at_home']:$data['service_price_at_home']
         ]);
     }
 

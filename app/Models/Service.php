@@ -109,7 +109,7 @@ class Service extends Model
 
         $arr=[
             'vendor_id'=>Auth::user()->user_id,
-            'service_name'=>json_encode($data['name_package']),
+            'service_name'=>$data['name_package'],
             'service_type'=>'package',
             'package_services_ids'=>','.implode(',',$data['services_ids']).','
         ];
@@ -128,12 +128,8 @@ class Service extends Model
        return self::query()
            ->select(
             'service_id As package_id ',
-                'package_services_ids',
-                self::getValueWithSpecificLang(
-                    'service_name',
-                    app()->getLocale(),
-                    'package_name'
-                )
+                    'package_services_ids',
+                    'service_name as package_name'
             )
             ->where('service_id',$id)
             ->where('service_type','=','package')
@@ -152,15 +148,14 @@ class Service extends Model
     public static function getAllPackageByVendor($vendor_id)
     {
         return self::query()->select(
-            'service_id as package_id',
-            self::getValueWithSpecificLang(
-                'service_name',
-                app()->getLocale(),
-                'package_name'
-            ),'package_services_ids'
-        )
-        ->where('vendor_id',$vendor_id)
-        ->where('service_type','package')->get();
+            'services.service_id as package_id',
+                    'services.service_name as package_name',
+                    'services.package_services_ids',
+                    'vendor_services.service_discount_price_at_salon',
+                    'vendor_services.service_discount_price_at_home'
+        )->join('vendor_services','vendor_services.service_id','=','services.service_id')
+        ->where('services.vendor_id',$vendor_id)
+        ->where('services.service_type','package')->get();
     }
 
 
