@@ -60,7 +60,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
         Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
-
+        Route::get('/show_new_orders', 'OrderController@showNewOrders')->name('order.show_new_orders');
     });
 
     Route::prefix('langs')->group(function (){

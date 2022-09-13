@@ -17,12 +17,12 @@
                     <div class="small-box bg-aqua">
                         <div class="inner">
                             <h3>{{$new_orders}}</h3>
-                            <p>@lang('site.new_orders')</p>
+                            <p style="font-size: 15px; font-weight: bold">@lang('site.new_orders')</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('order.show_new_orders') }}" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -31,12 +31,12 @@
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{$available_ads}}</h3>
-                            <p>@lang('site.available_ads')</p>
+                            <p style="font-size: 15px; font-weight: bold">@lang('site.available_ads')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-bullhorn" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -45,12 +45,12 @@
                     <div class="small-box bg-yellow">
                         <div class="inner">
                             <h3>{{$new_users}}</h3>
-                            <p>@lang('site.new_users')</p>
+                            <p style="font-size: 15px; font-weight: bold">@lang('site.new_users')</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -59,12 +59,12 @@
                     <div class="small-box bg-red">
                         <div class="inner">
                             <h3>{{$vendor_type_specialist}}</h3>
-                            <p>@lang('site.specialists')</p>
+                            <p style="font-size: 15px; font-weight: bold">@lang('site.specialists')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -75,12 +75,12 @@
                     <div class="small-box bg-fuchsia">
                         <div class="inner">
                             <h3>{{$vendor_type_salon}}</h3>
-                            <p>@lang('site.salons')</p>
+                            <p style="font-size: 15px; font-weight: bold">@lang('site.salons')</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-scissors" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
