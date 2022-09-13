@@ -36,7 +36,7 @@
                         <div class="icon">
                             <i class="fa fa-bullhorn" aria-hidden="true"></i>
                         </div>
-                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('ad.show_available_ads') }}" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->

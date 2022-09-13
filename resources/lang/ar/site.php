@@ -40,6 +40,7 @@ return [
     'report'                 => 'التقرير',
     'payment_methods'        => 'طرق الدفع',
     'settings'               => 'الاعدادات',
-    'more_info'              => 'عرض المزيد'
+    'more_info'              => 'عرض المزيد',
+    'ads'                    => 'الاعلانات'
 
 ];

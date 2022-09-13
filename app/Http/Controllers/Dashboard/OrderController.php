@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class OrderController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
         $orders = Order::getAllOrders(15);
         return view('dashboard.orders.index')->with(['orders' => $orders]);
@@ -50,7 +50,7 @@ class OrderController extends Controller
         return response()->json(false);
     }
 
-    public function showNewOrders(Request $request)
+    public function showNewOrders()
     {
 
         $orders = Order::getNewOrders(20, 20);

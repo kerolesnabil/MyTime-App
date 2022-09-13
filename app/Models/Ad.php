@@ -18,9 +18,16 @@ class Ad extends Model
     protected $table = "ads";
     protected $primaryKey = "ad_id";
     protected $fillable = [
-        'vendor_id','ad_title','ad_start_at','ad_days',
-        'ad_end_at','ad_cost','ad_img',
-        'ad_at_homepage','ad_at_discover_page'
+        'ad_id',
+        'vendor_id',
+        'ad_title',
+        'ad_start_at',
+        'ad_days',
+        'ad_end_at',
+        'ad_cost',
+        'ad_img',
+        'ad_at_homepage',
+        'ad_at_discover_page'
     ];
 
 
@@ -71,14 +78,27 @@ class Ad extends Model
         return self::query()->create($data);
     }
 
-    public static function getAd($id)
+    public static function getAd($adId)
     {
        $data=self::query()
-            ->select('ad_id','vendor_id','ad_title','ad_days','ad_start_at','ad_end_at','ad_cost','ad_img','ad_at_homepage','ad_at_discover_page')
-            ->where('ad_id','=',$id)->first();
+            ->select(
+                'ad_id',
+                'vendor_id',
+                'ad_title', 'ad_days',
+                'ad_start_at',
+                'ad_end_at',
+                'ad_cost',
+                'ad_img',
+                'ad_at_homepage',
+                'ad_at_discover_page',
+                'users.user_name as vendor_name'
+            )
+           ->join('users','users.user_id','=','ads.vendor_id')
+           ->where('ad_id','=',$adId)->first();
 
-
-        $data->ad_img=ImgHelper::returnImageLink($data->ad_img);
+       if (!is_null($data)){
+           $data->ad_img=ImgHelper::returnImageLink($data->ad_img);
+       }
 
        return $data;
     }
@@ -92,13 +112,42 @@ class Ad extends Model
         return true;
     }
 
-    public static function countAvailableAds()
+    public static function getAllAvailableAds($paginate)
     {
         $current_day = Carbon::today();
 
-        return count(self::whereDate('ad_start_at','<=', $current_day)
-            ->whereDate('ad_end_at','>=', $current_day)
-            ->get());
+        return self::query()->select(
+            'ad_id',
+            'ad_title',
+            'ad_days',
+            'ad_start_at',
+            'ad_end_at',
+            'ad_cost',
+            'ad_at_homepage',
+            'ad_at_discover_page',
+            'users.user_name as vendor_name'
+        )
+        ->join('users','users.user_id','=','ads.vendor_id')
+        ->whereDate('ad_start_at','<=', $current_day)
+        ->whereDate('ad_end_at','>=', $current_day)
+        ->paginate($paginate);
+
     }
 
+    public static function getAllAds($paginate)
+    {
+        return self::query()->select(
+            'ad_id',
+                'ad_title',
+                'ad_days',
+                'ad_start_at',
+                'ad_end_at',
+                'ad_cost',
+                'ad_at_homepage',
+                'ad_at_discover_page',
+                'users.user_name as vendor_name'
+            )
+            ->join('users','users.user_id','=','ads.vendor_id')
+            ->paginate($paginate);
+    }
 }
