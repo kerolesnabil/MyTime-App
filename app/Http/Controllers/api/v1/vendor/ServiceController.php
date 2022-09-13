@@ -293,6 +293,7 @@ class ServiceController extends Controller
 
         $getServicesName=Service::servicesNamesByIds($ids);
         $data->package_services_name= $getServicesName;
+        unset($data->package_services_ids);
 
         return ResponsesHelper::returnData($data,'200');
 
