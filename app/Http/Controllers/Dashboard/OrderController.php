@@ -16,12 +16,8 @@ use Illuminate\Support\Facades\Validator;
 class OrderController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-
-        if (request()->ajax()){
-            dd($request);
-        }
         $orders = Order::getAllOrders(15);
         return view('dashboard.orders.index')->with(['orders' => $orders]);
     }
@@ -52,7 +48,12 @@ class OrderController extends Controller
         }
 
         return response()->json(false);
+    }
 
+    public function showNewOrders()
+    {
 
+        $orders = Order::getNewOrders(20, 20);
+        return view('dashboard.orders.index')->with(['orders' => $orders]);
     }
 }

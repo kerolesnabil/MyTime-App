@@ -60,7 +60,13 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
         Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
+        Route::get('/show_new_orders', 'OrderController@showNewOrders')->name('order.show_new_orders');
+    });
 
+    Route::prefix('ads')->group(function (){
+        Route::get('/', 'AdController@index')->name('ad.index');
+        Route::get('/show_ad/{id}', 'AdController@showAdById')->name('ad.show_ad');
+        Route::get('/show_available_ads', 'AdController@showAvailableAds')->name('ad.show_available_ads');
     });
 
     Route::prefix('langs')->group(function (){
