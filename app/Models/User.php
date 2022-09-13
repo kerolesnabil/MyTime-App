@@ -215,5 +215,14 @@ class User extends Authenticatable
     }
 
 
+    public static function getUserByEmailAndPassword($data)
+    {
+        return self::query()
+            ->select('*')
+            ->where('user_email','=',$data['email'])
+            ->where('password','=',bcrypt($data['password']))->first();
+    }
+
+
 
 }

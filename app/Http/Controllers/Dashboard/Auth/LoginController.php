@@ -14,68 +14,46 @@ use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
 
-    public $verificationServices;
 
-    public function __construct(VerificationServices $verificationServices)
-    {
-        $this->verificationServices = $verificationServices;
-    }
 
     public function getViewLogin()
     {
         return view('dashboard.auth.login');
     }
 
-    public function sendSMS(Request $request)
-    {
-        $rules = [
-            "user_phone" => "required|exists:users,user_phone|digits:9",
-        ];
-
-        $validator = Validator::make(
-            $request->all(),
-            $rules,
-            [
-                "user_phone.required" => __("phone_is_required"),
-                "user_phone.exists"   => __("you_should_register"),
-            ]
-        );
-
-        if ($validator->fails()) {
-//            return  $validator;
-        }
-
-        $user                    = User::getUserByPhone($request->user_phone);
-        $verification['user_id'] = $user->user_id;
-        $verification_data       = $this->verificationServices->setVerificationCode($verification);
-        $message                 = $this->verificationServices->getSMSVerifyMessageByAppName($verification_data->code);
-
-        app(ISMSGateway::class)->sendSms($user->user_phone, $message);
-
-        return view('dashboard.auth.verify')->with(['user_phone'=>$request->phone,'verification_code'=>$verification_data->code]);
-    }
-
     public function login(Request $request)
     {
         $rules     = [
-            "user_phone" => "required|exists:users,user_phone|digits:9",
-            'code'       => 'required|exists:verification_codes,code',
+            "email"           => "required|email",
+            'password'        => 'required|string',
         ];
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-//
+            return back()->withErrors($validator);
         }
 
-        $check = $this->verificationServices->checkOTPCode($request->code, $request->user_id);
 
-        if (!$check) {
-//
+
+        $user= User::getUserByEmailAndPassword($request->all());
+        dd($user);
+        //validation
+        $remember_me = $request->has('remember_me') ? true : false;
+
+        if(auth()->attempt([
+            'user_email' => $request->input("email"),
+            'password' => $request->input("password")
+        ],$remember_me)){
+
+            dd($request->input("email"));
+
+
+            return redirect()->route('admin.homepage');
         }
 
-        $this->verificationServices->removeOTPCode($request->code);
-        $user = User::getUserByPhone($request->user_phone);
-        Auth::login($user);
+        return redirect()->back()->with(['error' => 'هناك خطا بالبيانات']);
+
+
     }
 
 
