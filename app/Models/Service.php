@@ -24,7 +24,17 @@ class Service extends Model
     ];
 
 
+    public static function servicesNamesByIds($serviceIds)
+    {
 
+        return self::query()
+            ->select(
+                'service_id',
+                self::getValueWithSpecificLang('service_name', app()->getLocale(), 'service_name')
+            )
+            ->whereIn('service_id', $serviceIds)
+            ->get()->toArray();
+    }
 
     public static function getAllCategoriesServicesTree()
     {
