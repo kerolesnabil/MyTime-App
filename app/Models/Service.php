@@ -152,6 +152,7 @@ class Service extends Model
     public static function getAllPackageByVendor($vendor_id)
     {
         return self::query()->select(
+            'service_id as package_id',
             self::getValueWithSpecificLang(
                 'service_name',
                 app()->getLocale(),
