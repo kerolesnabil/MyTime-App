@@ -239,9 +239,12 @@ class ServiceController extends Controller
             "service_price_at_salon"            => "nullable|numeric",
             "service_discount_price_at_salon"   => "nullable|numeric",
             "service_price_at_home"             => "numeric|required",
-            "service_discount_price_at_home"    => "numeric|required",
+            "name_package"                      => "required|string",
+            "service_discount_price_at_home"    => "numeric|nullable",
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules,
+            ["services_ids.*.exists"   => __("vendor.services_ids_not_exists"),]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -262,6 +265,18 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
+        $data=Service::getPackage($package_id);
+
+        if(empty($data))
+        {
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+        }
+        if(!isset($data->package_services_ids))
+        {
+            return ResponsesHelper::returnError('400',__('vendor.this_id_not_package'));
+        }
+
+
         $request->request->add(['package_id' => $package_id]);
 
         $rules=[
@@ -272,7 +287,7 @@ class ServiceController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        $data=Service::getPackage($package_id);
+
 
         $ids=explode(',',$data->package_services_ids);
 
@@ -330,11 +345,22 @@ class ServiceController extends Controller
         $package_services_ids = array_unique($package_services_ids);
         $ids = array_diff($package_services_ids,[""]);
 
+
         $services=Service::getServicesOfVendor($ids);
 
         foreach ($packges as $packge) {
+
+            if($packge->service_discount_price_at_salon==0.00)
+            {
+                $packge->service_discount_price_at_salon="";
+            }
+            if($packge->service_discount_price_at_home==0.00)
+            {
+                $packge->service_discount_price_at_home="";
+            }
             $packge->package_services_ids  = explode(',', trim($packge->package_services_ids, ','));
             $packge->package_services_name = $services->whereIn("service_id", $packge->package_services_ids)->all();
+            unset($packge->package_services_ids);
         }
 
         return ResponsesHelper::returnData($packges,'200');
