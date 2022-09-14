@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class ServiceController extends Controller
 {
 
-    // unused
+
     public function getAllCategoriesServices()
     {
         $rootCategories = Category::getAllCategoriesTree();
@@ -212,6 +212,7 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($services,'200');
     }
 
+
     public function savePackage(Request $request,$package_id=null)
     {
         $vendor['vendor']=Auth::user();
@@ -256,11 +257,6 @@ class ServiceController extends Controller
 
     public function getPackage(Request $request, $package_id)
     {
-        $vendor['vendor']=Auth::user();
-
-        if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
-        }
 
         $request->request->add(['package_id' => $package_id]);
 
@@ -286,12 +282,6 @@ class ServiceController extends Controller
 
     public function deletePackage(Request $request ,$package_id)
     {
-        $vendor['vendor']=Auth::user();
-
-        if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
-        }
-
         $request->request->add(['package_id' => $package_id]);
 
         $rules = [
@@ -337,7 +327,7 @@ class ServiceController extends Controller
             $package->package_services_ids  = explode(',', trim($package->package_services_ids, ','));
             $package->package_services_name = $services->whereIn("service_id", $package->package_services_ids)->all();
         }
-        
+
         return ResponsesHelper::returnData($packages,'200');
     }
 
