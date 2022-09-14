@@ -37,6 +37,15 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
     });
 
+    Route::prefix('admins')->group(function (){
+        Route::get('/', 'AdminController@index')->name('admin.index');
+        Route::post('update_admin_activation', 'UserController@updateActivateUser')->name('admin.update_activation');
+        Route::get('get_admin/{id?}', 'AdminController@getAdmin')->name('admin.get_admin');
+        Route::delete('destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
+
+
+    });
+
     Route::prefix('categories')->group(function (){
         Route::get('/', 'CategoryController@index')->name('category.index');
         Route::delete('destroy/{id}', 'CategoryController@destroy')->name('category.destroy');

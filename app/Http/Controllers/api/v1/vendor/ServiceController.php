@@ -320,24 +320,25 @@ class ServiceController extends Controller
         }
 
 
-        $packges=Service::getAllPackageByVendor($user->user_id);
+        $packages = Service::getAllPackageByVendor($user->user_id);
 
         $package_services_ids = array_map(function($item){
             return explode(",",$item);
-        },$packges->pluck('package_services_ids')->toArray());
+        },$packages->pluck('package_services_ids')->toArray());
 
         $package_services_ids = collect($package_services_ids)->flatten(1)->all();
         $package_services_ids = array_unique($package_services_ids);
         $ids = array_diff($package_services_ids,[""]);
 
-        $services=Service::getServicesOfVendor($ids);
 
-        foreach ($packges as $packge) {
-            $packge->package_services_ids  = explode(',', trim($packge->package_services_ids, ','));
-            $packge->package_services_name = $services->whereIn("service_id", $packge->package_services_ids)->all();
+        $services = Service::getServicesOfVendor($ids);
+
+        foreach ($packages as $package) {
+            $package->package_services_ids  = explode(',', trim($package->package_services_ids, ','));
+            $package->package_services_name = $services->whereIn("service_id", $package->package_services_ids)->all();
         }
-
-        return ResponsesHelper::returnData($packges,'200');
+        
+        return ResponsesHelper::returnData($packages,'200');
     }
 
     public function addSuggestedService(Request $request)

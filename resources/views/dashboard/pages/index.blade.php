@@ -26,8 +26,6 @@
                             <a href="{{ route('page.get_page') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
                     </div>
-                    </form><!-- end of form -->
-
                 </div><!-- end of box header -->
 
                 <div class="box-body">

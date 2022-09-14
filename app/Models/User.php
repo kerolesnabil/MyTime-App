@@ -214,6 +214,11 @@ class User extends Authenticatable
         return $vendor;
     }
 
+    public static function getUserById($userId)
+    {
+        return self::where('user_id', $userId)->first();
+
+    }
 
 
 }
