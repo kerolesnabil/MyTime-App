@@ -234,13 +234,13 @@ class ServiceController extends Controller
         }
 
         $rules = [
-            "services_ids"=> "required|array",
-            "services_ids.*"=>"required|exists:services,service_id",
-            "service_price_at_salon"            => "nullable|numeric",
-            "service_discount_price_at_salon"   => "nullable|numeric",
-            "service_price_at_home"             => "numeric|required",
-            "name_package"                      => "required|string",
-            "service_discount_price_at_home"    => "numeric|nullable",
+            "services_ids"                    => "required|array",
+            "services_ids.*"                  => "required|exists:vendor_services,vendor_service_id",
+            "service_price_at_salon"          => "nullable|numeric",
+            "service_discount_price_at_salon" => "nullable|numeric",
+            "service_price_at_home"           => "required|numeric",
+            "service_discount_price_at_home"  => "nullable|numeric",
+            "name_package"                    => "required",
         ];
         $validator = Validator::make($request->all(), $rules,
             ["services_ids.*.exists"   => __("vendor.services_ids_not_exists"),]
@@ -249,6 +249,7 @@ class ServiceController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
         DB::beginTransaction();
+        $request->name_package = json_encode($request->name_package);
         $service=Service::savePackage($request->all(),$package_id);
         VendorServices::createVendorPackage($request->all(),isset($service->service_id)?$service->service_id:$package_id);
         DB::commit();
@@ -336,35 +337,41 @@ class ServiceController extends Controller
         }
 
 
-        $packges=Service::getAllPackageByVendor($user->user_id);
+        $packages = collect(Service::getAllPackageByVendor($user->user_id))->toArray();
 
-        $package_services_ids = array_map(function($item){
-            return explode(",",$item);
-        },$packges->pluck('package_services_ids')->toArray());
-
-        $package_services_ids = collect($package_services_ids)->flatten(1)->all();
-        $package_services_ids = array_unique($package_services_ids);
-        $ids = array_diff($package_services_ids,[""]);
-
-
-        $services=Service::getServicesOfVendor($ids);
-
-        foreach ($packges as $packge) {
-
-            if($packge->service_discount_price_at_salon==0.00)
-            {
-                $packge->service_discount_price_at_salon="";
-            }
-            if($packge->service_discount_price_at_home==0.00)
-            {
-                $packge->service_discount_price_at_home="";
-            }
-            $packge->package_services_ids  = explode(',', trim($packge->package_services_ids, ','));
-            $packge->package_services_name = $services->whereIn("service_id", $packge->package_services_ids)->all();
-            unset($packge->package_services_ids);
+        $serviceIds = [];
+        foreach ($packages as $package){
+            $serviceIds = array_merge($serviceIds, explode(',' , $package['package_services_ids']));
         }
 
-        return ResponsesHelper::returnData($packges,'200');
+
+        $serviceIds  = array_unique($serviceIds);
+        $serviceObjs = VendorServices::vendorServicesNamesByIds($serviceIds);
+        $serviceObjs = collect($serviceObjs);
+
+
+        foreach ($packages as $key => $package) {
+
+            if($package['service_discount_price_at_salon'] == 0 || is_null($package['service_discount_price_at_salon']))
+            {
+                $package['service_discount_price_at_salon'] = "";
+            }
+            if($package['service_discount_price_at_home'] == 0 || is_null($package['service_discount_price_at_home']))
+            {
+                $package['service_discount_price_at_home'] = "";
+            }
+
+            $package['package_services_ids']  = explode(',', trim($package['package_services_ids'], ','));
+
+            $packages[$key]['package_services_name'] = collect($serviceObjs->whereIn("service_id", $package['package_services_ids']))->toArray();
+            $packages[$key]['package_services_name'] = array_values($packages[$key]['package_services_name']);
+
+
+
+            unset($package['package_services_ids']);
+        }
+
+        return ResponsesHelper::returnData($packages,'200');
     }
 
     public function addSuggestedService(Request $request)

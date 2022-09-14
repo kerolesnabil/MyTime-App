@@ -70,11 +70,14 @@ class VendorServices extends Model
         $serviceIds = [];
         foreach ($packagesOfVendor as $package){
             $serviceIds = array_merge($serviceIds,explode(',' , $package['package_services_ids']));
+            $serviceIds = array_diff($serviceIds, [""]);
         }
 
         $serviceIds  = array_unique($serviceIds);
+
         $serviceObjs = self::vendorServicesNamesByIds($serviceIds);
         $serviceObjs = collect($serviceObjs);
+
 
 
 

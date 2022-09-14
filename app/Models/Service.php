@@ -102,7 +102,7 @@ class Service extends Model
             )
             ->join('categories','categories.cat_id','=','services.cat_id')
             ->where('service_type','service')
-            ->whereIn('service_id',$servicesIds)
+            ->whereIn('service_id', $servicesIds)
             ->get();
 
         if (!empty($services)){
@@ -114,14 +114,14 @@ class Service extends Model
         return $services;
     }
 
-    public static function savePackage($data,$package_id=null)
+    public static function savePackage($data, $package_id=null)
     {
 
         $arr=[
             'vendor_id'=>Auth::user()->user_id,
             'service_name'=>$data['name_package'],
             'service_type'=>'package',
-            'package_services_ids'=>','.implode(',',$data['services_ids']).','
+            'package_services_ids'=> implode(',',$data['services_ids'])
         ];
 
         if(isset($data['package_id']))
@@ -159,7 +159,7 @@ class Service extends Model
     {
         return self::query()->select(
             'services.service_id as package_id',
-                    'services.service_name as package_name',
+                    self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'package_name'),
                     'services.package_services_ids',
                     'vendor_services.service_discount_price_at_salon',
                     'vendor_services.service_discount_price_at_home'
