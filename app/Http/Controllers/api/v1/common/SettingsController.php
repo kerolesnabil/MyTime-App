@@ -28,7 +28,7 @@ class SettingsController extends Controller
 
     public static function getWhatsAppNumber()
     {
-        $whatsAppNumber = Setting::getSettingByKey('whatsapp');
+        $whatsAppNumber = Setting::getSettingByKey('whatsapp', 'api');
 
         if (is_null($whatsAppNumber)){
             return $data =[];
