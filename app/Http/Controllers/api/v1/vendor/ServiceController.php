@@ -385,6 +385,5 @@ class ServiceController extends Controller
 
         return ResponsesHelper::returnData([],'200',__('vendor.save_data'));
 
-
     }
 }
