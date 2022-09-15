@@ -126,8 +126,8 @@ class Service extends Model
 
         if(isset($data['package_id']))
         {
-            self::query()->where('service_id',$data['package_id'])->update($arr);
-            return true;
+            return self::query()->where('service_id',$data['package_id'])->update($arr);
+
         }else{
             return self::query()->create($arr);
         }
@@ -150,7 +150,7 @@ class Service extends Model
     public static function deletePackage($id)
     {
         self::query()
-            ->where('service_id',$id)
+            ->where('service_id', $id)
             ->where('service_type','=','package')
             ->delete();
     }
@@ -159,7 +159,7 @@ class Service extends Model
     {
         return self::query()->select(
             'services.service_id as package_id',
-                    self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'package_name'),
+                    'services.service_name as package_name',
                     'services.package_services_ids',
                     'vendor_services.service_discount_price_at_salon',
                     'vendor_services.service_discount_price_at_home'

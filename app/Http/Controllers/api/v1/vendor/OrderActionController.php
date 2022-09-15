@@ -69,7 +69,7 @@ class OrderActionController extends Controller
         }
 
         $rules = [
-            "order_id"         => "required|numeric|exists:orders,order_id",
+            "order_id"            => "required|numeric|exists:orders,order_id",
             "rejection_reason_id" => "required|numeric|exists:order_rejections_reasons,rejection_reason_id",
         ];
 
