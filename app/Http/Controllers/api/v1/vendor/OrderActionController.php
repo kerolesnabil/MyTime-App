@@ -117,7 +117,7 @@ class OrderActionController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+            return ResponsesHelper::returnError('400', 'The selected order id is invalid.');
         }
 
         if(!Order::checkIfVendorHaveOrder($orderId, $vendor['vendor']->user_id)){
