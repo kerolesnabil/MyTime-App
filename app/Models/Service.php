@@ -24,7 +24,17 @@ class Service extends Model
     ];
 
 
+    public static function servicesNamesByIds($serviceIds)
+    {
 
+        return self::query()
+            ->select(
+                'service_id',
+                self::getValueWithSpecificLang('service_name', app()->getLocale(), 'service_name')
+            )
+            ->whereIn('service_id', $serviceIds)
+            ->get()->toArray();
+    }
 
     public static function getAllCategoriesServicesTree()
     {
@@ -92,7 +102,7 @@ class Service extends Model
             )
             ->join('categories','categories.cat_id','=','services.cat_id')
             ->where('service_type','service')
-            ->whereIn('service_id',$servicesIds)
+            ->whereIn('service_id', $servicesIds)
             ->get();
 
         if (!empty($services)){
@@ -104,20 +114,20 @@ class Service extends Model
         return $services;
     }
 
-    public static function savePackage($data,$package_id=null)
+    public static function savePackage($data, $package_id=null)
     {
 
         $arr=[
             'vendor_id'=>Auth::user()->user_id,
-            'service_name'=>json_encode($data['name_package']),
+            'service_name'=>$data['name_package'],
             'service_type'=>'package',
-            'package_services_ids'=>','.implode(',',$data['services_ids']).','
+            'package_services_ids'=> implode(',',$data['services_ids'])
         ];
 
         if(isset($data['package_id']))
         {
-            self::query()->where('service_id',$data['package_id'])->update($arr);
-            return true;
+            return self::query()->where('service_id',$data['package_id'])->update($arr);
+
         }else{
             return self::query()->create($arr);
         }
@@ -128,12 +138,8 @@ class Service extends Model
        return self::query()
            ->select(
             'service_id As package_id ',
-                'package_services_ids',
-                self::getValueWithSpecificLang(
-                    'service_name',
-                    app()->getLocale(),
-                    'package_name'
-                )
+                    'package_services_ids',
+                    'service_name as package_name'
             )
             ->where('service_id',$id)
             ->where('service_type','=','package')
@@ -144,7 +150,7 @@ class Service extends Model
     public static function deletePackage($id)
     {
         self::query()
-            ->where('service_id',$id)
+            ->where('service_id', $id)
             ->where('service_type','=','package')
             ->delete();
     }
@@ -152,14 +158,14 @@ class Service extends Model
     public static function getAllPackageByVendor($vendor_id)
     {
         return self::query()->select(
-            self::getValueWithSpecificLang(
-                'service_name',
-                app()->getLocale(),
-                'package_name'
-            ),'package_services_ids'
-        )
-        ->where('vendor_id',$vendor_id)
-        ->where('service_type','package')->get();
+            'services.service_id as package_id',
+                    'services.service_name as package_name',
+                    'services.package_services_ids',
+                    'vendor_services.service_discount_price_at_salon',
+                    'vendor_services.service_discount_price_at_home'
+        )->join('vendor_services','vendor_services.service_id','=','services.service_id')
+        ->where('services.vendor_id',$vendor_id)
+        ->where('services.service_type','package')->get();
     }
 
 

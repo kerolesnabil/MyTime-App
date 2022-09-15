@@ -57,7 +57,7 @@ class VendorServices extends Model
             self::query()
                 ->select(
                     'vendor_services.vendor_service_id as package_id',
-                    self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'package_name'),
+                    'services.service_name as package_name',
                     'services.package_services_ids',
                     "vendor_services.service_price_at_$serviceType as package_price",
                     "vendor_services.service_discount_price_at_$serviceType as package_discount_price"
@@ -67,15 +67,17 @@ class VendorServices extends Model
                 ->where('services.service_type','=','package')
                 ->get()->toArray();
 
+
         $serviceIds = [];
         foreach ($packagesOfVendor as $package){
             $serviceIds = array_merge($serviceIds,explode(',' , $package['package_services_ids']));
+            $serviceIds = array_diff($serviceIds, [""]);
         }
 
         $serviceIds  = array_unique($serviceIds);
+
         $serviceObjs = self::vendorServicesNamesByIds($serviceIds);
         $serviceObjs = collect($serviceObjs);
-
 
 
         foreach ($packagesOfVendor as $key=>$package){
@@ -160,7 +162,7 @@ class VendorServices extends Model
         $vendorService =
             self::query()
                 ->select('vendor_service_id')
-                ->where('vendor_service_id','=',$vendorServiceId)
+                ->where('vendor_service_id','=', $vendorServiceId)
                 ->where('vendor_id','=',$vendorId)
                 ->get()->toArray();
 
@@ -173,14 +175,22 @@ class VendorServices extends Model
     public static function saveVendorService($data,$vendor_id)
     {
 
+        if(isset($data['service_price_at_salon'])){
+            $service_discount_price_at_salon=$data['service_price_at_salon'];
+        }
+        if(isset($data['service_discount_price_at_salon']))
+        {
+            $service_discount_price_at_salon=$data['service_discount_price_at_salon'];
+        }
+
         $arr=[
             'vendor_id'=>$vendor_id,
             'service_id'=>$data['service_id'],
             'service_title'=>(isset($data['service_title']))?$data['service_title']:Null,
             'service_price_at_salon'=>(isset($data['service_price_at_salon']))?$data['service_price_at_salon']:Null,
-            'service_discount_price_at_salon'=>(isset($data['service_discount_price_at_salon']))?$data['service_discount_price_at_salon']:Null,
+            'service_discount_price_at_salon'=>(isset($service_discount_price_at_salon))?$service_discount_price_at_salon:Null,
             'service_price_at_home'=>$data['service_price_at_home'],
-            'service_discount_price_at_home'=>$data['service_discount_price_at_home']
+            'service_discount_price_at_home'=>isset($data['service_discount_price_at_home'])?$data['service_discount_price_at_home']:$data['service_price_at_home']
         ];
 
         if(isset($data['vendor_service_id']))
@@ -199,7 +209,7 @@ class VendorServices extends Model
 
     public static function deleteServiceOfPackage($package_id)
     {
-        self::query()->where('service_id',$package_id)->delete();
+        self::query()->where('service_id', $package_id)->delete();
     }
 
     public static function getServiceById($service_id)
@@ -209,27 +219,75 @@ class VendorServices extends Model
         )->where('vendor_service_id',$service_id)->first();
     }
 
-    public static function getAllServicesOfVendor($vendor_id)
+    public static function getAllServicesOfVendor($vendor_id, $servicesIds =null)
     {
-        $data=self::query()
-            ->select('service_id')
-            ->where('vendor_id',$vendor_id)->get()->toArray();
+        $services = self::query()
+            ->select(
+                'vendor_service_id as service_id',
+                self::getValueWithSpecificLang(
+                    'services.service_name',
+                    app()->getLocale(),
+                    'service_name'
+                ),
+                'categories.cat_img'
+            )
+            ->join('services','services.service_id','=','vendor_services.service_id')
+            ->join('categories','categories.cat_id','=','services.cat_id')
+            ->where('vendor_services.vendor_id', $vendor_id)
+            ->where('services.service_type','service')
+            ->orderBy('vendor_services.service_id','asc');
 
-        return collect($data)->flatten('1');
+            if(!is_null($servicesIds)){
+                $services = $services->whereIn('vendor_services.vendor_service_id', $servicesIds);
+            }
+            $services = $services->get();
+
+
+        if (!empty($services)){
+            foreach ($services as $service){
+                $service['cat_img'] = ImgHelper::returnImageLink($service['cat_img']);
+            }
+        }
+        return $services;
 
     }
 
-    public static function createVendorPackage($data,$id)
+    public static function saveVendorPackage($data, $packageId, $operationType)
     {
-        self::create([
-            'vendor_id'=>Auth::user()->user_id,
-            'service_id'=>$id,
-            'service_title'=>(isset($data['service_title']))?$data['service_title']:Null,
-            'service_price_at_salon'=>(isset($data['service_price_at_salon']))?$data['service_price_at_salon']:Null,
-            'service_discount_price_at_salon'=>(isset($data['service_discount_price_at_salon']))?$data['service_discount_price_at_salon']:Null,
-            'service_price_at_home'=>$data['service_price_at_home'],
-            'service_discount_price_at_home'=>$data['service_discount_price_at_home']
-        ]);
+        // $operationType => create || edit
+        if(isset($data['service_price_at_salon'])){
+            $service_discount_price_at_salon=$data['service_price_at_salon'];
+        }
+        if(isset($data['service_discount_price_at_salon']))
+        {
+            $service_discount_price_at_salon=$data['service_discount_price_at_salon'];
+        }
+
+        if ($operationType == 'create'){
+            self::create([
+                'vendor_id'=>Auth::user()->user_id,
+                'service_id'=>$packageId,
+                'service_title'=>(isset($data['service_title']))?$data['service_title']:Null,
+                'service_price_at_salon'=>(isset($data['service_price_at_salon']))?$data['service_price_at_salon']:Null,
+                'service_discount_price_at_salon'=>(isset($service_discount_price_at_salon))?$service_discount_price_at_salon:Null,
+                'service_price_at_home'=>$data['service_price_at_home'],
+                'service_discount_price_at_home'=>isset($data['service_discount_price_at_home'])?$data['service_discount_price_at_home']:$data['service_price_at_home']
+            ]);
+        }
+        else{
+
+            self::where('service_id', $packageId)->update([
+                'service_title'=>(isset($data['service_title']))?$data['service_title']:Null,
+                'service_price_at_salon'=>(isset($data['service_price_at_salon']))?$data['service_price_at_salon']:Null,
+                'service_discount_price_at_salon'=>(isset($service_discount_price_at_salon))?$service_discount_price_at_salon:Null,
+                'service_price_at_home'=>$data['service_price_at_home'],
+                'service_discount_price_at_home'=>isset($data['service_discount_price_at_home'])?$data['service_discount_price_at_home']:$data['service_price_at_home']
+            ]);
+        }
+
+
+
+
     }
 
     public static function checkIfServiceProvidedInSpecificLocation($vendorId, $vendorServiceId, $serviceType)

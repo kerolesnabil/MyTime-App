@@ -13,7 +13,7 @@ class Mas3ood202293CreateOrderRejectionsReasons extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('order_rejection_reasons')) {
+        if (Schema::hasTable('order_rejections_reasons')) {
             return;
         }
 
