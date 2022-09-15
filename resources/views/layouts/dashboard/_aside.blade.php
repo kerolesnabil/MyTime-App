@@ -17,6 +17,7 @@
 
 
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('admin.homepage')}}"><i class="fa fa-dashboard"></i><span>@lang('site.dashboard')</span></a></li>
+            <li style="font-size: 16px; font-weight: bold"><a href="{{route('admin.index')}}"><i class="fa fa-users" aria-hidden="true"></i><span>@lang('site.admins')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('user.index')}}"><i class="fa fa-users" aria-hidden="true"></i><span>@lang('site.users')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('vendor.index')}}"><i class="fa fa-users" aria-hidden="true"></i><span>@lang('site.vendors')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('category.index')}}"><i class="fa fa-list" aria-hidden="true"></i><span>@lang('site.categories')</span></a></li>

@@ -24,17 +24,7 @@ class Service extends Model
     ];
 
 
-    public static function servicesNamesByIds($serviceIds)
-    {
 
-        return self::query()
-            ->select(
-                'service_id',
-                self::getValueWithSpecificLang('service_name', app()->getLocale(), 'service_name')
-            )
-            ->whereIn('service_id', $serviceIds)
-            ->get()->toArray();
-    }
 
     public static function getAllCategoriesServicesTree()
     {
@@ -102,7 +92,7 @@ class Service extends Model
             )
             ->join('categories','categories.cat_id','=','services.cat_id')
             ->where('service_type','service')
-            ->whereIn('service_id', $servicesIds)
+            ->whereIn('service_id',$servicesIds)
             ->get();
 
         if (!empty($services)){
@@ -114,7 +104,7 @@ class Service extends Model
         return $services;
     }
 
-    public static function savePackage($data, $package_id=null)
+    public static function savePackage($data,$package_id=null)
     {
 
         $arr=[

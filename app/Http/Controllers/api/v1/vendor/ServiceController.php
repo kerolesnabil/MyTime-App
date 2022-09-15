@@ -37,6 +37,7 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($newCatsArr,'200');
     }
 
+
     public function getMainCategoriesOfServices(Request $request)
     {
         $user=Auth::user();
@@ -81,6 +82,7 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($data,'200','');
     }
 
+
     public function getServicesByCatId(Request $request, $catId)
     {
 
@@ -105,6 +107,7 @@ class ServiceController extends Controller
         return ResponsesHelper::returnData($data,'200','');
 
     }
+
 
     public function saveService(Request $request,$vendor_service_id=null)
     {
@@ -317,6 +320,7 @@ class ServiceController extends Controller
         DB::beginTransaction();
         VendorServices::deleteServiceOfPackage($request->package_id);
         Service::deletePackage($request->package_id);
+        VendorServices::deleteServiceOfPackage($request->package_id);
         DB::commit();
         return ResponsesHelper::returnSuccessMessage(__('vendor.delete_data'),'200');
     }
@@ -380,7 +384,6 @@ class ServiceController extends Controller
         SuggestedServices::createSuggestedService($request, $vendor['vendor']->user_id);
 
         return ResponsesHelper::returnData([],'200',__('vendor.save_data'));
-
 
     }
 }
