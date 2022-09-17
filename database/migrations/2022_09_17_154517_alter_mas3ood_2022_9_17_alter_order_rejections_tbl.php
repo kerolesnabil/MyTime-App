@@ -16,7 +16,7 @@ class AlterMas3ood2022917AlterOrderRejectionsTbl extends Migration
         if (Schema::hasTable('order_rejections')) {
 
             DB::statement("
-              ALTER TABLE app_my_time_test2.order_rejections DROP FOREIGN KEY order_rejections_ibfk_2;
+              ALTER TABLE order_rejections DROP FOREIGN KEY order_rejections_ibfk_2;
             ");
 
 
