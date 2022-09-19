@@ -17,9 +17,25 @@ class AdController extends Controller
 
     public function getCreateAds()
     {
-        $cost=Setting::getCostOfAds();
+        $cost = Setting::getCostOfAds();
 
-       return  ResponsesHelper::returnData($cost,'200');
+        $data = [];
+        if (!empty($cost)){
+
+            foreach ($cost as $item){
+
+                if ($item['setting_key'] == 'price_ad_in_homepage'){
+                    $data['price_ad_in_homepage'] = $item['setting_value'];
+                }
+
+                if ($item['setting_key'] == 'price_ad_in_discover_page'){
+                    $data['price_ad_in_discover_page'] = $item['setting_value'];
+                }
+            }
+
+        }
+
+       return  ResponsesHelper::returnData($data,'200');
 
     }
 
