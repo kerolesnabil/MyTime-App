@@ -42,6 +42,8 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::post('update_admin_activation', 'UserController@updateActivateUser')->name('admin.update_activation');
         Route::get('get_admin/{id?}', 'AdminController@getAdmin')->name('admin.get_admin');
         Route::delete('destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
+        Route::post('save/{id?}', 'AdminController@saveAdmin')->name('admin.save_admin');
+
 
 
     });

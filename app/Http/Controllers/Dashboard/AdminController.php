@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveAdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,72 +18,62 @@ class AdminController extends Controller
     }
 
 
-    public function savePage(Request $request, $pageId= null)
+    public function saveAdmin(SaveAdminRequest $request, $adminId = null)
     {
 
+        $data['user_name']          = $request->user_name;
+        $data['user_address']       = $request->user_address;
+        $data['user_phone']         = $request->user_phone;
+        $data['user_email']         = $request->user_email;
+        $data['user_date_of_birth'] = $request->user_date_of_birth;
+        $data['user_is_active']     = $request->user_is_active;
 
-        $data['page_title']         = json_encode($request->page_title);
-        $data['page_content']       = json_encode($request->page_content);
-        $data['show_in_user_app']   = $request->show_in_user_app;
-        $data['show_in_vendor_app'] = $request->show_in_vendor_app;
-        $data['page_position']      = $request->page_position;
-        $data['is_active']          = $request->is_active;
+        $options =[];
+        if(!empty($request->password)){
+            $options['password'] = bcrypt($request->password);
+        }
 
-
-        if (!is_null($pageId)){
+        if (!is_null($adminId)){
             /**************  edit ***************/
-            $data['page_id'] = $pageId;
-            if (!is_null($request->img)) {
-                $pageImg = ImgHelper::uploadImage('images', $request->img);
-                Page::updatePageData($data, $pageImg);
-            }
-            else {
-                Page::updatePageData($data);
-            }
 
+            if (!is_null($request->user_img)) {
+                $adminImg = ImgHelper::uploadImage('images', $request->user_img);
+                $options['user_img'] = $adminImg;
+            }
+            User::saveAdminData($data, $adminId, $options);
             session()->flash('success', __('site.updated_successfully'));
         }
         else{
             /**************  create ***************/
-            $pageImg = ImgHelper::uploadImage('images', $request->img);
-            $data['img'] = $pageImg;
-            Page::createPage($data);
+            if (!is_null($request->user_img)) {
+                $adminImg = ImgHelper::uploadImage('images', $request->user_img);
+                $options['user_img'] = $adminImg;
+            }
+            User::saveAdminData($data, null, $options);
             session()->flash('success', __('site.created_successfully'));
         }
 
-        return redirect(route('page.index'));
+        return redirect(route('admin.index'));
     }
 
-    public function getPage($adminId = null)
+    public function getAdmin($adminId = null)
     {
         // to do
 
         if (!is_null($adminId)){
             //edit
-            $admin = User::getUserById($adminId);
+            $admin = User::getUserWithTypeAndById($adminId,'admin');
 
-            return view('dashboard.pages.save')->with(['admin' => $admin]);
+            if (is_null($admin)){
+                session()->flash('warning', __('site_admin.admin_id_not_valid'));
+                return redirect(route('admin.index'));
+            }
+            return view('dashboard.admins.save')->with(['admin' => $admin]);
         }
         //create
-        return view('dashboard.pages.save')->with(['langs' => $langs]);
+        return view('dashboard.admins.save');
     }
 
-    public function updateActivationPage(Request $request)
-    {
-
-        if (isset($request->active_status) && isset($request->page_id)){
-
-            if ($request->active_status == 'true'){
-                Page::updatePageActivationStatus($request->page_id, 1);
-                return response()->json(['page_id' =>$request->page_id, 'status' => 'activate']);
-            }
-
-            Page::updatePageActivationStatus($request->page_id, 0);
-            return response()->json(['page_id' =>$request->page_id, 'status' => 'deactivate']);
-        }
-        return response()->json(false);
-
-    }
 
 
     public function destroy($id)
