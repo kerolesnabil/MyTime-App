@@ -76,9 +76,9 @@ class SaveCategoryRequest extends FormRequest
             'cat_is_active.min'          => __('site_category.rule_cat_is_active_min'),
             'cat_is_active.max'          => __('site_category.rule_cat_is_active_max'),
             'cat_name.*.required'        => __('site_category.rule_cat_name_required'),
-            'cat_name.*.string'          => __('site_category.rule_cat_name_required'),
+            'cat_name.*.string'          => __('site_category.rule_cat_name_string'),
             'cat_description.*.required' => __('site_category.rule_cat_description_required'),
-            'cat_description.*.string'   => __('site_category.rule_cat_description_required'),
+            'cat_description.*.string'   => __('site_category.rule_cat_description_string'),
         ];
     }
 

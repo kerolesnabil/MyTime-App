@@ -216,4 +216,18 @@ class Category extends Model
     }
 
 
+    public static function getAllSubCats()
+    {
+        $parentsCategories = self::query()
+            ->select(
+                'cat_id',
+                self::getValueWithSpecificLang('cat_name', app()->getLocale(),'cat_name'),
+                'has_children'
+            )
+            ->where('parent_id', '<>', 0)
+            ->get();
+
+        return $parentsCategories;
+
+    }
 }

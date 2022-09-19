@@ -141,5 +141,13 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         });
     });
 
+    Route::prefix('services')->group(function (){
+        Route::get('/', 'ServiceController@index')->name('service.index');
+        Route::post('save/{id?}', 'ServiceController@saveService')->name('service.save_service');
+        Route::get('get_service/{id?}', 'ServiceController@getService')->name('service.get_service');
+        Route::delete('destroy/{id}', 'ServiceController@destroy')->name('service.destroy');
+        Route::get('show_suggested_service', 'ServiceController@showSuggestedService')->name('service.show_suggested_services');
+    });
+
 
 });

@@ -39,10 +39,11 @@ class Service extends Model
 
     }
 
-    public static function getService($service_id)
+    public static function getService($service_id, $webOrApi)
     {
         $service = self::query()
             ->select(
+
                 'categories.cat_id as category_id',
                 self::getValueWithSpecificLang(
                     'categories.cat_name',
@@ -60,12 +61,20 @@ class Service extends Model
                     'service_name',
                     app()->getLocale(),
                     'service_name'
-                )
+                ),
+                'service_id'
             )->where('services.service_id', $service_id)
             ->join('categories', 'categories.cat_id', '=', 'services.cat_id')
-            ->leftJoin('categories as parent_cat', 'categories.parent_id', '=', 'parent_cat.cat_id')
-            ->first()
-            ->toArray();
+            ->leftJoin('categories as parent_cat', 'categories.parent_id', '=', 'parent_cat.cat_id');
+
+
+            if($webOrApi == 'api'){
+                $service = $service->addSelect(self::getValueWithSpecificLang('service_name', app()->getLocale(), 'service_name'));
+            }
+            else {
+                $service = $service->addSelect('service_name');
+            }
+            $service = $service->first()->toArray();
 
         if(!empty($service)){
             $service['cat_img'] = ImgHelper::returnImageLink($service['cat_img']);
@@ -172,22 +181,36 @@ class Service extends Model
     }
 
 
+    public static function gelAllServices()
+    {
+        return self::query()->select
+        (
+            'services.service_id',
+            self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'service_name'),
+            self::getValueWithSpecificLang('categories.cat_name', app()->getLocale(), 'sub_cat_name'),
+            self::getValueWithSpecificLang('parent_cats.cat_name', app()->getLocale(), 'main_cat_name')
+        )
+        ->join('categories','categories.cat_id','=','services.cat_id')
+        ->leftJoin('categories as parent_cats','parent_cats.cat_id','=','categories.parent_id')
+        ->where('services.service_type','=','service')
+        ->get();
+    }
 
 
+    public static function saveService($data, $serviceId = null)
+    {
 
+        $data['service_type'] = 'service';
+        if (!is_null($serviceId)) {
+            return self::query()->where('service_id', '=', $serviceId)->update($data);
+        }
+        else{
+            $data['created_at'] = now();
+            $data['updated_at'] = now();
+            return self::query()->create($data);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
 }

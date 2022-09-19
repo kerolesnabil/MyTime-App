@@ -374,4 +374,19 @@ class VendorServices extends Model
             ->get()->toArray();
     }
 
+
+    public static function checkIfServiceUsedByAnyVendor($serviceId)
+    {
+        $services =
+            self::query()
+                ->where('service_id', '=', $serviceId)
+                ->get();
+
+        if (!count($services)){
+            return false;
+        }
+        return true;
+
+    }
+
 }
