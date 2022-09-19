@@ -166,7 +166,7 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
         }
 
-        $service = Service::getService($service->service_id);
+        $service = Service::getService($service->service_id, 'api');
 
         $service = array_merge(['service_id'=>(int)$service_id], $service);
 
