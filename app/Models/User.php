@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\ImgHelper;
+use App\Helpers\ResponsesHelper;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,6 @@ class User extends Authenticatable
 
     protected $primaryKey='user_id';
 
-    public $timestamps=false;
 
     protected $table='users';
     /**
@@ -214,11 +214,52 @@ class User extends Authenticatable
         return $vendor;
     }
 
-    public static function getUserById($userId)
+    public static function getUserWithTypeAndById($userId, $type)
     {
-        return self::where('user_id', $userId)->first();
+        $user =  self::where('user_id', $userId)->where('user_type', $type)->first();
+        if (!is_null($user)){
+            $user->user_img = ImgHelper::returnImageLink($user->user_img);
+        }
+
+        return $user;
 
     }
 
+
+    public static function saveAdminData($data, $userId = null, $options = null)
+    {
+        // $options (array) => image, password
+
+        $dataToBeSaved['user_type']          = 'admin';
+        $dataToBeSaved['user_name']          = $data['user_name'];
+        $dataToBeSaved['user_address']       = $data['user_address'];
+        $dataToBeSaved['user_email']         = $data['user_email'];
+        $dataToBeSaved['user_phone']         = $data['user_phone'];
+        $dataToBeSaved['user_date_of_birth'] = $data['user_date_of_birth'];
+        $dataToBeSaved['user_is_active']     = $data['user_is_active'];
+
+        if (isset($options['password'])){
+            $dataToBeSaved['password'] = $options['password'];
+        }
+
+        if (isset($options['user_img'])){
+            $dataToBeSaved['user_img'] = $options['user_img'];
+        }
+
+        if (is_null($userId)){
+            //create
+            $dataToBeSaved['created_at'] = now();
+            $dataToBeSaved['updated_at'] = now();
+
+            return self::create($dataToBeSaved);
+        }
+        else{
+            //update
+            return self::where('user_id', '=', $userId)
+                ->update($dataToBeSaved);
+        }
+
+
+    }
 
 }

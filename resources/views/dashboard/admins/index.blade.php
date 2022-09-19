@@ -23,7 +23,7 @@
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site.admins')</h3>
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="{{ route('page.get_page') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                            <a href="{{ route('admin.get_admin') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
                     </div>
 
