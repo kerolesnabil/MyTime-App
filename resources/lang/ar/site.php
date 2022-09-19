@@ -42,5 +42,7 @@ return [
     'settings'               => 'الاعدادات',
     'more_info'              => 'عرض المزيد',
     'ads'                    => 'الاعلانات',
-    'admins'                 => 'المديرين'
+    'admins'                 => 'المديرين',
+    'suggested_services'     => 'الخدمات المقترحة',
+    'services'               => 'الخدمات',
 ];
