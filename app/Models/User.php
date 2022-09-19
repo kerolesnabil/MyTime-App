@@ -18,7 +18,6 @@ class User extends Authenticatable
 
     protected $primaryKey='user_id';
 
-    public $timestamps=false;
 
     protected $table='users';
     /**
@@ -251,6 +250,7 @@ class User extends Authenticatable
             //create
             $dataToBeSaved['created_at'] = now();
             $dataToBeSaved['updated_at'] = now();
+
             return self::create($dataToBeSaved);
         }
         else{
