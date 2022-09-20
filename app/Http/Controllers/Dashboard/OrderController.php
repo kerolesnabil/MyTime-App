@@ -16,12 +16,8 @@ use Illuminate\Support\Facades\Validator;
 class OrderController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-
-        if (request()->ajax()){
-            dd($request);
-        }
         $orders = Order::getAllOrders(15);
         return view('dashboard.orders.index')->with(['orders' => $orders]);
     }
@@ -52,7 +48,20 @@ class OrderController extends Controller
         }
 
         return response()->json(false);
+    }
 
+    public function showNewOrders($reportType)
+    {
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+
+        if (in_array($reportType, $reportTypes)){
+            $orders = Order::getNewOrders(20, $reportType);
+            return view('dashboard.orders.index')->with(['orders' => $orders, 'report' => 'report']);
+        }
+
+
+        session()->flash('warning', __('site.report_type_wrong'));
+        return redirect()->back();
 
     }
 }

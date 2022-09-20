@@ -41,7 +41,7 @@
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
 
 
-                                    <input type="text" name="user_splash[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$user_splash['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="user_splash[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$user_splash['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>
@@ -78,7 +78,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input type="text" name="user_logo[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$user_logo['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="user_logo[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$user_logo['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>
@@ -116,7 +116,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input type="text" name="vendor_splash[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$vendor_splash['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="vendor_splash[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$vendor_splash['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>
@@ -153,7 +153,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input type="text" name="vendor_logo[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$vendor_logo['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="vendor_logo[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$vendor_logo['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>

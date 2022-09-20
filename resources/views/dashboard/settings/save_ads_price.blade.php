@@ -36,7 +36,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input type="text" name="ad_price_in_homepage[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$ad_price_in_homepage['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="ad_price_in_homepage[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$ad_price_in_homepage['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>
@@ -44,7 +44,7 @@
                         <label style="font-size: 18px">@lang('site_setting.ad_price_value')</label>
                         <div class="row mb-3 margin-bottom">
                             <div class="col-md-6 pr-md-1">
-                                <input type="text" name="ad_price_in_homepage[setting_value]" class="form-control" value="{{$ad_price_in_homepage['setting_value']}}">
+                                <input style="font-weight: bold; font-size: 14px;" type="text" name="ad_price_in_homepage[setting_value]" class="form-control" value="{{$ad_price_in_homepage['setting_value']}}">
                             </div>
                         </div>
                         <hr style=" border-top: 1px solid #4481ff;">
@@ -54,7 +54,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input type="text" name="ad_price_in_discover_page[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$ad_price_in_discover_page['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="ad_price_in_discover_page[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$ad_price_in_discover_page['setting_name'][$lang['lang_symbol']]}}">
                                 </div>
                             @endforeach
                         </div>
@@ -62,7 +62,7 @@
                         <label style="font-size: 18px">@lang('site_setting.ad_price_value')</label>
                         <div class="row mb-3 margin-bottom">
                             <div class="col-md-6 pr-md-1">
-                                <input type="text" name="ad_price_in_discover_page[setting_value]" class="form-control" value="{{$ad_price_in_discover_page['setting_value']}}">
+                                <input style="font-weight: bold; font-size: 14px;" type="text" name="ad_price_in_discover_page[setting_value]" class="form-control" value="{{$ad_price_in_discover_page['setting_value']}}">
                             </div>
                         </div>
 

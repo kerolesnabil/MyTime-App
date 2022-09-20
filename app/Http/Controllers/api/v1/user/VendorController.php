@@ -86,9 +86,11 @@ class VendorController extends Controller
 
         $vendorPackages = VendorServices::packagesOfVendor($vendorId, $request->service_type);
 
+
         if (empty($vendorPackages)) {
             return ResponsesHelper::returnError('400', 'not found package for this vendor right now !');
         }
+
 
         $data = [];
 

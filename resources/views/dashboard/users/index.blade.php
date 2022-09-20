@@ -22,21 +22,6 @@
 
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site.users')</h3>
 
-                    <form action="{{ route('user.index') }}" method="get">
-
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
-                            </div>
-
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                            </div>
-
-                        </div>
-                    </form><!-- end of form -->
-
                 </div><!-- end of box header -->
 
                 <div class="box-body">
@@ -47,13 +32,13 @@
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
-                                <th>#</th>
-                                <th>@lang('site_user.user_name')</th>
-                                <th>@lang('site_user.user_phone')</th>
-                                <th>@lang('site_user.user_email')</th>
-                                <th>@lang('site_user.user_address')</th>
-                                <th style="text-align: center">@lang('site_user.user_is_active')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >@lang('site_user.user_name')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >@lang('site_user.user_phone')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >@lang('site_user.user_email')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >@lang('site_user.user_address')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_user.user_is_active')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
                             </tr>
                             </thead>
 
@@ -64,12 +49,12 @@
                             ?>
                             @foreach ($users as $index=>$user)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $user->user_name }}</td>
-                                    <td>{{ $user->user_phone }}</td>
-                                    <td>{{ $user->user_email }}</td>
-                                    <td>{{ $user->user_address }}</td>
-                                    <td id="user_status_{{$user->user_id}}" style="text-align: center">
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $user->user_name }}</td>
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $user->user_phone }}</td>
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $user->user_email }}</td>
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $user->user_address }}</td>
+                                    <td id="user_status_{{$user->user_id}}" style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                             echo $user->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?></td>
@@ -80,11 +65,11 @@
                                             <input type="hidden" name="user_id" value="{{$user->user_id}}">
                                             <?php
                                                 echo $user->user_is_active == 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='text-align: center; font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$user->user_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='text-align: center; font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$user->user_id' name='active_status' value='true'>
                                                     ";
                                             ?>
@@ -134,7 +119,7 @@
                                         $('#'+user_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['user_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='text-align: center; font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -144,7 +129,7 @@
                                         $('#'+user_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['user_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='text-align: center; font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['user_id'] +"' name='active_status' value='true'>");
                                     }

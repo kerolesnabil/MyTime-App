@@ -25,9 +25,15 @@ return [
     'no'                     => 'لا',
     'orders'                 => 'الطلبات',
     'langs'                  => 'اللغات',
-    'new_orders'             => 'الطلبات الجديدة',
+    'daily_orders'           => 'الطلبات اليومية',
+    'weekly_orders'          => 'الطلبات الاسبوعية',
+    'monthly_orders'         => 'الطلبات الشهرية',
+    'yearly_orders'          => 'الطلبات السنوية',
+    'daily_users'            => 'المستخدمين الجدد ( يومي )',
+    'weekly_users'           => 'المستخدمين الجدد ( اسبوعي )',
+    'monthly_users'          => 'المستخدمين الجدد ( شهري )',
+    'yearly_users'           => 'المستخدمين الجدد ( سنوي )',
     'available_ads'          => 'الاعلانات المتاحة حاليا',
-    'new_users'              => 'المستخدمين الجدد',
     'specialists'            => 'الاخصائيين',
     'salons'                 => 'الصالونات',
     'order_rejection_reason' => 'اسباب رفض الطلبات',
@@ -39,6 +45,11 @@ return [
     'date_to'                => 'التاريخ الي',
     'report'                 => 'التقرير',
     'payment_methods'        => 'طرق الدفع',
-    'settings'               => 'الاعدادات'
-
+    'settings'               => 'الاعدادات',
+    'more_info'              => 'عرض المزيد',
+    'ads'                    => 'الاعلانات',
+    'admins'                 => 'المديرين',
+    'suggested_services'     => 'الخدمات المقترحة',
+    'services'               => 'الخدمات',
+    'msg_report_type_wrong'  => 'نوع التقرير غير صحيح'
 ];

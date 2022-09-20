@@ -84,7 +84,10 @@ class VendorDetail extends Model
 
     public static function vendorsByType($vendorType, $userLat, $userLong, $filterCatId = 0)
     {
-        $distanceKm = 50000;
+
+        $diameterSearch = Setting::getSettingByKey('diameter_search', 'web');
+        $diameterSearch = intval($diameterSearch['setting_value']);
+
 
         $vendors =
             self::query()
@@ -107,7 +110,7 @@ class VendorDetail extends Model
         }
 
         $vendors = $vendors
-                ->having('distance_in_kilometer', '<=', $distanceKm)
+                ->having('distance_in_kilometer', '<=', $diameterSearch)
                 ->orderBy('distance_in_kilometer', 'asc')
                 ->get()->toArray();
 

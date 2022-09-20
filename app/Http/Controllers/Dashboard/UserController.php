@@ -31,4 +31,20 @@ class UserController extends Controller
         return response()->json(false);
 
     }
+
+
+    public function showNewUsers($reportType)
+    {
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+
+        if (in_array($reportType, $reportTypes)){
+            $users = User::getNewUsers(20, $reportType);
+
+            return view('dashboard.users.show_new_users')->with(['users' => $users]);
+        }
+
+        session()->flash('warning', __('site.report_type_wrong'));
+        return redirect()->back();
+
+    }
 }

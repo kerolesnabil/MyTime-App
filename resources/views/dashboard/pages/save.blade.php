@@ -123,15 +123,6 @@
                         </div>
 
 
-                        {{--<div class="form-group">
-                            <img src="{{ $page->image_path }}" style="width: 100px" class="img-thumbnail image-preview" alt="">
-                        </div>--}}
-
-                        <div class="row margin-bottom">
-
-
-                        </div>
-
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($page->page_id)?  __('site.add') : __('site.edit')?></button>

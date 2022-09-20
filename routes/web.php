@@ -24,6 +24,7 @@ Route::group([
     Route::prefix('users')->group(function (){
         Route::get('/', 'UserController@index')->name('user.index');
         Route::post('update_user_activation', 'UserController@updateActivateUser')->name('user.update_activation');
+        Route::get('/show_new_users/{report_type}', 'UserController@showNewUsers')->name('user.show_new_users');
 
     });
 
@@ -32,6 +33,17 @@ Route::group([
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
         Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
         Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
+    });
+
+    Route::prefix('admins')->group(function (){
+        Route::get('/', 'AdminController@index')->name('admin.index');
+        Route::post('update_admin_activation', 'UserController@updateActivateUser')->name('admin.update_activation');
+        Route::get('get_admin/{id?}', 'AdminController@getAdmin')->name('admin.get_admin');
+        Route::delete('destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
+        Route::post('save/{id?}', 'AdminController@saveAdmin')->name('admin.save_admin');
+
+
+
     });
 
     Route::prefix('categories')->group(function (){
@@ -57,7 +69,13 @@ Route::group([
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
         Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
+        Route::get('/show_new_orders/{report_type}', 'OrderController@showNewOrders')->name('order.show_new_orders');
+    });
 
+    Route::prefix('ads')->group(function (){
+        Route::get('/', 'AdController@index')->name('ad.index');
+        Route::get('/show_ad/{id}', 'AdController@showAdById')->name('ad.show_ad');
+        Route::get('/show_available_ads', 'AdController@showAvailableAds')->name('ad.show_available_ads');
     });
 
     Route::prefix('langs')->group(function (){
@@ -110,6 +128,23 @@ Route::group([
             Route::post('save', 'SettingController@saveAdsPrice')->name('setting.save_ad_price');
         });
 
+        Route::prefix('diameter_search')->group(function (){
+            Route::get('get_diameter_search', 'SettingController@getDiameterSearch')->name('setting.get_diameter_search');
+            Route::post('save', 'SettingController@saveDiameterSearch')->name('setting.save_diameter_search');
+        });
+
+        Route::prefix('bank_account_details')->group(function (){
+            Route::get('get_bank_account_details', 'SettingController@getBankAccountDetails')->name('setting.get_bank_account_details');
+            Route::post('save', 'SettingController@saveBankAccountDetails')->name('setting.save_bank_account_details');
+        });
+    });
+
+    Route::prefix('services')->group(function (){
+        Route::get('/', 'ServiceController@index')->name('service.index');
+        Route::post('save/{id?}', 'ServiceController@saveService')->name('service.save_service');
+        Route::get('get_service/{id?}', 'ServiceController@getService')->name('service.get_service');
+        Route::delete('destroy/{id}', 'ServiceController@destroy')->name('service.destroy');
+        Route::get('show_suggested_service', 'ServiceController@showSuggestedService')->name('service.show_suggested_services');
     });
 
 

@@ -69,7 +69,7 @@ class OrderActionController extends Controller
         }
 
         $rules = [
-            "order_id"         => "required|numeric|exists:orders,order_id",
+            "order_id"            => "required|numeric|exists:orders,order_id",
             "rejection_reason_id" => "required|numeric|exists:order_rejections_reasons,rejection_reason_id",
         ];
 
@@ -117,7 +117,7 @@ class OrderActionController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
+            return ResponsesHelper::returnError('400', 'The selected order id is invalid.');
         }
 
         if(!Order::checkIfVendorHaveOrder($orderId, $vendor['vendor']->user_id)){
@@ -131,7 +131,7 @@ class OrderActionController extends Controller
         }
 
         Order::changeStatusOfOrder('accepted', $orderId);
-        return ResponsesHelper::returnData([],'200','This order has been successfully accepted');
+        return ResponsesHelper::returnSuccessMessage('This order has been successfully accepted', '200');
     }
 
     public function doneOrder(Request $request, $orderId)

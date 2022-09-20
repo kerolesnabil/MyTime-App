@@ -39,11 +39,11 @@
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
-                                <th>#</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th>@lang('site_payment_method.payment_method_name')</th>
-                                <th style="text-align: center">@lang('site_payment_method.payment_method_type')</th>
-                                <th style="text-align: center">@lang('site_payment_method.is_active')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_payment_method.payment_method_type')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_payment_method.is_active')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
                             </tr>
                             </thead>
 
@@ -54,10 +54,10 @@
                             ?>
                             @foreach ($payment_methods as $index => $payment_method)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $payment_method->payment_method_name }}</td>
-                                    <td>{{ __("site_payment_method.payment_method_type_$payment_method->payment_method_type") }}</td>
-                                    <td id="payment_method_status_{{$payment_method->payment_method_id}}" style="text-align: center">
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $payment_method->payment_method_name }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ __("site_payment_method.payment_method_type_$payment_method->payment_method_type") }}</td>
+                                    <td id="payment_method_status_{{$payment_method->payment_method_id}}" style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                             echo $payment_method->is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
@@ -69,23 +69,23 @@
                                             <input type="hidden" name="payment_method_id" value="{{$payment_method->payment_method_id}}">
                                             <?php
                                                 echo $payment_method->is_active == 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='text-align: center; font-size: 18px; font-weight: bold'  type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$payment_method->payment_method_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='text-align: center; font-size: 18px; font-weight: bold'  type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$payment_method->payment_method_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a href="{{ route('payment_method.get_payment_method', $payment_method->payment_method_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='text-align: center; font-size: 18px; font-weight: bold'  href="{{ route('payment_method.get_payment_method', $payment_method->payment_method_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('payment_method.destroy', $payment_method->payment_method_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='text-align: center; font-size: 18px; font-weight: bold'  type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>
@@ -131,7 +131,7 @@
                                         $('#'+page_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['payment_method_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='text-align: center; font-size: 18px; font-weight: bold'  type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['payment_method_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -141,7 +141,7 @@
                                         $('#'+page_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['payment_method_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='text-align: center; font-size: 18px; font-weight: bold'  type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['payment_method_id'] +"' name='active_status' value='true'>");
                                     }
                                 },

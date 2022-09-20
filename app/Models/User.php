@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\ImgHelper;
+use App\Helpers\ResponsesHelper;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +18,6 @@ class User extends Authenticatable
 
     protected $primaryKey='user_id';
 
-    public $timestamps=false;
 
     protected $table='users';
     /**
@@ -106,11 +106,41 @@ class User extends Authenticatable
 
     }
 
-    public static function countNewUsers($days)
+    public static function getNewUsers($paginate, $reportType)
     {
-        $currentTime =  Carbon::now();
-        $time = $currentTime->subDays($days);
-        return  count(self::where('user_type', '=', 'user')->where('created_at', '>', $time)->get());
+        // $reportType => daily, weekly, monthly, yearly
+
+        $time = "";
+        if ($reportType == 'daily'){
+            $time =  Carbon::now()->startOfDay();
+        }
+        elseif ($reportType == 'weekly'){
+            $time =  Carbon::now()->subWeek()->startOfDay();
+        }
+        elseif ($reportType == 'monthly'){
+            $time =  Carbon::now()->subMonth()->startOfDay();
+        }
+        elseif ($reportType == 'yearly')
+        {
+            $time =  Carbon::now()->subYear()->startOfDay();
+        }
+        $time = $time->format('Y-m-d H:i:s');
+
+
+        return self::query()
+            ->select
+            (
+                'users.user_id',
+                'users.user_name',
+                'users.user_phone',
+                'users.user_email',
+                'users.user_address',
+                'users.user_is_active'
+            )
+            ->where('user_type', '=', 'user')
+            ->where('created_at', '>', $time)
+            ->orderBy('users.created_at','desc')
+            ->paginate($paginate);
     }
 
     public static function getUsersByType($type)
@@ -214,6 +244,33 @@ class User extends Authenticatable
         return $vendor;
     }
 
+    public static function getUserWithTypeAndById($userId, $type)
+    {
+        $user =  self::where('user_id', $userId)->where('user_type', $type)->first();
+        if (!is_null($user)){
+            $user->user_img = ImgHelper::returnImageLink($user->user_img);
+        }
+
+        return $user;
+
+    }
+
+
+    public static function saveAdminData($data, $userId = null, $options = null)
+    {
+        // $options (array) => image, password
+
+        $dataToBeSaved['user_type']          = 'admin';
+        $dataToBeSaved['user_name']          = $data['user_name'];
+        $dataToBeSaved['user_address']       = $data['user_address'];
+        $dataToBeSaved['user_email']         = $data['user_email'];
+        $dataToBeSaved['user_phone']         = $data['user_phone'];
+        $dataToBeSaved['user_date_of_birth'] = $data['user_date_of_birth'];
+        $dataToBeSaved['user_is_active']     = $data['user_is_active'];
+
+        if (isset($options['password'])){
+            $dataToBeSaved['password'] = $options['password'];
+        }
 
     public static function getUserByEmailAndPassword($data)
     {
@@ -224,5 +281,24 @@ class User extends Authenticatable
     }
 
 
+        if (isset($options['user_img'])){
+            $dataToBeSaved['user_img'] = $options['user_img'];
+        }
+
+        if (is_null($userId)){
+            //create
+            $dataToBeSaved['created_at'] = now();
+            $dataToBeSaved['updated_at'] = now();
+
+            return self::create($dataToBeSaved);
+        }
+        else{
+            //update
+            return self::where('user_id', '=', $userId)
+                ->update($dataToBeSaved);
+        }
+
+
+    }
 
 }

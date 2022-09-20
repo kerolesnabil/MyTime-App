@@ -166,14 +166,14 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
         }
 
-        $service = Service::getService($service->service_id);
+        $service = Service::getService($service->service_id, 'api');
 
         $service = array_merge(['service_id'=>(int)$service_id], $service);
 
        return ResponsesHelper::returnData($service,'200');
     }
 
-    public function deleteService(Request $request ,$vendor_service_id)
+    public function deleteService(Request $request, $vendor_service_id)
     {
 
         $vendor['vendor']=Auth::user();
@@ -206,13 +206,12 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400','you are not a vendor');
 }
 
-        $allServicesOfVendor=VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id);
-        $services=Service::getServicesOfVendor($allServicesOfVendor);
+        $allServicesOfVendor = VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id);
 
-        return ResponsesHelper::returnData($services,'200');
+        return ResponsesHelper::returnData($allServicesOfVendor,'200');
     }
 
-    public function savePackage(Request $request,$package_id=null)
+    public function savePackage(Request $request,$packageId=null)
     {
         $vendor['vendor']=Auth::user();
 
@@ -220,50 +219,52 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-        if(isset($package_id))
-        {
-            $request->request->add(['package_id' => $package_id]);
+        $rules = [
+            "services_ids"                    => "required|array",
+            "services_ids.*"                  => "required|exists:vendor_services,vendor_service_id",
+            "service_price_at_salon"          => "nullable|numeric",
+            "service_discount_price_at_salon" => "nullable|numeric",
+            "service_price_at_home"           => "required|numeric",
+            "service_discount_price_at_home"  => "nullable|numeric",
+            "name_package"                    => "required",
+        ];
 
-            $rules=[
-                'package_id' =>"required|exists:services,service_id"
-            ];
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return ResponsesHelper::returnValidationError('400', $validator);
-            }
+        if(isset($packageId))
+        {
+            $request->request->add(['package_id' => $packageId]);
+            $rules['package_id'] = "required|exists:services,service_id";
         }
 
-        $rules = [
-            "services_ids"=> "required|array",
-            "services_ids.*"=>"required|exists:services,service_id",
-            "service_price_at_salon"            => "nullable|numeric",
-            "service_discount_price_at_salon"   => "nullable|numeric",
-            "service_price_at_home"             => "numeric|required",
-            "service_discount_price_at_home"    => "numeric|required",
-        ];
-        $validator = Validator::make($request->all(), $rules);
+
+        $validator = Validator::make($request->all(), $rules,
+            ["services_ids.*.exists"   => __("vendor.services_ids_not_exists"),]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
         DB::beginTransaction();
-        $service=Service::savePackage($request->all(),$package_id);
-        VendorServices::createVendorPackage($request->all(),isset($service->service_id)?$service->service_id:$package_id);
+        if (!is_null($packageId)){
+            $service=Service::savePackage($request->all(),$packageId);
+            VendorServices::saveVendorPackage($request->all(), $packageId,'edit');
+        }
+        else{
+            $service = Service::savePackage($request->all());
+            VendorServices::saveVendorPackage($request->all(), $service->service_id, 'create');
+        }
         DB::commit();
 
-        return ResponsesHelper::returnData((isset($package_id)? intval($package_id) : (int) $service->service_id),'200',__('vendor.save_data'));
+        return ResponsesHelper::returnData((isset($packageId)? intval($packageId) : (int) $service->service_id),'200',__('vendor.save_data'));
 
     }
 
-    public function getPackage(Request $request, $package_id)
+    public function getPackage(Request $request, $packageId)
     {
         $vendor['vendor']=Auth::user();
-
         if($vendor['vendor']->user_type!='vendor'){
             return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-        $request->request->add(['package_id' => $package_id]);
-
+        $request->request->add(['package_id' => $packageId]);
         $rules=[
             'package_id' =>"required|exists:services,service_id"
         ];
@@ -272,19 +273,31 @@ class ServiceController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        $data=Service::getPackage($package_id);
+        $data = Service::getPackage($packageId);
 
-        $ids=explode(',',$data->package_services_ids);
+        if(empty($data))
+        {
+            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+        }
+        if(!isset($data->package_services_ids))
+        {
+            return ResponsesHelper::returnError('400',__('vendor.this_id_not_package'));
+        }
+        $servicesIds = explode(',',$data->package_services_ids);
 
-        $getServicesName=Service::servicesNamesByIds($ids);
-        $data->package_services_name= $getServicesName;
+
+
+        $servicesOfPackage =  VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id, $servicesIds);
+
+        $data->package_services_name= $servicesOfPackage;
+        unset($data->package_services_ids);
 
         return ResponsesHelper::returnData($data,'200');
 
 
     }
 
-    public function deletePackage(Request $request ,$package_id)
+    public function deletePackage(Request $request ,$packageId)
     {
         $vendor['vendor']=Auth::user();
 
@@ -292,19 +305,20 @@ class ServiceController extends Controller
             return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
-        $request->request->add(['package_id' => $package_id]);
+        $request->request->add(['package_id' => $packageId]);
 
         $rules = [
-            "package_id"     => "required|exists:services,service_id",
+            "package_id"     => "required|exists:services,service_id|exists:vendor_services,service_id",
         ];
-
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
+
         DB::beginTransaction();
+        VendorServices::deleteServiceOfPackage($request->package_id);
         Service::deletePackage($request->package_id);
         VendorServices::deleteServiceOfPackage($request->package_id);
         DB::commit();
@@ -313,31 +327,40 @@ class ServiceController extends Controller
 
     public function getAllPackageOfVendor()
     {
-        $user=Auth::user();
-        if( $user->user_type!='vendor')
-        {
-            return ResponsesHelper::returnError('400','yor are not a vendor');
+        $vendor['vendor']=Auth::user();
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
         }
 
+        $packages = collect(Service::getAllPackageByVendor($vendor['vendor']->user_id));
 
-        $packges=Service::getAllPackageByVendor($user->user_id);
-
-        $package_services_ids = array_map(function($item){
-            return explode(",",$item);
-        },$packges->pluck('package_services_ids')->toArray());
-
-        $package_services_ids = collect($package_services_ids)->flatten(1)->all();
-        $package_services_ids = array_unique($package_services_ids);
-        $ids = array_diff($package_services_ids,[""]);
-
-        $services=Service::getServicesOfVendor($ids);
-
-        foreach ($packges as $packge) {
-            $packge->package_services_ids  = explode(',', trim($packge->package_services_ids, ','));
-            $packge->package_services_name = $services->whereIn("service_id", $packge->package_services_ids)->all();
+        $servicesIds = [];
+        foreach ($packages as $package){
+            $servicesIds = array_merge($servicesIds, explode(',' , $package['package_services_ids']));
         }
 
-        return ResponsesHelper::returnData($packges,'200');
+        $servicesIds  = array_unique($servicesIds);
+        $serviceObjs = VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id, $servicesIds);
+        $serviceObjs = collect($serviceObjs);
+
+
+        foreach ($packages as $key => $package) {
+
+            if($package['service_discount_price_at_salon'] == 0.00 )
+            {
+                $package['service_discount_price_at_salon'] = "";
+            }
+            if($package['service_discount_price_at_home'] == 0.00)
+            {
+                $package['service_discount_price_at_home'] = "";
+            }
+            $package['package_services_ids']         = explode(',', trim($package['package_services_ids'], ','));
+            $packages[$key]['package_services_name'] = collect($serviceObjs->whereIn("service_id", $package['package_services_ids']))->toArray();
+            $packages[$key]['package_services_name'] = array_values($packages[$key]['package_services_name']);
+            unset($package['package_services_ids']);
+        }
+
+        return ResponsesHelper::returnData($packages,'200');
     }
 
     public function addSuggestedService(Request $request)
@@ -361,7 +384,6 @@ class ServiceController extends Controller
         SuggestedServices::createSuggestedService($request, $vendor['vendor']->user_id);
 
         return ResponsesHelper::returnData([],'200',__('vendor.save_data'));
-
 
     }
 }

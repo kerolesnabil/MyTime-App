@@ -310,11 +310,52 @@ class Order extends Model
 
     }
 
-    public static function countNewOrders($days)
+    public static function getNewOrders($paginate, $reportType)
     {
-        $currentTime =  Carbon::now();
-        $time = $currentTime->subDays($days);
-        return count(self::where('updated_at', '>', $time)->get());
+        // $reportType => daily, weekly, monthly, yearly
+
+
+        $time = "";
+        if ($reportType == 'daily'){
+            $time =  Carbon::now()->startOfDay();
+        }
+        elseif ($reportType == 'weekly'){
+            $time =  Carbon::now()->subWeek()->startOfDay();
+        }
+        elseif ($reportType == 'monthly'){
+            $time =  Carbon::now()->subMonth()->startOfDay();
+        }
+        elseif ($reportType == 'yearly')
+        {
+            $time =  Carbon::now()->subYear()->startOfDay();
+        }
+        $time = $time->format('Y-m-d H:i:s');
+
+
+        return self::query()
+            ->select(
+                'orders.order_id',
+                'orders.order_custom_date as order_date',
+                'orders.order_custom_time as order_time',
+                'orders.order_type',
+                'orders.order_status',
+                'orders.is_paid',
+                'vendors.user_name as vendor_name',
+                'users.user_name',
+                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method'),
+                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at'),
+                'order_taxes_cost',
+                'order_total_price',
+                'order_app_profit',
+                'order_phone'
+            )
+            ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
+            ->join('users', 'orders.user_id', '=', 'users.user_id')
+            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
+            ->where('orders.created_at', '>=', $time)
+            ->orderBy('orders.created_at','desc')
+            ->paginate($paginate);
+
     }
 
     public static function updateRatedStatusOfOrder($orderId)
@@ -409,7 +450,6 @@ class Order extends Model
             ->where('orders.created_at','<=', $date_to)
             ->get();
     }
-
 
     public static function getOrdersOfVendorByKeyWord($vendorId, $orderId = null, $username =null)
     {

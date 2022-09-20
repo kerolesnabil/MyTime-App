@@ -44,9 +44,9 @@
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
-                                <th>#</th>
-                                <th>@lang('site_order_rejection_reason.rejection_reason')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
+                                <th style="font-size: 18px; font-weight: bold">@lang('site_order_rejection_reason.rejection_reason')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
 
                             </tr>
                             </thead>
@@ -55,19 +55,19 @@
 
                             @foreach ($reasons as $index => $reason)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $reason->rejection_reason }}</td>
+                                    <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $reason->rejection_reason }}</td>
 
 
                                     <td style="text-align: center">
 
-                                        <a href="{{ route('order_rejection_reason.get_order_rejection_reason', $reason->rejection_reason_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style="font-size: 16px; font-weight: bold" href="{{ route('order_rejection_reason.get_order_rejection_reason', $reason->rejection_reason_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('order_rejection_reason.destroy', $reason->rejection_reason_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style="font-size: 16px; font-weight: bold" type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>
