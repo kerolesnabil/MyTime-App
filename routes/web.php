@@ -14,14 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/login', function () {
-    return [
-        "message" => "please login"
-    ];
-})->name("login");
-
-
-Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
+Route::group([
+    'middleware' => ['auth'],
+    'prefix'    =>'dashboard',
+    'namespace' =>'Dashboard'
+], function () {
     Route::get('/', 'DashboardController@index')->name('admin.homepage');
 
     Route::prefix('users')->group(function (){
@@ -150,5 +147,13 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('show_suggested_service', 'ServiceController@showSuggestedService')->name('service.show_suggested_services');
     });
 
+
+});
+
+Route::prefix('dashboard')->group(function () {
+
+    Route::get('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'getViewLogin'] )->name("login");
+
+    Route::post('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'login']);
 
 });

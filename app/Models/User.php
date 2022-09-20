@@ -272,6 +272,15 @@ class User extends Authenticatable
             $dataToBeSaved['password'] = $options['password'];
         }
 
+    public static function getUserByEmailAndPassword($data)
+    {
+        return self::query()
+            ->select('*')
+            ->where('user_email','=',$data['email'])
+            ->where('password','=',bcrypt($data['password']))->first();
+    }
+
+
         if (isset($options['user_img'])){
             $dataToBeSaved['user_img'] = $options['user_img'];
         }
