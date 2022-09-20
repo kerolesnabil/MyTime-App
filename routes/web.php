@@ -27,6 +27,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
     Route::prefix('users')->group(function (){
         Route::get('/', 'UserController@index')->name('user.index');
         Route::post('update_user_activation', 'UserController@updateActivateUser')->name('user.update_activation');
+        Route::get('/show_new_users/{report_type}', 'UserController@showNewUsers')->name('user.show_new_users');
 
     });
 
@@ -71,7 +72,7 @@ Route::namespace('Dashboard')->prefix('dashboard')->group(function () {
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
         Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
-        Route::get('/show_new_orders', 'OrderController@showNewOrders')->name('order.show_new_orders');
+        Route::get('/show_new_orders/{report_type}', 'OrderController@showNewOrders')->name('order.show_new_orders');
     });
 
     Route::prefix('ads')->group(function (){
