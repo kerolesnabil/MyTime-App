@@ -310,11 +310,27 @@ class Order extends Model
 
     }
 
-    public static function getNewOrders($days, $paginate)
+    public static function getNewOrders($paginate, $reportType)
     {
-        $currentTime =  Carbon::now();
-        $time = $currentTime->subDays($days);
-        $time= $time->format('Y-m-d H:i:s');
+        // $reportType => daily, weekly, monthly, yearly
+
+
+        $time = "";
+        if ($reportType == 'daily'){
+            $time =  Carbon::now()->startOfDay();
+        }
+        elseif ($reportType == 'weekly'){
+            $time =  Carbon::now()->subWeek()->startOfDay();
+        }
+        elseif ($reportType == 'monthly'){
+            $time =  Carbon::now()->subMonth()->startOfDay();
+        }
+        elseif ($reportType == 'yearly')
+        {
+            $time =  Carbon::now()->subYear()->startOfDay();
+        }
+        $time = $time->format('Y-m-d H:i:s');
+
 
         return self::query()
             ->select(

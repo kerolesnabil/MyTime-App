@@ -51,6 +51,11 @@
 
                 <div class="box-body">
 
+                    @if(isset($report))
+                        <i class="fa fa-file-text-o" aria-hidden="true" style="font-size: 30px; display: inline"> <span style=" font-weight: bold;color: #0B90C4">@lang('site.report')</span></i>
+                        <hr>
+                    @endif
+
                     @if ($orders->count() > 0)
 
                         <table class="table table-bordered table-hover">
