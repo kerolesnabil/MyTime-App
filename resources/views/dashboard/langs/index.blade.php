@@ -44,11 +44,11 @@
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
                                 <th>#</th>
-                                <th>@lang('site_lang.lang_symbol')</th>
-                                <th >@lang('site_lang.lang_name')</th>
-                                <th >@lang('site_lang.lang_direction')</th>
-                                <th style="text-align: center">@lang('site_lang.lang_is_active')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_symbol')</th>
+                                <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_name')</th>
+                                <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_direction')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_lang.lang_is_active')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
                             </tr>
                             </thead>
 
@@ -59,12 +59,12 @@
                             ?>
                             @foreach ($langs as $index => $lang)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $lang['lang_symbol']}}</td>
-                                    <td>{{ $lang['lang_name']}}</td>
-                                    <td><?php echo __('site_lang.'.$lang['lang_direction'])?></td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $index + 1 }}</td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $lang['lang_symbol']}}</td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $lang['lang_name']}}</td>
+                                    <td style="font-size: 18px; font-weight: bold"><?php echo __('site_lang.'.$lang['lang_direction'])?></td>
 
-                                    <td id="lang_status_{{$lang['lang_id']}}" style="text-align: center">
+                                    <td id="lang_status_{{$lang['lang_id']}}" style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                             echo $lang['lang_is_active']== 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
@@ -73,27 +73,27 @@
                                     <td>
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
-                                            <input type="hidden" name="lang_id" value="{{$lang['lang_id']}}">
+                                            <input style="font-size: 18px; font-weight: bold" type="hidden" name="lang_id" value="{{$lang['lang_id']}}">
                                             <?php
                                                 $lang_id = $lang['lang_id'];
                                                 echo $lang['lang_is_active']== 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='false'>
                                                     "
                                                     :
                                                     "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
-                                                     <input type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='true'>
+                                                     <input style='font-size: 18px; font-weight: bold' type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a href="{{ route('lang.get_lang', $lang['lang_id']) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='font-size: 18px; font-weight: bold' href="{{ route('lang.get_lang', $lang['lang_id']) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('lang.destroy', $lang['lang_id']) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='font-size: 18px; font-weight: bold' type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>
@@ -136,7 +136,7 @@
                                         $('#'+lang_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['lang_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['lang_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -146,7 +146,7 @@
                                         $('#'+lang_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['lang_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
 
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['lang_id'] +"' name='active_status' value='true'>");
                                     }

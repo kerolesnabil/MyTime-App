@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-yellow">
                         <div class="inner">
                             <h3>{{$weekly_orders}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.weekly_orders')</p>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-red">
                         <div class="inner">
                             <h3>{{$monthly_orders}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.monthly_orders')</p>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{$yearly_orders}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.yearly_orders')</p>
@@ -70,7 +70,7 @@
             <div class="row">
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-yellow">
+                    <div class="small-box bg-aqua">
                         <div class="inner">
                             <h3>{{$daily_users}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.daily_users')</p>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-yellow">
+                    <div class="small-box bg-red">
                         <div class="inner">
                             <h3>{{$monthly_users}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.monthly_users')</p>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-yellow">
+                    <div class="small-box bg-green">
                         <div class="inner">
                             <h3>{{$yearly_users}}</h3>
                             <p style="font-size: 15px; font-weight: bold">@lang('site.yearly_users')</p>

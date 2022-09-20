@@ -36,13 +36,13 @@
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
-                                <th>#</th>
-                                <th>@lang('site_page.page_title')</th>
-                                <th style="text-align: center">@lang('site_page.page_position')</th>
-                                <th style="text-align: center">@lang('site_page.show_in_user_app')</th>
-                                <th style="text-align: center">@lang('site_page.show_in_vendor_app')</th>
-                                <th style="text-align: center">@lang('site_page.is_active')</th>
-                                <th style="text-align: center">@lang('site.action')</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
+                                <th style='font-size: 18px; font-weight: bold'>@lang('site_page.page_title')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_page.page_position')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_page.show_in_user_app')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_page.show_in_vendor_app')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_page.is_active')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
                             </tr>
                             </thead>
 
@@ -53,22 +53,22 @@
                             ?>
                             @foreach ($pages as $index => $page)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $page->page_title }}</td>
-                                    <td>{{ $page->page_position}}</td>
-                                    <td style="text-align: center">
+                                    <td  style="font-size: 18px; font-weight: bold">{{ $index + 1 }}</td>
+                                    <td  style="font-size: 18px; font-weight: bold">{{ $page->page_title }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $page->page_position}}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                             echo $page->show_in_user_app == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
                                     </td>
-                                    <td style="text-align: center">
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                         echo $page->show_in_vendor_app == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
                                     </td>
 
 
-                                    <td id="page_status_{{$page->page_id}}" style="text-align: center">
+                                    <td id="page_status_{{$page->page_id}}" style="text-align: center; font-size: 18px; font-weight: bold">
                                         <?php
                                             echo $page->is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?>
@@ -80,23 +80,23 @@
                                             <input type="hidden" name="page_id" value="{{$page->page_id}}">
                                             <?php
                                                 echo $page->is_active == 1 ?
-                                                    "<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 18px; font-weight: bold'type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$page->page_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$page->page_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a href="{{ route('page.get_page', $page->page_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='font-size: 18px; font-weight: bold' href="{{ route('page.get_page', $page->page_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('page.destroy', $page->page_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='font-size: 18px; font-weight: bold' type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>
@@ -142,7 +142,7 @@
                                         $('#'+page_status).append('<i class="fa fa-check" style="font-size:18px;color:green"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['page_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
+                                        form.append("<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> <?php echo $deactivateBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['page_id'] +"' name='active_status' value='false'>");
 
                                     }
@@ -152,7 +152,7 @@
                                         $('#'+page_status).append('<i class="fa fa-times" style="font-size:18px;color:red"></i>');
                                         form.find('button').remove();
                                         form.find('#hidden_btn_'+data['page_id']).remove();
-                                        form.append("<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
+                                        form.append("<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> <?php echo $activeBtn?></button>");
                                         form.append("<input type='hidden' id= 'hidden_btn_"+ data['page_id'] +"' name='active_status' value='true'>");
                                     }
                                 },
