@@ -22,21 +22,11 @@
 
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site.categories')</h3>
 
-                    <form action="{{ route('category.index') }}" method="get">
-
-                        <div class="row">
-
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
-                            </div>
-
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                    <a href="{{ route('category.get_category') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
-                            </div>
-
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="{{ route('category.get_category') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
-                    </form><!-- end of form -->
+                    </div>
 
                 </div><!-- end of box header -->
 
@@ -48,7 +38,7 @@
 
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
-                                <th>#</th>
+                                <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th>@lang('site_category.cat_name')</th>
                                 <th style="text-align: center; font-size: 16px">@lang('site_category.parent_cat_name')</th>
                                 <th style="text-align: center; font-size: 16px">@lang('site_category.has_children')</th>
