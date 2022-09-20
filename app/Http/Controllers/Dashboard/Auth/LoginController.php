@@ -33,27 +33,17 @@ class LoginController extends Controller
             return back()->withErrors($validator);
         }
 
-
-
-        $user= User::getUserByEmailAndPassword($request->all());
-        dd($user);
-        //validation
         $remember_me = $request->has('remember_me') ? true : false;
 
         if(auth()->attempt([
-            'user_email' => $request->input("email"),
-            'password' => $request->input("password")
+            'user_email' => $request->get("email"),
+            'password' => $request->get("password")
         ],$remember_me)){
-
-            dd($request->input("email"));
-
 
             return redirect()->route('admin.homepage');
         }
 
         return redirect()->back()->with(['error' => 'هناك خطا بالبيانات']);
-
-
     }
 
 

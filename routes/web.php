@@ -119,9 +119,6 @@ Route::prefix('dashboard')->group(function () {
 
     Route::get('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'getViewLogin'] )->name("login");
 
-
-    Route::post('/sendSMS',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'sendSMS'] )->name("sendSMS");
-
-    Route::post('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'login'] )->name("checkUser");
+    Route::post('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'login']);
 
 });
