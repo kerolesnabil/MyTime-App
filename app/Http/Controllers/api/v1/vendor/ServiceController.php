@@ -204,7 +204,7 @@ class ServiceController extends Controller
 
         if($vendor['vendor']->user_type!='vendor'){
             return ResponsesHelper::returnError('400','you are not a vendor');
-        }
+}
 
         $allServicesOfVendor = VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id);
 
