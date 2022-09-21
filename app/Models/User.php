@@ -268,9 +268,16 @@ class User extends Authenticatable
         $dataToBeSaved['user_date_of_birth'] = $data['user_date_of_birth'];
         $dataToBeSaved['user_is_active']     = $data['user_is_active'];
 
-        if (isset($options['password'])){
-            $dataToBeSaved['password'] = $options['password'];
+        if (!is_null($options)){
+            if (isset($options['password'])){
+                $dataToBeSaved['password'] = $options['password'];
+            }
+
+            if (isset($options['user_img'])){
+                $dataToBeSaved['user_img'] = $options['user_img'];
+            }
         }
+
 
     public static function getUserByEmailAndPassword($data)
     {
@@ -284,6 +291,7 @@ class User extends Authenticatable
         if (isset($options['user_img'])){
             $dataToBeSaved['user_img'] = $options['user_img'];
         }
+
 
         if (is_null($userId)){
             //create
