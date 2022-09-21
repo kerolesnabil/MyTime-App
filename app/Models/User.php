@@ -268,36 +268,22 @@ class User extends Authenticatable
         $dataToBeSaved['user_date_of_birth'] = $data['user_date_of_birth'];
         $dataToBeSaved['user_is_active']     = $data['user_is_active'];
 
-        if (!is_null($options)){
-            if (isset($options['password'])){
-                $dataToBeSaved['password'] = $options['password'];
-            }
-
-            if (isset($options['user_img'])){
-                $dataToBeSaved['user_img'] = $options['user_img'];
-            }
+        if (isset($options['password'])) {
+            $dataToBeSaved['password'] = $options['password'];
         }
 
-
-    public static function getUserByEmailAndPassword($data)
-    {
-        return self::query()
-            ->select('*')
-            ->where('user_email','=',$data['email'])
-            ->where('password','=',bcrypt($data['password']))->first();
-    }
-
+        if (isset($options['user_img'])) {
+            $dataToBeSaved['user_img'] = $options['user_img'];
+        }
 
         if (isset($options['user_img'])){
             $dataToBeSaved['user_img'] = $options['user_img'];
         }
 
-
         if (is_null($userId)){
             //create
             $dataToBeSaved['created_at'] = now();
             $dataToBeSaved['updated_at'] = now();
-
             return self::create($dataToBeSaved);
         }
         else{
@@ -306,7 +292,15 @@ class User extends Authenticatable
                 ->update($dataToBeSaved);
         }
 
+    }
 
+
+    public static function getUserByEmailAndPassword($data)
+    {
+        return self::query()
+            ->select('*')
+            ->where('user_email','=',$data['email'])
+            ->where('password','=',bcrypt($data['password']))->first();
     }
 
 }
