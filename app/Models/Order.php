@@ -81,9 +81,11 @@ class Order extends Model
                 'users.user_img',
                 DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at')
             )->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->where('vendor_id',$id)
+            ->where('vendor_id','=',$id)
+            ->where('order_status','=','pending')
             ->orderBy('order_created_at','desc')
-            ->limit(5)->get();
+            ->limit(5)
+            ->get();
 
         if (!empty($lastOrders)){
 
