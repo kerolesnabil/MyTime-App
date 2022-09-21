@@ -79,7 +79,7 @@ class Order extends Model
                 'order_status',
                 'users.user_name',
                 'users.user_img',
-                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at')
+                DB::raw('DATE_FORMAT(orders.updated_at, "%Y-%m-%d %H:%i") as order_created_at')
             )->join('users', 'orders.user_id', '=', 'users.user_id')
             ->where('vendor_id','=',$id)
             ->where('order_status','=','pending')
