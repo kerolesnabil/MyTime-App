@@ -9,6 +9,7 @@ class NotificationToken extends Model
 {
     use HasFactory;
 
+    protected $table = "notification_tokens";
     protected $primaryKey='not_token_id';
 
     protected $fillable=[
