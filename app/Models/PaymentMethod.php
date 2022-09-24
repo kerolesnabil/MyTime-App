@@ -96,4 +96,13 @@ class PaymentMethod extends Model
 
     }
 
+    public static function getPaymentByMethodType($type)
+    {
+        return self::query()
+            ->select('payment_method_id')
+            ->where('payment_method_type','=',$type)
+            ->first()->toArray();
+    }
+
+
 }

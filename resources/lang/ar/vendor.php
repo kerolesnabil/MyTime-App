@@ -10,6 +10,8 @@ return [
     'This_ad_is_not_for_you' => 'هذا الاعلان ليست لك',
     'This_service_is_not_for_you' => 'هذا الخدمه ليست لك',
     'services_ids_not_exists'=>'خدمة من الخدمات غير متوفره',
-    'this_id_not_package'=>'هذاليس لبكج'
+    'this_id_not_package'=>'هذاليس لبكج',
+    'not_vendor'=>'هذه الخدمه مخصصه لبائع',
+    'lower_amount'=>'رصيدك غير كافي ، الرجاء إدخال مبلغ أقل'
 
 ];
