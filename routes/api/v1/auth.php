@@ -17,7 +17,7 @@ Route::group([
     'middleware' => ['auth:api'],
 ], function () {
 
-    Route::post('notification/save-notification-token', [\App\Http\Controllers\api\v1\notification\NotificationController::class,'SaveNotificationToken']);
+    Route::post('notification/save-notification-token', [\App\Http\Controllers\api\v1\notification\NotificationController::class,'saveNotificationToken']);
     Route::post('auth/logout', [\App\Http\Controllers\api\v1\auth\AuthController::class, 'logout']);
 
 });

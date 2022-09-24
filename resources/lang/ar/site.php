@@ -51,5 +51,6 @@ return [
     'admins'                 => 'المديرين',
     'suggested_services'     => 'الخدمات المقترحة',
     'services'               => 'الخدمات',
-    'msg_report_type_wrong'  => 'نوع التقرير غير صحيح'
+    'msg_report_type_wrong'  => 'نوع التقرير غير صحيح',
+    'transactions_logs'      => 'سجلات المعاملات المالية'
 ];
