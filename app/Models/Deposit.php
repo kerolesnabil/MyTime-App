@@ -9,20 +9,20 @@ class Deposit extends Model
 {
     use HasFactory;
 
-    protected $table='deposits'
+    protected $table='deposits';
 
     protected $primaryKey='deposit_id';
 
     protected $fillable= [
         'user_id','payment_method_id','deposit_amount','deposit_status','notes'
-    ]
+    ];
 
 
-    public function createDeposit($data)
+    public static function createDeposit($data)
     {
         return self::create([
             'user_id'=>$data['user_id'],
-            'payment_method_id'=>$data['paymentId'],
+            'payment_method_id'=>$data['payment_id'],
             'deposit_amount'=>$data['amount']
         ]);
     }
