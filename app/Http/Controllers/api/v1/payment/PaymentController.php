@@ -15,10 +15,9 @@ class PaymentController extends Controller
 
     public function getPaymentMethods()
     {
-        $paymentMethods = PaymentMethod::getPaymentMethods();
+        $paymentMethods = PaymentMethod::getPaymentMethods('api');
 
         return ResponsesHelper::returnData($paymentMethods, '200', '');
-
 
     }
 
