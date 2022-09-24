@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Payment;
 
+use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Deposit;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\VarDumper\VarDumper;
 
 class PaymentController extends Controller
 {
@@ -31,9 +33,9 @@ class PaymentController extends Controller
             'amount'=>$request->get('amount')
         ]
 
-        Deposit::createDeposit($data);
+        $deposit=Deposit::createDeposit($data);
 
-
+        return ResponsesHelper::returnData($deposit->deposit_id,'200',trans('payment.send_order'));
     }
 
 }

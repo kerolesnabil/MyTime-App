@@ -14,7 +14,7 @@ class Deposit extends Model
     protected $primaryKey='deposit_id';
 
     protected $fillable= [
-        'user_id','payment_method_id','deposit_amount','status','notes'
+        'user_id','payment_method_id','deposit_amount','deposit_status','notes'
     ]
 
 
