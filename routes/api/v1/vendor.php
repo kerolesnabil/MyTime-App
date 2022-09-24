@@ -68,7 +68,8 @@ Route::group([
     Route::get('/get-all-order-rejection-reasons', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'getAllOrderRejectionReasons']);
 
 
-    Route::post('deposit',[\App\Http\Controllers\Payment\PaymentController::class,'deposit']);
+    Route::post('deposit',[\App\Http\Controllers\Payment\PaymentController::class,'vendorDeposit']);
+    Route::post('withdrawal',[\App\Http\Controllers\Payment\PaymentController::class,'vendorWithdrawal']);
 
 });
 
