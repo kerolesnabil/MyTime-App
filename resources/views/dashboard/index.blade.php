@@ -121,67 +121,7 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <div class="row">
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h3>{{$available_ads}}</h3>
-                            <p style="font-size: 15px; font-weight: bold">@lang('site.available_ads')</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                        </div>
-                        <a href="{{ route('ad.show_available_ads') }}" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                            <h3>{{$vendor_type_specialist}}</h3>
-                            <p style="font-size: 15px; font-weight: bold">@lang('site.specialists')</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-fuchsia">
-                        <div class="inner">
-                            <h3>{{$vendor_type_salon}}</h3>
-                            <p style="font-size: 15px; font-weight: bold">@lang('site.salons')</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-scissors" aria-hidden="true"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">@lang('site.more_info') <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-
-
-            <div class="box box-primary">
-
-                <div class="box-header">
-
-                </div><!-- end of box header -->
-                <div class="box-body">
-
-
-                </div><!-- end of box body -->
-
-            </div><!-- end of box -->
+            
 
         </section><!-- end of content -->
 
