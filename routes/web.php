@@ -148,8 +148,8 @@ Route::group([
     });
 
 
-    Route::prefix('transactions_logs')->group(function (){
-        Route::get('/', 'TransactionLogController@index')->name('transaction_log.index');
+    Route::prefix('transactions_log')->group(function (){
+        Route::get('/', 'FinancialTransactionsController@index')->name('transaction_log.index');
     });
 
 
