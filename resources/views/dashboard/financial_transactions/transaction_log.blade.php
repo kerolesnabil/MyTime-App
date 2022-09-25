@@ -6,11 +6,11 @@
 
         <section class="content-header">
 
-            <h1>@lang('site.transactions_logs')</h1>
+            <h1>@lang('site_financial_transactions.transactions_log')</h1>
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.homepage') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.transactions_logs')</li>
+                <li class="active">@lang('site_financial_transactions.transactions_log')</li>
             </ol>
         </section>
 
@@ -20,14 +20,7 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.transactions_logs')</h3>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <a href="{{ route('payment_method.get_payment_method') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
-                        </div>
-
-                    </div>
+                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site_financial_transactions.transactions_log')</h3>
 
                 </div><!-- end of box header -->
 
@@ -41,13 +34,11 @@
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th>@lang('site_user.user_name')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_transaction_log.transaction_type')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_transaction_log.amount')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_transaction_log.status')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_transaction_log.transaction_notes')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_transaction_log.created_at')</th>
-
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_type')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.amount')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.status')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_notes')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.created_at')</th>
                             </tr>
                             </thead>
 
@@ -56,7 +47,7 @@
                             @foreach ($logs as $index => $log)
                                 <tr>
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->transaction_type }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->amount }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->status }}</td>

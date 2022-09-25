@@ -28,6 +28,17 @@
 
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order.index')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>@lang('site.orders')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order_rejection_reason.index')}}"><i class="fa fa-file-text" aria-hidden="true"></i><span>@lang('site.order_rejection_reason')</span></a></li>
+            <li class="treeview" style="font-size: 16px; font-weight: bold">
+                <a href="#">
+                    <i class="fa fa-money" aria-hidden="true"></i>@lang('site.financial_transactions')<i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('transaction_log.index') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.transactions_log')</a></li>
+                </ul>
+            </li>
+
+
+
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('ad.index')}}"><i class="fa fa-bullhorn" aria-hidden="true"></i><span>@lang('site.ads')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('coupon.index')}}"><i class="fa fa-tags" aria-hidden="true"></i><span>@lang('site.coupons')</span></a></li>
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('lang.index')}}"><i class="fa fa-language"></i><span>@lang('site.langs')</span></a></li>
