@@ -20,6 +20,7 @@ class CreateMas3ood2022925FinancialTransactionsTbl extends Migration
                 $table->integer('f_t_id', true);
                 $table->integer('user_id')->index('user_id');
                 $table->integer('payment_method_id')->index('payment_method_id');
+                $table->enum('transaction_type', array('deposit','withdrawal'));
                 $table->decimal('amount')->comment('amount value');
                 $table->boolean('status')->nullable()->comment('null => waiting, 0 => not approved, 1 => approved');
                 $table->text('notes')->nullable();
@@ -27,7 +28,7 @@ class CreateMas3ood2022925FinancialTransactionsTbl extends Migration
                 $table->softDeletes();
             });
 
-            Schema::table('withdrawal_requests', function(Blueprint $table)
+            Schema::table('financial_transactions', function(Blueprint $table)
             {
                 $table->foreign('user_id', 'financial_transactions_ibfk_1')->references('user_id')->on('users')->onUpdate('RESTRICT')->onDelete('RESTRICT');
                 $table->foreign('payment_method_id', 'financial_transactions_ibfk_2')->references('payment_method_id')->on('payment_methods')->onUpdate('RESTRICT')->onDelete('RESTRICT');
