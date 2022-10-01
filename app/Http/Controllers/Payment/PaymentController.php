@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Deposit;
 use App\Models\FinancialRequests;
 use App\Models\PaymentMethod;
+use App\Models\TransactionLog;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,12 +38,12 @@ class PaymentController extends Controller
             'user_id'          => Auth::user()->user_id,
             'payment_id'       => $payment_obj['payment_method_id'],
             'amount'           => $request->get('amount'),
-            'transaction_type' => 'deposit'
+            'transaction_type' => 'deposit',
         ];
 
-        $deposit = FinancialRequests::createFinancialRequest($data);
+        $request= FinancialRequests::createFinancialRequest($data);
 
-        return ResponsesHelper::returnData($deposit->deposit_id,'200',trans('payment.send_order'));
+        return ResponsesHelper::returnData($request->f_t_id,'200',trans('payment.send_order'));
     }
 
     public function vendorWithdrawal(Request $request)
@@ -67,12 +68,34 @@ class PaymentController extends Controller
             'user_id'          => Auth::user()->user_id,
             'payment_id'       => $payment_obj['payment_method_id'],
             'amount'           => $request->get('amount'),
-            'transaction_type' => 'withdrawal'
+            'transaction_type' => 'withdrawal',
         ];
 
-        $deposit = FinancialRequests::createFinancialRequest($data);
+        $request = FinancialRequests::createFinancialRequest($data);
 
-        return ResponsesHelper::returnData($deposit->deposit_id,'200',trans('payment.send_order'));
+        return ResponsesHelper::returnData($request->f_t_id,'200',trans('payment.send_order'));
+    }
+
+
+    public function showTransactionLogOfVendor(Request $request)
+    {
+        if(Auth::user()->user_type!='vendor'){
+            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
+        }
+
+        $logs = TransactionLog::getTransactionsLogsByUserId(Auth::user()->user_id);
+        return ResponsesHelper::returnData($logs,'200','');
+
+    }
+
+    public function showFinancialRequests(Request $request)
+    {
+        if(Auth::user()->user_type!='vendor'){
+            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
+        }
+
+        $requests = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id);
+        return ResponsesHelper::returnData($requests,'200','');
     }
 
 }

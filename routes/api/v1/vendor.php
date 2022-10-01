@@ -70,6 +70,9 @@ Route::group([
 
     Route::post('deposit',[\App\Http\Controllers\Payment\PaymentController::class,'vendorDeposit']);
     Route::post('withdrawal',[\App\Http\Controllers\Payment\PaymentController::class,'vendorWithdrawal']);
+    Route::get('show-transaction-log',[\App\Http\Controllers\Payment\PaymentController::class,'showTransactionLogOfVendor']);
+    Route::get('show-financial-requests',[\App\Http\Controllers\Payment\PaymentController::class,'showFinancialRequests']);
+
 
 });
 

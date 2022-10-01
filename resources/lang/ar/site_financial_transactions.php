@@ -9,5 +9,16 @@ return [
     'amount'                 => 'الملبغ',
     'status'                 => 'الحالة',
     'transaction_notes'      => 'ملاحظات',
-    'created_at'             => 'تاريخ الانشاء'
+    'created_at'             => 'تاريخ الانشاء',
+    'deposit_requests'       => 'طلبات الإيداع',
+    'withdrawal_requests'    => 'طلبات السحب',
+    'deposit'                => 'إيداع',
+    'withdrawal'             => 'سحب',
+    'request_waiting'        => 'إنتظار',
+    'request_approved'       => 'تمت الموافقة',
+    'request_not_approved'   => 'لم تتم الموافقة',
+    'agree'                  => 'موافقة',
+    'disagree'               => 'رفض'
+
+
 ];
