@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 
 
 class FinancialRequests extends Model
@@ -44,21 +44,39 @@ class FinancialRequests extends Model
         return $financialRequests;
     }
 
-    public static function getTransactionsLogsByUserId($userId, $paginate)
+    public static function getFinancialRequestsByUserId($userId)
     {
-        $transactionsLog = self::query()
+        $requests = self::query()
             ->select(
-                'log_id',
+                'f_t_id',
+                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method_name'),
                 'transaction_type',
                 'amount',
                 'status',
-                'transaction_notes',
-                'created_at'
+                'notes',
+                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d %H:%i") as request_created_at')
             )
-            ->orderBy('created_at','desc')
+            ->join('payment_methods','payment_methods.payment_method_id','=','financial_requests.payment_method_id')
+            ->orderBy('financial_requests.created_at','desc')
             ->where('user_id','=',$userId)
-            ->paginate($paginate);
-        return $transactionsLog;
+            ->get();
+
+        if (!empty($requests)){
+
+            foreach ($requests as $request){
+                if (is_null($request['status'])){
+                    $request['status'] = 'waiting';
+                }
+                elseif ($request['status'] == 0){
+                    $request['status'] = 'not_approved';
+                }
+                else{
+                    $request['status'] = 'approved';
+                }
+            }
+        }
+
+        return $requests;
     }
 
 
