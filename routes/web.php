@@ -148,10 +148,17 @@ Route::group([
     });
 
 
-    Route::prefix('transactions_log')->group(function (){
-        Route::get('/', 'FinancialTransactionsController@index')->name('transaction_log.index');
+    Route::prefix('financial_requests')->group(function (){
+        Route::get('/show_deposit_requests', 'FinancialRequestsController@showDepositRequests')->name('financial_request.show_deposit_requests');
+        Route::get('/show_withdrawal_requests', 'FinancialRequestsController@showWithdrawalRequests')->name('financial_request.show_withdrawal_requests');
+        Route::post('/handle_action_financial_request', 'FinancialRequestsController@handleActionOnFinancialRequest')->name('financial_request.handle_action_financial_request');
+
     });
 
+
+    Route::prefix('transactions_logs')->group(function (){
+        Route::get('/', 'TransactionLogController@index')->name('transaction_log.index');
+    });
 
 });
 
