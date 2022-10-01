@@ -18,7 +18,7 @@ class TransactionLog extends Model
     protected $primaryKey = "log_id";
     protected $guarded = ['log_id'];
     protected $fillable = [
-        'user_id', 'transaction_type', 'amount', 'transaction_notes'
+        'user_id', 'transaction_operation', 'amount', 'transaction_notes'
     ];
 
 
@@ -27,7 +27,7 @@ class TransactionLog extends Model
         $transactionsLogs = self::query()
             ->select(
                 'transactions_log.log_id',
-                'transactions_log.transaction_type',
+                'transactions_log.transaction_operation',
                 'transactions_log.amount',
                 'transactions_log.transaction_notes',
                 'transactions_log.created_at',
@@ -44,7 +44,7 @@ class TransactionLog extends Model
         $transactionsLog = self::query()
             ->select(
                 'log_id',
-                'transaction_type',
+                'transaction_operation',
                 'amount',
                 'transaction_notes',
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as log_created_at')
