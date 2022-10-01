@@ -34,7 +34,11 @@
                 </a>
                 <ul class="treeview-menu">
                     <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('transaction_log.index') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.transactions_log')</a></li>
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('financial_request.show_deposit_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.deposit_requests')</a></li>
+                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('financial_request.show_withdrawal_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.withdrawal_requests')</a></li>
+
                 </ul>
+
             </li>
 
 

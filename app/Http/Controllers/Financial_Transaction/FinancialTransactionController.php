@@ -56,9 +56,9 @@ class FinancialTransactionController extends Controller
         }
         $rules= [
             "amount"            => "required|integer",
-            "bank_name"         => "required|string",
-            "user_bank_account" => "required|string",
-            "iban_number"       => "required|string",
+            "bank_name"         => "string",
+            "user_bank_account" => "string",
+            "iban_number"       => "string",
         ];
 
         $validator = Validator::make($request->all(), $rules);
