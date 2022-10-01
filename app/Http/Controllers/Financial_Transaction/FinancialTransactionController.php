@@ -11,6 +11,7 @@ use App\Models\TransactionLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class FinancialTransactionController extends Controller
 {
@@ -32,7 +33,13 @@ class FinancialTransactionController extends Controller
         }
 
         $payment_obj = PaymentMethod::getPaymentByMethodType('cash');
-        $image       = ImgHelper::uploadImage('images', $request['deposit_receipt_img']);
+
+        if (!is_null($request['deposit_receipt_img'])){
+            $image = ImgHelper::uploadImage('images', $request['deposit_receipt_img']);
+        }
+        else{
+            $image = null;
+        }
 
         $data = [
             'user_id'             => Auth::user()->user_id,
