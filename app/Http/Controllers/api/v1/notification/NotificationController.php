@@ -32,9 +32,10 @@ class NotificationController extends Controller
 
 
 
-    public function showNotifications(Request $request)
+    public function showNotifications()
     {
 
+        Notification::updateNotificationsIsSeenColByUserId(Auth::user()->user_id);
 
         $notifications = Notification::showNotificationsByUserId(Auth::user()->user_id);
         return ResponsesHelper::returnData($notifications,'200','');
