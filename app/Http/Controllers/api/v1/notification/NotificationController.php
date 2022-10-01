@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\api\v1\notification;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\NotificationToken;
 use Illuminate\Http\Request;
 use App\Helpers\ResponsesHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
@@ -23,9 +25,19 @@ class NotificationController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        $notification=NotificationToken::createNotificationToken($request);
-
+        NotificationToken::createNotificationToken($request);
         return ResponsesHelper::returnSuccessMessage('','200');
+
+    }
+
+
+
+    public function showNotifications(Request $request)
+    {
+
+
+        $notifications = Notification::showNotificationsByUserId(Auth::user()->user_id);
+        return ResponsesHelper::returnData($notifications,'200','');
 
     }
 }

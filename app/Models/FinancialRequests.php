@@ -17,8 +17,9 @@ class FinancialRequests extends Model
     protected $primaryKey = "f_t_id";
     protected $guarded = ['f_t_id'];
     protected $fillable = [
-        'user_id', 'payment_method_id', 'transaction_type',
-        'amount', 'status', 'notes'
+        'user_id', 'payment_method_id', 'request_type', 'amount',
+        'status', 'iban_number', 'bank_name', 'user_bank_account',
+        'notes', 'withdrawal_confirmation_receipt_img', 'deposit_receipt_img'
     ];
 
 
@@ -50,7 +51,7 @@ class FinancialRequests extends Model
             ->select(
                 'f_t_id',
                 self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method_name'),
-                'transaction_type',
+                'request_type',
                 'amount',
                 'status',
                 'notes',
@@ -80,13 +81,30 @@ class FinancialRequests extends Model
     }
 
 
-    public static function createFinancialRequest($data)
+    public static function createDepositRequest($data)
+    {
+        return self::create([
+            'user_id'             => $data['user_id'],
+            'payment_method_id'   => $data['payment_id'],
+            'amount'              => $data['amount'],
+            'request_type'        => $data['request_type'],
+            'deposit_receipt_img' => $data['deposit_receipt_img'],
+            'created_at'          => now(),
+            'updated_at'          => now(),
+        ]);
+    }
+
+
+    public static function createWithdrawalRequest($data)
     {
         return self::create([
             'user_id'           => $data['user_id'],
             'payment_method_id' => $data['payment_id'],
             'amount'            => $data['amount'],
-            'transaction_type'  => $data['transaction_type'],
+            'request_type'      => $data['request_type'],
+            'bank_name'         => $data['bank_name'],
+            'user_bank_account' => $data['user_bank_account'],
+            'iban_number'       => $data['iban_number'],
             'created_at'        => now(),
             'updated_at'        => now(),
         ]);
