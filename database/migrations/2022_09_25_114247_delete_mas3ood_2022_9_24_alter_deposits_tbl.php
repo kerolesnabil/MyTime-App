@@ -16,7 +16,7 @@ class DeleteMas3ood2022924AlterDepositsTbl extends Migration
         if (Schema::hasTable('deposits')) {
 
             DB::statement("
-               DROP TABLE `app_my_time_test2`.`deposits`
+               DROP TABLE `my_time`.`deposits`
             ");
         }
     }

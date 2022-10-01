@@ -17,7 +17,7 @@ class DeleteMas3ood2022925WithdrawalRequestsTbl extends Migration
         if (Schema::hasTable('withdrawal_requests')) {
 
             DB::statement("
-               DROP TABLE `app_my_time_test2`.`withdrawal_requests`
+               DROP TABLE `my_time`.`withdrawal_requests`
             ");
         }
     }
