@@ -48,7 +48,7 @@
                                 <tr>
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
                                     <td style="font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->transaction_type }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">@lang("site_financial_transactions.$log->transaction_type") </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->amount }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->status }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->transaction_notes }}</td>
