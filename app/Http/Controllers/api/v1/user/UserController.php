@@ -140,7 +140,6 @@ class UserController extends Controller
         }
 
         if (!is_null($request->user_img)) {
-
             $image = ImgHelper::uploadImage('images', $request->user_img);
             User::updateUserProfile($request, $image);
         }
