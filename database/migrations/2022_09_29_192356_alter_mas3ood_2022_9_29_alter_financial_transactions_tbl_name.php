@@ -16,8 +16,8 @@ class AlterMas3ood2022929AlterFinancialTransactionsTblName extends Migration
         if (Schema::hasTable('financial_transactions')) {
 
             DB::statement("
-               RENAME TABLE `app_my_time_test2`.`financial_transactions` 
-               TO `app_my_time_test2`.`financial_requests`;
+               RENAME TABLE `my_time`.`financial_transactions` 
+               TO `my_time`.`financial_requests`;
             ");
 
         }
