@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\api\v1\vendor;
 
+use App\Events\CreateAd;
 use App\Helpers\ImgHelper;
 use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Setting;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +48,20 @@ class AdController extends Controller
         if(Auth::user()->user_type!='vendor'){
             return ResponsesHelper::returnError('400','you are not a vendor');
         }
+        $rules= [
+            "ad_at_location"        =>"required",
+            "ad_days"               => "required|integer",
+            "ad_title"              => "required|string",
+            "ad_start_at"           => "required|date",
+            'ad_img'                => 'nullable|image|mimes:jpg,jpeg,png|max:3072',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+
         if(isset($id)) {
             $ad = Ad::getAd($id);
             if (empty($ad)){
@@ -55,34 +71,10 @@ class AdController extends Controller
             {
                 return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
             }
-
             $request->request->add(['ad_id' => $id]);
-            $rules= [
-                "ad_at_location"        =>"required",
-                "ad_days"               => "required|integer",
-                "ad_title"              => "required|string",
-                "ad_start_at"           => "required|date",
-                'ad_img'                => 'nullable|image|mimes:jpg,jpeg,png|max:1000',
-            ];
 
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return ResponsesHelper::returnValidationError('400', $validator);
-            }
-        }else{
-            $rules= [
-                "ad_at_location"        =>"required",
-                "ad_days"               => "required|integer",
-                "ad_title"              => "required|string",
-                "ad_start_at"           => "required|date",
-                'ad_img'                => 'required|image|mimes:jpg,jpeg,png|max:10240',
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return ResponsesHelper::returnValidationError('400', $validator);
-            }
         }
+
 
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
 
@@ -110,6 +102,27 @@ class AdController extends Controller
         $request->request->add(['ad_cost' => $cost]);
 
         $dataArr = $request->all();
+
+        // check if vendor has the cost of ad in his wallet
+        if (is_null($id)){
+            $wallet = User::getUserWallet(Auth::user()->user_id);
+
+            if ($wallet->user_wallet < $cost){
+                return ResponsesHelper::returnData([],'400',__('vendor.wallet_amount_not_enough'));
+            }
+            else{
+
+                event(new CreateAd(
+                    Auth::user()->user_id,
+                    $wallet->user_wallet,
+                    $cost
+                ));
+
+
+            }
+        }
+
+
         if(isset($id))
         {
             if(isset($request->ad_img))
@@ -121,6 +134,8 @@ class AdController extends Controller
         }else{
             $dataArr["ad_img"]=ImgHelper::uploadImage('images',$request->ad_img);
         }
+
+
 
         $ad=Ad::saveAd($dataArr);
 

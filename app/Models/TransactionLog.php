@@ -63,6 +63,18 @@ class TransactionLog extends Model
         return $transactionsLog;
     }
 
+    public static function createTransactionsLog($data)
+    {
+        return self::create([
+            'user_id'               => $data['user_id'],
+            'transaction_operation' => $data['transaction_operation'],
+            'amount'                => $data['amount'],
+            'transaction_notes'     => $data['transaction_notes'],
+            'created_at'            => now(),
+            'updated_at'            => now(),
+        ]);
+
+    }
 
 
 

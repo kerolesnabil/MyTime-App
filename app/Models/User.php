@@ -26,8 +26,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_name','user_address','user_phone','user_type',
-        'user_email','user_date_of_birth','user_lat','user_long', 'user_img'
+        'user_wallet', 'user_type', 'user_name', 'user_address', 'user_phone', 'user_phone_verified_at',
+        'user_email', 'password', 'user_date_of_birth', 'user_lat', 'user_long', 'user_is_active', 'user_img'
     ];
 
     /**
@@ -179,7 +179,6 @@ class User extends Authenticatable
 
     }
 
-
     public static function getUsersHaveOrdersWithFilters($userType, $dateFrom, $dateTo, $orderStatus = null)
     {
         $users =
@@ -255,7 +254,6 @@ class User extends Authenticatable
 
     }
 
-
     public static function saveAdminData($data, $userId = null, $options = null)
     {
         // $options (array) => image, password
@@ -294,13 +292,34 @@ class User extends Authenticatable
 
     }
 
-
     public static function getUserByEmailAndPassword($data)
     {
         return self::query()
             ->select('*')
             ->where('user_email','=',$data['email'])
             ->where('password','=',bcrypt($data['password']))->first();
+    }
+
+    public static function getUserWallet($userId)
+    {
+        return self::query()
+            ->select('user_wallet')
+            ->where('user_id','=', $userId)
+            ->first();
+
+
+
+
+
+    }
+
+    public static function updateWalletOfUser($userId, $newWalletValue)
+    {
+        self::where('user_id', '=', $userId)
+            ->update(array(
+                'user_wallet' => $newWalletValue,
+            ));
+
     }
 
 }
