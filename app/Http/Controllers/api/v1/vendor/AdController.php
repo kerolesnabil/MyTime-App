@@ -174,8 +174,14 @@ class AdController extends Controller
             return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
         }
 
-        Ad::deleteAd($id);
+        $current_day = Carbon::today();
 
+
+        if ($current_day >= $ad->ad_start_at && $current_day <= $ad->ad_end_at){
+            return ResponsesHelper::returnError('400',__('vendor.this_ad_work_now_you_can_not_delete'));
+        }
+        
+        Ad::deleteAd($id);
         return ResponsesHelper::returnSuccessMessage(__('vendor.delete_data'),'200');
 
     }
