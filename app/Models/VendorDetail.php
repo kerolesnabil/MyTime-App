@@ -261,7 +261,7 @@ class VendorDetail extends Model
         $time = $time->format('Y-m-d H:i:s');
 
 
-        
+
 
 
 

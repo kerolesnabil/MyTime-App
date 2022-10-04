@@ -51,11 +51,15 @@ class AdController extends Controller
 
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
 
+        $dataArr = $request->all();
+
+
+
         if(!is_null($id)) {
 
             $rules= [
-                "ad_title"              => "required|string",
-                'ad_img'                => 'nullable|image|mimes:jpg,jpeg,png|max:3072',
+                "ad_title" => "required|string",
+                "ad_img"   => "nullable|image|mimes:jpg,jpeg,png|max:3072",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -71,13 +75,14 @@ class AdController extends Controller
             {
                 return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
             }
-            $request->request->add(['ad_id' => $id]);
+            $dataArr['ad_id'] = $id;
 
-            if(isset($request->ad_img))
+            if(isset($request->ad_img) && !is_null($request->ad_img))
             {
-                $dataArr["ad_img"]=ImgHelper::uploadImage('images',$request->ad_img);
                 $img=explode('/',$ad->ad_img);
-                ImgHelper::deleteImage('images',$img[4]);
+                ImgHelper::deleteImage('images', $img[4]);
+                $dataArr["ad_img"] = ImgHelper::uploadImage('images', $request->ad_img);
+
             }
 
         }
@@ -88,7 +93,7 @@ class AdController extends Controller
                 "ad_days"               => "required|integer",
                 "ad_title"              => "required|string",
                 "ad_start_at"           => "required|date",
-                'ad_img'                => 'nullable|image|mimes:jpg,jpeg,png|max:3072',
+                'ad_img'                => 'required|image|mimes:jpg,jpeg,png|max:3072',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -116,8 +121,8 @@ class AdController extends Controller
             $cost = Setting::calculateCost($settingKey, $request->ad_days);
             $date = Carbon::parse($request->ad_start_at)->addDay($request->ad_days);
 
-            $request->request->add(['ad_end_at' => $date->toDateString()]);
-            $request->request->add(['ad_cost' => $cost]);
+            $dataArr['ad_end_at'] = $date->toDateString();
+            $dataArr['ad_cost']   = $cost;
 
             // check if vendor has the cost of ad in his wallet
             $wallet = User::getUserWallet(Auth::user()->user_id);
@@ -134,12 +139,12 @@ class AdController extends Controller
                 ));
             }
 
-            $dataArr["ad_img"]=ImgHelper::uploadImage('images',$request->ad_img);
+
+            $dataArr["ad_img"]=ImgHelper::uploadImage('images', $request->ad_img);
 
         }
 
-        $dataArr = $request->all();
-        $ad      = Ad::saveAd($dataArr);
+        $ad = Ad::saveAd($dataArr);
 
         return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('vendor.save_data'));
 
@@ -182,6 +187,10 @@ class AdController extends Controller
         if ($current_day >= $ad->ad_start_at && $current_day <= $ad->ad_end_at){
             return ResponsesHelper::returnError('400',__('vendor.this_ad_work_now_you_can_not_delete'));
         }
+
+
+        $img=explode('/',$ad->ad_img);
+        ImgHelper::deleteImage('images', $img[4]);
 
         Ad::deleteAd($id);
         return ResponsesHelper::returnSuccessMessage(__('vendor.delete_data'),'200');
