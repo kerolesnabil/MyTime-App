@@ -91,7 +91,7 @@ class Ad extends Model
                 'ad_img',
                 'ad_at_homepage',
                 'ad_at_discover_page',
-                'ads.created_at',
+                DB::raw('DATE_FORMAT(ads.created_at, "%Y-%m-%d %H:%i") as ad_created_at'),
                 'users.user_name as vendor_name'
             )
            ->join('users','users.user_id','=','ads.vendor_id')

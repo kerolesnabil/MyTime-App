@@ -251,5 +251,40 @@ class VendorController extends Controller
     }
 
 
+    public function getVendorReport(Request $request)
+    {
+        $vendor['vendor']=Auth::user();
+        if($vendor['vendor']->user_type!='vendor'){
+            return ResponsesHelper::returnError('400','you are not a vendor');
+        }
+
+        $rules = [
+            'report_time_type' => 'required|string',
+            'report_name_type' => 'required|string',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
+
+        $reportNameTypes = ['weekly', 'monthly', 'yearly'];
+        if (!in_array($request['report_time_type'], $reportNameTypes)){
+
+            return ResponsesHelper::returnError('400',__('vendor.report_time_type_not_found'));
+        }
+
+        $reportNameTypes = ['views', 'reviews'];
+        if (!in_array($request['report_name_type'], $reportNameTypes)){
+
+            return ResponsesHelper::returnError('400',__('vendor.report_name_type_not_found'));
+        }
+
+
+
+
+    }
 
 }
