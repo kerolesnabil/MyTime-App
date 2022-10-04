@@ -15,6 +15,8 @@ return [
     'lower_amount'=>'رصيدك غير كافي ، الرجاء إدخال مبلغ أقل',
     'not_auth' => 'الرجاء تسجيل الدخول',
     'wallet_amount_not_enough' => 'لا يمكن اتمام العملية المبلغ الموجود بالمحفظة غير كافي',
-    'this_ad_work_now_you_can_not_delete' => 'هذا الاعلان مازال يتم عرضه بالطبيق لايمكنك حذفه الان'
+    'this_ad_work_now_you_can_not_delete' => 'هذا الاعلان مازال يتم عرضه بالطبيق لايمكنك حذفه الان',
+    'report_name_type_not_found'        => 'عفوا هذا المعيار الاحصائي غير موجود',
+    'report_time_type_not_found'        => 'عفوا هذا فترة التقرير غير صحيحة'
 
 ];

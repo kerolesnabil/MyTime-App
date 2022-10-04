@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\ArraysProcessHelper;
 use App\Helpers\ImgHelper;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -241,6 +242,28 @@ class VendorDetail extends Model
         }
 
         return $slider;
+
+    }
+
+    public static function getVendorReport($reportTimeType, $reportNameType)
+    {
+        $time = "";
+        if ($reportTimeType == 'weekly'){
+            $time =  Carbon::now()->subWeek()->startOfDay();
+        }
+        elseif ($reportTimeType == 'monthly'){
+            $time =  Carbon::now()->subMonth()->startOfDay();
+        }
+        elseif ($reportTimeType == 'yearly')
+        {
+            $time =  Carbon::now()->subYear()->startOfDay();
+        }
+        $time = $time->format('Y-m-d H:i:s');
+
+
+        
+
+
 
     }
 
