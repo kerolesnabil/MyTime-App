@@ -245,25 +245,42 @@ class VendorDetail extends Model
 
     }
 
-    public static function getVendorReport($reportTimeType, $reportNameType)
+    public static function getVendorReport($vendorId, $reportTimeType, $reportNameType)
     {
-        $time = "";
+
+
+        $to   = Carbon::now()->format('Y-m-d H:i:s');
         if ($reportTimeType == 'weekly'){
-            $time =  Carbon::now()->subWeek()->startOfDay();
+            $from = Carbon::now()->subDays(7)->format('Y-m-d H:i:s');
         }
         elseif ($reportTimeType == 'monthly'){
-            $time =  Carbon::now()->subMonth()->startOfDay();
+
+            $from = Carbon::now()->subMonth()->format('Y-m-d H:i:s');
         }
-        elseif ($reportTimeType == 'yearly')
-        {
-            $time =  Carbon::now()->subYear()->startOfDay();
+        elseif ($reportTimeType == 'yearly') {
+
+            $from = Carbon::now()->subYear()->format('Y-m-d H:i:s');
         }
-        $time = $time->format('Y-m-d H:i:s');
+        else{
+            $from = Carbon::now();
+        }
+
+
+        if ($reportNameType == 'views'){
+            $report  = self::query()->select('vendor_views_count as report_value');
+        }
+        else{
+            $report  = self::query()->select('vendor_reviews_count as report_value');
+        }
 
 
 
-
-
+        $report = $report
+                ->where('user_id','=', $vendorId)
+                ->where('created_at','>=', $from)
+                ->where('created_at','<=', $to)
+                ->first();
+        return $report;
 
     }
 

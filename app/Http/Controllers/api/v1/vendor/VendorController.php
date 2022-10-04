@@ -270,21 +270,26 @@ class VendorController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        $reportNameTypes = ['weekly', 'monthly', 'yearly'];
-        if (!in_array($request['report_time_type'], $reportNameTypes)){
+        $reportTimeTypes = ['weekly', 'monthly', 'yearly'];
+        if (!in_array($request['report_time_type'], $reportTimeTypes)){
 
             return ResponsesHelper::returnError('400',__('vendor.report_time_type_not_found'));
         }
 
         $reportNameTypes = ['views', 'reviews'];
         if (!in_array($request['report_name_type'], $reportNameTypes)){
-
             return ResponsesHelper::returnError('400',__('vendor.report_name_type_not_found'));
         }
 
+        $report = VendorDetail::getVendorReport($vendor['vendor']->user_id, $request['report_time_type'], $request['report_name_type']);
+
+        if (is_null($report)){
+
+            $report['report_value'] = 0;
+        }
 
 
-
+        return ResponsesHelper::returnData($report, '200', '');
     }
 
 }
