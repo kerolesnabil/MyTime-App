@@ -93,10 +93,19 @@ class FinancialTransactionController extends Controller
             return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
         }
 
+        if (Auth::user()->user_wallet >= 0){
+            $requests['vendor_dues'] = Auth::user()->user_wallet;
+            $requests['app_dues']    = 0;
+        }
+        else{
+            $requests['vendor_dues'] = 0;
+            $requests['app_dues']    = abs(Auth::user()->user_wallet);
+        }
+
+
         $requests['deposit_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'deposit');
         $requests['withdrawal_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'withdrawal');
-
-
+        
         return ResponsesHelper::returnData($requests,'200','');
     }
 
