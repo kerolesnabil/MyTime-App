@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Helpers\ImgHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class FinancialRequests extends Model
     protected $guarded = ['f_t_id'];
     protected $fillable = [
         'user_id', 'payment_method_id', 'request_type', 'amount',
-        'status', 'iban_number', 'bank_name', 'user_bank_account',
+        'status', 'iban_number', 'bank_name',
         'notes', 'withdrawal_confirmation_receipt_img', 'deposit_receipt_img'
     ];
 
@@ -34,33 +35,66 @@ class FinancialRequests extends Model
                 'financial_requests.notes',
                 'financial_requests.created_at',
                 'users.user_name',
-                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method_name')
-
+                self::getValueWithSpecificLang
+                (
+                    'payment_methods.payment_method_name',
+                    app()->getLocale(),
+                    'payment_method_name'
+                )
             )
             ->join('users','users.user_id','=','financial_requests.user_id')
-            ->join('payment_methods','payment_methods.payment_method_id','=','financial_requests.payment_method_id')
+            ->join(
+                'payment_methods',
+                'payment_methods.payment_method_id',
+                '=',
+                'financial_requests.payment_method_id'
+            )
             ->where('financial_requests.transaction_type','=', $requestType)
             ->orderBy('financial_requests.created_at','desc')
             ->get();
         return $financialRequests;
     }
 
-    public static function getFinancialRequestsByUserId($userId)
+    public static function getFinancialRequestsByUserId($userId, $requestType)
     {
         $requests = self::query()
             ->select(
                 'f_t_id',
-                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method_name'),
-                'request_type',
+                self::getValueWithSpecificLang
+                ('payment_methods.payment_method_name',
+                    app()->getLocale(),
+                    'payment_method_name'
+                ),
                 'amount',
                 'status',
                 'notes',
                 DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d %H:%i") as request_created_at')
             )
-            ->join('payment_methods','payment_methods.payment_method_id','=','financial_requests.payment_method_id')
+            ->join
+            (
+                'payment_methods',
+                'payment_methods.payment_method_id',
+                '=',
+                'financial_requests.payment_method_id'
+            )
             ->orderBy('financial_requests.created_at','desc')
             ->where('user_id','=',$userId)
-            ->get();
+            ->where('request_type', '=', $requestType);
+
+
+        if ($requestType == 'deposit'){
+
+            $requests = $requests->addSelect('deposit_receipt_img');
+        }
+        else{
+
+            $requests = $requests->addSelect(
+                'withdrawal_confirmation_receipt_img'
+            );
+        }
+
+
+        $requests = $requests->get();
 
         if (!empty($requests)){
 
@@ -73,6 +107,14 @@ class FinancialRequests extends Model
                 }
                 else{
                     $request['status'] = 'approved';
+                }
+
+                if (isset($request['deposit_receipt_img']) && !is_null($request['deposit_receipt_img'])) {
+                    $request["deposit_receipt_img"] = ImgHelper::returnImageLink($request["deposit_receipt_img"]);
+                }
+
+                if (isset($request['withdrawal_confirmation_receipt_img']) && !is_null($request['withdrawal_confirmation_receipt_img'])) {
+                    $request["withdrawal_confirmation_receipt_img"] = ImgHelper::returnImageLink($request["withdrawal_confirmation_receipt_img"]);
                 }
             }
         }
@@ -103,7 +145,6 @@ class FinancialRequests extends Model
             'amount'            => $data['amount'],
             'request_type'      => $data['request_type'],
             'bank_name'         => $data['bank_name'],
-            'user_bank_account' => $data['user_bank_account'],
             'iban_number'       => $data['iban_number'],
             'created_at'        => now(),
             'updated_at'        => now(),

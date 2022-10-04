@@ -64,7 +64,6 @@ class FinancialTransactionController extends Controller
         $rules= [
             "amount"            => "required|integer",
             "bank_name"         => "string",
-            "user_bank_account" => "string",
             "iban_number"       => "string",
         ];
 
@@ -81,7 +80,6 @@ class FinancialTransactionController extends Controller
             'amount'            => $request->get('amount'),
             'request_type'      => 'withdrawal',
             'bank_name'         => $request->get('bank_name'),
-            'user_bank_account' => $request->get('user_bank_account'),
             'iban_number'       => $request->get('iban_number'),
         ];
 
@@ -95,7 +93,10 @@ class FinancialTransactionController extends Controller
             return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
         }
 
-        $requests = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id);
+        $requests['deposit_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'deposit');
+        $requests['withdrawal_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'withdrawal');
+
+
         return ResponsesHelper::returnData($requests,'200','');
     }
 

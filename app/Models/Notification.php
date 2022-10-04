@@ -4,17 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Notification extends Model
 {
     use HasFactory;
+    use AbstractionModelTrait;
+
 
     protected $table = "notifications";
     protected $primaryKey='not_id';
 
     protected $fillable=[
-        'from_user_id', 'to_user_id', 'not_title',
-        'not_type', 'action', 'is_seen'
+        'to_user_id', 'not_title', 'not_type', 'action', 'is_seen'
     ];
 
     public static function showNotificationsByUserId($userId)
@@ -23,10 +25,12 @@ class Notification extends Model
             ->select
             (
                 'not_id',
-                'not_title',
+                self::getValueWithSpecificLang('not_title', app()->getLocale(),'not_title'),
                 'not_type',
                 'action',
-                'is_seen'
+                'is_seen',
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as not_created_at')
+
             )
             ->where('to_user_id','=', $userId)
             ->orderBy('created_at', 'desc')
@@ -38,6 +42,10 @@ class Notification extends Model
 
     public static function updateNotificationsIsSeenColByUserId($userId)
     {
+        self::where('to_user_id', '=', $userId)
+            ->update(array(
+                'is_seen'    => 1
+            ));
 
     }
 
