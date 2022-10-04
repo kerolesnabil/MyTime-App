@@ -59,8 +59,9 @@ Route::group([
     Route::get('get-Ad/{ad_id}',[\App\Http\Controllers\api\v1\vendor\AdController::class,'getAd']);
 
     Route::get('/get-vendor-profile', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'getVendorProfile']);
-
     Route::post('/update-vendor-profile', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'updateVendorProfile']);
+    Route::post('/get-vendor-report', [\App\Http\Controllers\api\v1\vendor\VendorController::class, 'getVendorReport']);
+
 
     Route::post('/reschedule-order-date', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rescheduleOrderDate']);
     Route::post('/reject-order', [\App\Http\Controllers\api\v1\vendor\OrderActionController::class, 'rejectOrder']);
