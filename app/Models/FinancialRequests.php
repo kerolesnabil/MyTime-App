@@ -24,12 +24,12 @@ class FinancialRequests extends Model
     ];
 
 
-    public static function getFinancialRequestsWithType($requestType)
+    public static function getFinancialRequestsWithType($requestType, $attr = [])
     {
         $financialRequests = self::query()
             ->select(
                 'financial_requests.f_t_id',
-                'financial_requests.transaction_type',
+                'financial_requests.request_type',
                 'financial_requests.amount',
                 'financial_requests.status',
                 'financial_requests.notes',
@@ -43,16 +43,33 @@ class FinancialRequests extends Model
                 )
             )
             ->join('users','users.user_id','=','financial_requests.user_id')
-            ->join(
-                'payment_methods',
-                'payment_methods.payment_method_id',
-                '=',
-                'financial_requests.payment_method_id'
-            )
-            ->where('financial_requests.transaction_type','=', $requestType)
-            ->orderBy('financial_requests.created_at','desc')
-            ->get();
-        return $financialRequests;
+            ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'financial_requests.payment_method_id')
+            ->where('financial_requests.request_type','=', $requestType);
+
+
+
+            if(isset($attr['date_from']) && !empty($attr['date_from'])){
+
+                $attr['date_from'] =  date("Y-m-d H:i:s", strtotime($attr['date_from']));
+                $financialRequests = $financialRequests->where('financial_requests.created_at', '>=', $attr['date_from']);
+            }
+
+            if(isset($attr['date_to']) && !empty($attr['date_to'])){
+
+                $attr['date_to'] =  date("Y-m-d H:i:s", strtotime($attr['date_to']));
+                $financialRequests = $financialRequests->where('financial_requests.created_at', '<=', $attr['date_to']);
+            }
+
+            if(isset($attr['status']) && $attr['status'] != 'all'){
+
+                if ($attr['status'] == 'null'){
+                    $attr['status'] = null;
+                }
+                $financialRequests = $financialRequests->where('financial_requests.status', '=', $attr['status']);
+            }
+
+            $financialRequests = $financialRequests->orderBy('financial_requests.created_at','desc')->get();
+            return $financialRequests;
     }
 
     public static function getFinancialRequestsByUserId($userId, $requestType)
@@ -68,7 +85,7 @@ class FinancialRequests extends Model
                 'amount',
                 'status',
                 'notes',
-                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d %H:%i") as request_created_at')
+                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d  %H:%i") as request_created_at')
             )
             ->join
             (
@@ -122,7 +139,6 @@ class FinancialRequests extends Model
         return $requests;
     }
 
-
     public static function createDepositRequest($data)
     {
         return self::create([
@@ -151,5 +167,53 @@ class FinancialRequests extends Model
         ]);
     }
 
+
+    public static function getFinancialRequestsByRequestId($userId)
+    {
+        $request = self::query()
+            ->select(
+                'f_t_id',
+                self::getValueWithSpecificLang
+                ('payment_methods.payment_method_name',
+                    app()->getLocale(),
+                    'payment_method_name'
+                ),
+                'amount',
+                'request_type',
+                'status',
+                'notes',
+                'deposit_receipt_img',
+                'withdrawal_confirmation_receipt_img',
+                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d  %H:%i") as request_created_at')
+            )
+            ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'financial_requests.payment_method_id')
+            ->orderBy('financial_requests.created_at','desc')
+            ->where('user_id','=',$userId)->first();
+
+
+        if (!is_null($request)){
+
+            if (is_null($request['status'])){
+                $request['status'] = 'waiting';
+            }
+            elseif ($request['status'] == 0){
+                $request['status'] = 'not_approved';
+            }
+            else{
+                $request['status'] = 'approved';
+            }
+
+            if (!is_null($request['deposit_receipt_img'])) {
+                $request["deposit_receipt_img"] = ImgHelper::returnImageLink($request["deposit_receipt_img"]);
+            }
+
+            if (!is_null($request['withdrawal_confirmation_receipt_img'])) {
+                $request["withdrawal_confirmation_receipt_img"] = ImgHelper::returnImageLink($request["withdrawal_confirmation_receipt_img"]);
+            }
+
+        }
+
+        return $request;
+    }
 
 }

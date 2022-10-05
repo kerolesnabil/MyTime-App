@@ -46,7 +46,7 @@ class TransactionLog extends Model
                 'log_id',
                 'transaction_operation',
                 'amount',
-                'transaction_notes',
+                self::getValueWithSpecificLang('transactions_log.transaction_notes', app()->getLocale(), 'transaction_notes'),
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i") as log_created_at')
             )
             ->orderBy('created_at','desc')
@@ -79,3 +79,8 @@ class TransactionLog extends Model
 
 
 }
+
+
+
+
+

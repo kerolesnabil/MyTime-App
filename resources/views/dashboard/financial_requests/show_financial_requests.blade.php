@@ -10,9 +10,11 @@
 
                if ( $request_type == 'deposit') {
                    $title = 'site_financial_transactions.deposit_requests';
+                   $showRoute = '';
                }
                else{
                    $title = 'site_financial_transactions.withdrawal_requests';
+                   $showRoute = '';
                }
             ?>
             <h1>@lang($title)</h1>
@@ -31,6 +33,37 @@
 
                     <h3 class="box-title" style="margin-bottom: 15px">@lang($title)</h3>
 
+                    <form id='filter_form'>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_from') :</label>
+                                        <input type="date" name="date_from" class="form-control" value="{{ request()->date_from }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_to') :</label>
+                                        <input type="date" name="date_to" class="form-control" value="{{ request()->date_to }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_financial_transactions.status') :</label>
+
+                                        <select class="form-control" name="status">
+                                            <option value="all">@lang('site_financial_transactions.request_all')</option>
+                                            <option value="null">@lang('site_financial_transactions.request_waiting')</option>
+                                            <option value="0">@lang('site_financial_transactions.request_not_approved')</option>
+                                            <option value="1">@lang('site_financial_transactions.request_approved')</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="margin-top: 26px">
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form><!-- end of form -->
+
                 </div><!-- end of box header -->
 
                 <div class="box-body">
@@ -45,7 +78,6 @@
                                 <th>@lang('site_user.user_name')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.amount')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.status')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_notes')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.created_at')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site.action')</th>
                             </tr>
@@ -72,26 +104,12 @@
                                             }
 
                                         ?>
-
                                     </td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $request->transaction_notes }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $request->created_at }}</td>
 
                                     <td style="text-align: center">
 
-                                        @if (is_null($request->status))
-
-                                            <form style="display: inline-block">
-                                                {{csrf_field()}}
-                                                <input type="hidden" name="status" value="1">
-                                                <button style="font-size: 18px; font-weight: bold" type="submit" class="action_btn btn btn-block btn-success btn-sm"><i class="fa fa-check"> @lang('site_financial_transactions.agree')</i></button>
-                                            </form>
-                                            <form style="display: inline-block">
-                                                {{csrf_field()}}
-                                                <input type="hidden" name="status" value="0">
-                                                <button style="font-size: 18px; font-weight: bold" type="submit" class="action_btn btn btn-block btn-danger btn-sm"><i class="fa fa-times"> @lang('site_financial_transactions.disagree')</i></button>
-                                            </form>
-                                        @endif
+                                        <a style='font-size: 17px' href="{{ route('financial_request.update_financial_request', $request->f_t_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.show')</a>
                                     </td>
 
                                 </tr>
@@ -111,38 +129,6 @@
 
         </section><!-- end of content -->
 
-
-        <script>
-            $(document).ready(function () {
-                $('body').on('click','.action_btn', function (e) {
-
-                    e.preventDefault();
-                    let formData = new FormData($(this).parent()[0]);
-                    let form = $(this).parent();
-
-                    $.ajax({
-                        type: 'post',
-                        enctype: 'multipart/form-data',
-                        url: "{{route('financial_request.handle_action_financial_request')}}",
-                        data : formData,
-                        processData: false,
-                        contentType: false,
-                        cache: false,
-                        success: function (data) {
-
-                            console.log(data);
-                        },
-                        error: function (data) {
-                            console.log(data);
-                        }
-                    })
-
-                });
-            });
-
-
-
-        </script>
     </div><!-- end of content wrapper -->
 
 
