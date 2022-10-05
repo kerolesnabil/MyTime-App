@@ -22,10 +22,14 @@ class RunAfterCreateAd
 
         // create transaction log
 
+        $arMsg = " تم خصم تكلفة الاعلان من المحفظة $event->adCost ريال سعودي ";
+        $enMsg = "The cost of advertising has been deducted from the wallet $event->adCost SAR";
+
+
         $data['user_id']               = $event->userId;
         $data['amount']                = $event->adCost;
         $data['transaction_operation'] = 'decrease';
-        $data['transaction_notes']     = '{"ar": "تم خصم تكلفة الاعلان من المحفظة 200 ريال سعودي", "en": "The cost of advertising has been deducted from the wallet 200 SAR"}';
+        $data['transaction_notes']     = '{"ar":"'.$arMsg.'", "en":"'.$enMsg.'"}';
         TransactionLog::createTransactionsLog($data);
 
     }

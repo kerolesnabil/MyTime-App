@@ -109,14 +109,10 @@ class FinancialTransactionController extends Controller
         return ResponsesHelper::returnData($requests,'200','');
     }
 
-    public function showTransactionLogOfVendor()
+    public function showTransactionLog()
     {
-        if(Auth::user()->user_type!='vendor'){
-            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
-        }
 
         $logs = TransactionLog::getTransactionsLogsByUserId(Auth::user()->user_id);
         return ResponsesHelper::returnData($logs,'200','');
-
     }
 }

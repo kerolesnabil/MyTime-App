@@ -18,7 +18,8 @@ return [
     'request_approved'       => 'تمت الموافقة',
     'request_not_approved'   => 'لم تتم الموافقة',
     'agree'                  => 'موافقة',
-    'disagree'               => 'رفض'
+    'disagree'               => 'رفض',
+    'request_all'            => 'الكل'
 
 
 ];
