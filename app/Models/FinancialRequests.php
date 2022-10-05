@@ -168,7 +168,7 @@ class FinancialRequests extends Model
     }
 
 
-    public static function getFinancialRequestsByRequestId($userId)
+    public static function getFinancialRequestsByRequestId($requestId)
     {
         $request = self::query()
             ->select(
@@ -184,24 +184,21 @@ class FinancialRequests extends Model
                 'notes',
                 'deposit_receipt_img',
                 'withdrawal_confirmation_receipt_img',
-                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d  %H:%i") as request_created_at')
+                'iban_number',
+                'bank_name',
+                DB::raw('DATE_FORMAT(financial_requests.created_at, "%Y-%m-%d  %H:%i") as request_created_at'),
+                'users.user_id',
+                'users.user_name',
+                'users.user_phone',
+                'users.user_email'
             )
             ->join('payment_methods', 'payment_methods.payment_method_id', '=', 'financial_requests.payment_method_id')
+            ->join('users', 'users.user_id', '=', 'financial_requests.user_id')
             ->orderBy('financial_requests.created_at','desc')
-            ->where('user_id','=',$userId)->first();
+            ->where('f_t_id','=',$requestId)->first();
 
 
         if (!is_null($request)){
-
-            if (is_null($request['status'])){
-                $request['status'] = 'waiting';
-            }
-            elseif ($request['status'] == 0){
-                $request['status'] = 'not_approved';
-            }
-            else{
-                $request['status'] = 'approved';
-            }
 
             if (!is_null($request['deposit_receipt_img'])) {
                 $request["deposit_receipt_img"] = ImgHelper::returnImageLink($request["deposit_receipt_img"]);
@@ -214,6 +211,12 @@ class FinancialRequests extends Model
         }
 
         return $request;
+    }
+
+
+    public static function updateFinancialRequest($data, $requestId)
+    {
+        self::where('f_t_id', $requestId)->update($data);
     }
 
 }

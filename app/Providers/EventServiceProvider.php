@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\CreateAd;
+use App\Events\UpdateFinancialRequest;
 use App\Listeners\RunAfterCreateAd;
+use App\Listeners\RunAfterUpdateFinancialRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
 
         CreateAd::class => [
             RunAfterCreateAd::class,
+        ],
+        UpdateFinancialRequest::class => [
+            RunAfterUpdateFinancialRequest::class,
         ],
     ];
 
