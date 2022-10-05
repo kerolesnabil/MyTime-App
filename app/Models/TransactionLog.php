@@ -22,20 +22,44 @@ class TransactionLog extends Model
     ];
 
 
-    public static function getTransactionsLogs($paginate)
+    public static function getTransactionsLogs($paginate, $attr = [])
     {
         $transactionsLogs = self::query()
             ->select(
                 'transactions_log.log_id',
                 'transactions_log.transaction_operation',
                 'transactions_log.amount',
-                'transactions_log.transaction_notes',
-                'transactions_log.created_at',
+                self::getValueWithSpecificLang('transactions_log.transaction_notes', app()->getLocale(), 'transaction_notes'),
+                DB::raw('DATE_FORMAT(transactions_log.created_at, "%Y-%m-%d  %H:%i") as log_created_at'),
                 'users.user_name'
             )
-            ->join('users','users.user_id','=','transactions_log.user_id')
-            ->orderBy('transactions_log.created_at','desc')
-            ->paginate($paginate);
+            ->join('users','users.user_id','=','transactions_log.user_id');
+
+
+             if(isset($attr['date_from']) && !empty($attr['date_from'])){
+
+                 $attr['date_from'] =  date("Y-m-d H:i:s", strtotime($attr['date_from']));
+                 $transactionsLogs = $transactionsLogs->where('transactions_log.created_at', '>=', $attr['date_from']);
+             }
+
+            if(isset($attr['date_to']) && !empty($attr['date_to'])){
+
+                $attr['date_to'] =  date("Y-m-d H:i:s", strtotime($attr['date_to']));
+                $transactionsLogs = $transactionsLogs->where('transactions_log.created_at', '<=', $attr['date_to']);
+            }
+
+            if(isset($attr['transaction_operation']) && $attr['transaction_operation'] != 'all'){
+
+
+                $transactionsLogs = $transactionsLogs->where('transactions_log.transaction_operation', '=', $attr['transaction_operation']);
+            }
+
+
+        $transactionsLogs = $transactionsLogs
+                            ->orderBy('transactions_log.created_at','desc')
+                            ->paginate($paginate);
+
+
         return $transactionsLogs;
     }
 

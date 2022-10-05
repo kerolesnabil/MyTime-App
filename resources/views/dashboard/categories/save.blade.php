@@ -109,11 +109,6 @@
                             </div>
                         </div>
 
-
-                        {{--<div class="form-group">
-                            <img src="{{ $category->image_path }}" style="width: 100px" class="img-thumbnail image-preview" alt="">
-                        </div>--}}
-
                         <div class="row margin-bottom">
 
 

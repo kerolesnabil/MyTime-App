@@ -10,25 +10,25 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CreateAd
+class UpdateFinancialRequest
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $userId;
-    public $walletValue;
-    public $adCost;
-
+    public $requestId;
+    public $requestType;
+    public $status;
 
     public function __construct(
-        $userId,
-        $walletValue,
-        $adCost
+        $requestId,
+        $requestType,
+        $status
 
     )
     {
-        $this->userId      = $userId;
-        $this->walletValue = $walletValue;
-        $this->adCost      = $adCost;
+        $this->requestId     = $requestId;
+        $this->requestType   = $requestType;
+        $this->status        = $status;
+
     }
 
 

@@ -86,30 +86,41 @@
                             <tbody>
 
                             @foreach ($requests as $index => $request)
-                                <tr>
+
+                                <?php
+
+                                    if (is_null($request->status)){
+                                        $status_label =  'site_financial_transactions.request_waiting';
+                                        $class =  $class = 'class = bg-warning';
+                                    }
+                                    elseif ($request->status == 0){
+                                        $status_label =  'site_financial_transactions.request_not_approved';
+                                        $class =  $class = 'class = bg-danger';
+                                    }
+                                    else{
+                                        $status_label =  'site_financial_transactions.request_approved';
+                                        $class =  $class = 'class = bg-success';
+                                    }
+
+                                ?>
+
+                                <tr {{$class}}>
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
                                     <td style="font-size: 18px; font-weight: bold">{{ $request->user_name }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $request->amount }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">
-                                        <?php
-
-                                            if (is_null($request->status)){
-                                                echo __('site_financial_transactions.request_waiting');
-                                            }
-                                            elseif ($request->status == 0){
-                                                echo __('site_financial_transactions.request_not_approved');
-                                            }
-                                            else{
-                                                echo __('site_financial_transactions.request_approved');
-                                            }
-
-                                        ?>
+                                        @lang($status_label)
                                     </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $request->created_at }}</td>
 
+
+
                                     <td style="text-align: center">
 
-                                        <a style='font-size: 17px' href="{{ route('financial_request.update_financial_request', $request->f_t_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.show')</a>
+                                        @if(is_null($request->status))
+
+                                            <a style='font-size: 17px' href="{{ route('financial_request.get_financial_request', $request->f_t_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.show')</a>
+                                        @endif
                                     </td>
 
                                 </tr>

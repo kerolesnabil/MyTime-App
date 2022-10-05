@@ -151,7 +151,7 @@ Route::group([
     Route::prefix('financial_requests')->group(function (){
         Route::get('/show_deposit_requests', 'FinancialRequestsController@showDepositRequests')->name('financial_request.show_deposit_requests');
         Route::get('/show_withdrawal_requests', 'FinancialRequestsController@showWithdrawalRequests')->name('financial_request.show_withdrawal_requests');
-        Route::get('/update_financial_request/{id}', 'FinancialRequestsController@updateFinancialRequest')->name('financial_request.update_financial_request');
+        Route::get('/get_financial_request/{id}', 'FinancialRequestsController@getFinancialRequest')->name('financial_request.get_financial_request');
         Route::post('/update_financial_request/{id}', 'FinancialRequestsController@updateFinancialRequest')->name('financial_request.update_financial_request');
 
     });

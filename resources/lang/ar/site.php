@@ -56,5 +56,6 @@ return [
     'suggested_services'     => 'الخدمات المقترحة',
     'services'               => 'الخدمات',
     'msg_report_type_wrong'  => 'نوع التقرير غير صحيح',
-    'financial_transactions' => 'المعاملات المالية'
+    'financial_transactions' => 'المعاملات المالية',
+    'save'                   => 'حفظ'
 ];

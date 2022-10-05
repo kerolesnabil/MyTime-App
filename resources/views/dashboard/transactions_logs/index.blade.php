@@ -21,11 +21,37 @@
                 <div class="box-header with-border">
 
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site_financial_transactions.transactions_log')</h3>
+                    <form id='filter_form'>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_from') :</label>
+                                        <input type="date" name="date_from" class="form-control" value="{{ request()->date_from }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site.date_to') :</label>
+                                        <input type="date" name="date_to" class="form-control" value="{{ request()->date_to }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_financial_transactions.transaction_type') :</label>
 
-                </div><!-- end of box header -->
+                                        <select class="form-control" name="transaction_operation">
+                                            <option value="all">@lang('site_financial_transactions.request_all')</option>
+                                            <option value="increase">@lang('site_financial_transactions.increase')</option>
+                                            <option value="decrease">@lang('site_financial_transactions.decrease')</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="margin-top: 26px">
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                    </form><!-- end of form -->
+                </div>
                 <div class="box-body">
-
                     @if ($logs->count() > 0)
 
                         <table class="table table-bordered table-hover">
@@ -33,10 +59,9 @@
                             <thead style="background-color: rgba(0,0,0,0.88); color: white">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
-                                <th>@lang('site_user.user_name')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_user.user_name')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_type')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.amount')</th>
-                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.status')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_notes')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.created_at')</th>
                             </tr>
@@ -45,14 +70,23 @@
                             <tbody>
 
                             @foreach ($logs as $index => $log)
-                                <tr>
+
+                                <?php
+                                    if($log->transaction_operation == 'increase'){
+                                        $class = 'class = bg-success';
+                                    }
+                                    else{
+                                        $class = 'class = bg-danger';
+                                    }
+
+                                ?>
+                                <tr {{$class}}>
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
-                                    <td style="font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">@lang("site_financial_transactions.$log->transaction_type") </td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">@lang("site_financial_transactions.$log->transaction_operation") </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->amount }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->status }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->transaction_notes }}</td>
-                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->created_at }}</td>
+                                    <td style="font-size: 18px; font-weight: bold">{{ $log->transaction_notes }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->log_created_at }}</td>
 
                                 </tr>
                             @endforeach
