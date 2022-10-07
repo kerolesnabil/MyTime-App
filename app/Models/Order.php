@@ -314,10 +314,10 @@ class Order extends Model
 
     public static function getNewOrders($paginate, $reportType)
     {
-        // $reportType => daily, weekly, monthly, yearly
+        // $reportType => daily, weekly, monthly, yearly, all
 
+        $time = Carbon::now();
 
-        $time = "";
         if ($reportType == 'daily'){
             $time =  Carbon::now()->startOfDay();
         }
@@ -331,10 +331,10 @@ class Order extends Model
         {
             $time =  Carbon::now()->subYear()->startOfDay();
         }
+
         $time = $time->format('Y-m-d H:i:s');
 
-
-        return self::query()
+        $orders = self::query()
             ->select(
                 'orders.order_id',
                 'orders.order_custom_date as order_date',
@@ -353,10 +353,15 @@ class Order extends Model
             )
             ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
             ->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
-            ->where('orders.created_at', '>=', $time)
-            ->orderBy('orders.created_at','desc')
-            ->paginate($paginate);
+            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id');
+
+        if($reportType != 'all'){
+            $orders = $orders->where('orders.created_at', '>=', $time);
+        }
+
+        $orders = $orders->orderBy('orders.created_at','desc')->paginate($paginate);
+
+        return $orders;
 
     }
 

@@ -48,6 +48,7 @@ class VendorDetail extends Model
             self::query()
                 ->select(
                     'users.user_name as vendor_name',
+                    'users.user_wallet as vendor_wallet',
                     'users.user_address as vendor_address',
                     'vendor_details.vendor_start_time',
                     'vendor_details.vendor_end_time',

@@ -12,6 +12,7 @@ return [
     'add'                    => 'اضافة',
     'remember_me'            => 'تذكرني',
     'login'                  => 'تسجيل الدخول',
+    'logout'                 => 'تسجيل الخروج',
     'email'                  => 'الايميل',
     'password'               => 'كلمة السر',
     'no_data_found'          => 'لا يوجد بيانات',
@@ -33,10 +34,17 @@ return [
     'weekly_orders'          => 'الطلبات الاسبوعية',
     'monthly_orders'         => 'الطلبات الشهرية',
     'yearly_orders'          => 'الطلبات السنوية',
+    'all_orders'             => 'الطلبات الكلية',
     'daily_users'            => 'المستخدمين الجدد ( يومي )',
     'weekly_users'           => 'المستخدمين الجدد ( اسبوعي )',
     'monthly_users'          => 'المستخدمين الجدد ( شهري )',
     'yearly_users'           => 'المستخدمين الجدد ( سنوي )',
+    'all_users'              => 'المستخدمين الكليين',
+    'daily_vendors'          => 'الصالونات الجديدة ( يومي )',
+    'weekly_vendors'         => 'الصالونات الجديدة ( اسبوعي )',
+    'monthly_vendors'        => 'الصالونات الجديدة ( شهري )',
+    'yearly_vendors'         => 'الصالونات الجديدة ( سنوي )',
+    'all_vendors'            => 'الصالونات الكلية',
     'available_ads'          => 'الاعلانات المتاحة حاليا',
     'specialists'            => 'الاخصائيين',
     'salons'                 => 'الصالونات',
@@ -57,5 +65,6 @@ return [
     'services'               => 'الخدمات',
     'msg_report_type_wrong'  => 'نوع التقرير غير صحيح',
     'financial_transactions' => 'المعاملات المالية',
-    'save'                   => 'حفظ'
+    'save'                   => 'حفظ',
+    'vendors_wallet_value'   => 'رصيد الصالونات'
 ];

@@ -106,11 +106,12 @@ class User extends Authenticatable
 
     }
 
-    public static function getNewUsers($paginate, $reportType)
+    public static function getNewUsers($paginate, $reportType, $userType)
     {
-        // $reportType => daily, weekly, monthly, yearly
+        // $reportType => daily, weekly, monthly, yearly, all
+        // $userType => user, vendor
 
-        $time = "";
+        $time = Carbon::now();
         if ($reportType == 'daily'){
             $time =  Carbon::now()->startOfDay();
         }
@@ -124,23 +125,38 @@ class User extends Authenticatable
         {
             $time =  Carbon::now()->subYear()->startOfDay();
         }
+
         $time = $time->format('Y-m-d H:i:s');
 
-
-        return self::query()
+        $users = self::query()
             ->select
             (
                 'users.user_id',
+                'user_wallet',
                 'users.user_name',
                 'users.user_phone',
                 'users.user_email',
                 'users.user_address',
                 'users.user_is_active'
-            )
-            ->where('user_type', '=', 'user')
-            ->where('created_at', '>', $time)
-            ->orderBy('users.created_at','desc')
-            ->paginate($paginate);
+            );
+
+        if ($userType == 'vendor'){
+
+            $users = $users->addSelect('vendor_details.vendor_type')
+                            ->join('vendor_details', 'vendor_details.user_id', 'users.user_id');
+        }
+
+
+
+        if ($reportType != 'all'){
+            $users = $users->where('users.created_at', '>=', $time);
+        }
+
+        $users = $users->where('user_type', '=', $userType)
+                        ->orderBy('users.created_at','desc')
+                        ->paginate($paginate);
+
+        return $users;
     }
 
     public static function getUsersByType($type)
@@ -152,6 +168,7 @@ class User extends Authenticatable
                 ->select
                 (
                     'users.user_id',
+                    'user_wallet',
                     'users.user_name',
                     'users.user_phone',
                     'users.user_email',

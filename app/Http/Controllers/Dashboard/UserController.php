@@ -38,7 +38,7 @@ class UserController extends Controller
         $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
 
         if (in_array($reportType, $reportTypes)){
-            $users = User::getNewUsers(20, $reportType);
+            $users = User::getNewUsers(20, $reportType,'user');
 
             return view('dashboard.users.show_new_users')->with(['users' => $users]);
         }
