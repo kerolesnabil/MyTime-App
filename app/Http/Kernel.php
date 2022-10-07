@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\APIGate;
 use App\Http\Middleware\APILogger;
+use App\Http\Middleware\PreventBackUrl;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Session\Middleware\StartSession;
 
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            PreventBackUrl::class,
         ],
 
         'api' => [
@@ -76,5 +78,6 @@ class Kernel extends HttpKernel
         'localeViewPath'        => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         'APIGate'               => APIGate::class,
         'APILogger'             => APILogger::class,
+        'PreventBackUrl'        => PreventBackUrl::class,
     ];
 }

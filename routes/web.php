@@ -162,10 +162,14 @@ Route::group([
 
 });
 
-Route::prefix('dashboard')->group(function () {
+Route::group([
+    'middleware' => ['PreventBackUrl'],
+    'prefix'    =>'dashboard',
+    'namespace' =>'Dashboard'
+],function (){
 
     Route::get('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'getViewLogin'] )->name("login");
-
     Route::post('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'login']);
+    Route::get('/logout', [\App\Http\Controllers\Dashboard\Auth\LoginController::class, 'logout'])->name("logout");
 
 });

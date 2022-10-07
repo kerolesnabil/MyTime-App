@@ -9,6 +9,7 @@ use App\Http\Services\VerificationServices;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -46,5 +47,12 @@ class LoginController extends Controller
         return redirect()->back()->with(['error' => 'هناك خطا بالبيانات']);
     }
 
+
+    public function logout()
+    {
+        auth()->logout();
+        Session::flush();
+        return redirect(route('login'));
+    }
 
 }
