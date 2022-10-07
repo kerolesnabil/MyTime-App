@@ -33,6 +33,8 @@ Route::group([
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
         Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
         Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
+        Route::get('/show_new_vendors/{report_type}', 'VendorController@showNewVendors')->name('vendor.show_new_vendors');
+
     });
 
     Route::prefix('admins')->group(function (){
@@ -41,9 +43,6 @@ Route::group([
         Route::get('get_admin/{id?}', 'AdminController@getAdmin')->name('admin.get_admin');
         Route::delete('destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
         Route::post('save/{id?}', 'AdminController@saveAdmin')->name('admin.save_admin');
-
-
-
     });
 
     Route::prefix('categories')->group(function (){

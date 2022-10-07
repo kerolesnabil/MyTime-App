@@ -5,6 +5,7 @@ return [
 
     'vendor_name'          => 'اسم الاخصائي',
     'vendor_type'          => 'نوع الحساب',
+    'wallet'               => 'المحفظة',
     'vendor_phone'         => 'الهاتف',
     'vendor_email'         => 'الايميل',
     'vendor_address'       => 'العنوان',

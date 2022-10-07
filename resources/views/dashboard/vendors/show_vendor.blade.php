@@ -120,6 +120,29 @@
                                 <li class="list-group-item">
                                     <b>@lang('site_vendor.vendor_views_count')</b> <a class="pull-right" style="font-weight: bold; color: #00a1ff">{{$vendor->vendor_views_count}}</a>
                                 </li>
+                                <li class="list-group-item">
+
+
+
+                                    <?php
+
+                                    if ( $vendor->vendor_wallet < 0){
+                                        $color = "#ff0006";
+                                    }
+                                    else{
+                                        $color = "#00a1ff";
+                                    }
+                                    ?>
+
+
+
+
+                                    <b>@lang('site_vendor.wallet')</b> <a class="pull-right" style="font-weight: bold; color: {{$color}}">
+
+                                        {{$vendor->vendor_wallet}}
+
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <!-- /.box-body -->

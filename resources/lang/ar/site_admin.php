@@ -7,6 +7,7 @@ return [
     'admin_password'                        => 'كلمة السر',
     'admin_confirm_password'                => 'تأكيد كلمة السر',
     'date_of_birth'                         => 'تاريخ الميلاد',
+    'img'                                   => 'صورة',
     'admin_id_not_valid'                    => 'الرقم التعريفي للمدير غير صحيح',
     'rule_user_name.required'               => 'اسم المدير مطلوب',
     'rule_user_name.string'                 => 'اسم المدير يجب ان يكون نص',

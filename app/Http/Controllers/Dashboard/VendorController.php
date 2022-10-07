@@ -71,4 +71,18 @@ class VendorController extends Controller
 
 
     }
+
+
+    public function showNewVendors($reportType)
+    {
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+
+        if (in_array($reportType, $reportTypes)){
+            $users = User::getNewUsers(20, $reportType,'vendor');
+            return view('dashboard.vendors.show_new_vendors')->with(['users' => $users]);
+        }
+
+        session()->flash('warning', __('site.report_type_wrong'));
+        return redirect()->back();
+    }
 }

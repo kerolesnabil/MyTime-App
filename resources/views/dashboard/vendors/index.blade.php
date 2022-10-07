@@ -74,6 +74,7 @@
                                 <th>@lang('site_vendor.vendor_phone')</th>
                                 <th>@lang('site_vendor.vendor_email')</th>
                                 <th>@lang('site_vendor.vendor_address')</th>
+                                <th>@lang('site_vendor.wallet')</th>
                                 <th style="text-align: center">@lang('site_vendor.vendor_is_active')</th>
                                 <th style="text-align: center">@lang('site.action')</th>
                             </tr>
@@ -92,6 +93,20 @@
                                     <td>{{ $vendor->user_phone }}</td>
                                     <td>{{ $vendor->user_email }}</td>
                                     <td>{{ $vendor->user_address }}</td>
+                                    <?php
+
+                                    if ( $vendor->user_wallet < 0){
+                                        $class = "bg-danger";
+                                    }
+                                    else{
+                                        $class = "";
+                                    }
+                                    ?>
+
+                                    <td class="{{$class}}">
+                                        {{ $vendor->user_wallet }}
+
+                                    </td>
                                     <td id="user_status_{{$vendor->user_id}}" style="text-align: center">
                                         <?php
                                             echo $vendor->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';

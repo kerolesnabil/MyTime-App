@@ -186,42 +186,22 @@
                         </ul>
                     </li>
 
-                    {{--<!-- Tasks: style can be found in dropdown.less -->--}}
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag-o"></i></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                {{--<!-- inner menu: contains the actual data -->--}}
-                                <ul class="menu">
-                                    {{--@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                        <li>
-                                            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                                {{ $properties['native'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach--}}
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
 
                     {{--<!-- User Account: style can be found in dropdown.less -->--}}
                     <li class="dropdown user user-menu">
 
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ asset('dashboard_files/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                            {{--{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}--}}
-                            <span class="hidden-xs">""</span>
+                            <img src="{{ asset(auth()->user()->user_img) }}" class="user-image" alt="User Image">
+                            {{ auth()->user()->user_name }}
                         </a>
                         <ul class="dropdown-menu">
 
                             {{--<!-- User image -->--}}
                             <li class="user-header">
-                                <img src="{{ asset('dashboard_files/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                                <img src="{{ asset(auth()->user()->user_img) }}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{--{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}--}}
-                                    <small>Member since 2 days</small>
+                                    {{ auth()->user()->user_name }}
                                 </p>
                             </li>
 
