@@ -208,11 +208,11 @@
                             {{--<!-- Menu Footer-->--}}
                             <li class="user-footer">
 
-                                {{--{{ route('logout') }}--}}
-                                <a href="route" class="btn btn-default btn-flat" onclick="event.preventDefault();
+
+                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">@lang('site.logout')</a>
-                                        {{--{{ route('logout') }}--}}
-                                <form id="logout-form" action="route" method="POST" style="display: none;">
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
                                     @csrf
                                 </form>
 

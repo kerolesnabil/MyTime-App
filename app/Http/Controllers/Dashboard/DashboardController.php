@@ -8,12 +8,12 @@ use App\Models\Ad;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\VendorDetail;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController
 {
     public function index()
     {
-
 
         $data['daily_orders']   = Order::getNewOrders(20, 'daily')->total();
         $data['weekly_orders']  = Order::getNewOrders(20, 'weekly')->total();
