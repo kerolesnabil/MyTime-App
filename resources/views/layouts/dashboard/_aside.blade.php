@@ -31,12 +31,12 @@
             <li style="font-size: 16px; font-weight: bold"><a href="{{route('order_rejection_reason.index')}}"><i class="fa fa-file-text" aria-hidden="true"></i><span>@lang('site.order_rejection_reason')</span></a></li>
             <li class="treeview" style="font-size: 16px; font-weight: bold">
                 <a href="#">
-                    <i class="fa fa-money" aria-hidden="true"></i>@lang('site.financial_transactions')<i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-money"></i><span>@lang('site.financial_transactions')</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('transaction_log.index') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.transactions_log')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('financial_request.show_deposit_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.deposit_requests')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('financial_request.show_withdrawal_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.withdrawal_requests')</a></li>
+                <ul class="treeview-menu" style="font-size: 13px; font-weight: bold">
+                    <li ><a href="{{ route('transaction_log.index') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.transactions_log')</a></li>
+                    <li ><a href="{{ route('financial_request.show_deposit_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.deposit_requests')</a></li>
+                    <li ><a href="{{ route('financial_request.show_withdrawal_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.withdrawal_requests')</a></li>
 
                 </ul>
 
@@ -52,21 +52,16 @@
 
             <li class="treeview" style="font-size: 16px; font-weight: bold">
                 <a href="#">
-                    <i class="fa fa-cogs" aria-hidden="true"></i>@lang('site.settings')<i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-cogs"></i><span>@lang('site.settings')</span><i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.social_media') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.social_media')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_app_images') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_images')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_ad_price') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.ads_prices')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_diameter_search') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.diameter_search')</a></li>
-                    <li ><a style="font-size: 15px; font-weight: bold" href="{{ route('setting.get_bank_account_details') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_bank_account')</a></li>
+                <ul class="treeview-menu" style="font-size: 13px; font-weight: bold">
+                    <li ><a href="{{ route('setting.social_media') }}"><i class="fa fa-circle-o"></i><span>@lang('site_setting.social_media')</span></a></li>
+                    <li ><a href="{{ route('setting.get_app_images') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_images')</a></li>
+                    <li ><a href="{{ route('setting.get_ad_price') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.ads_prices')</a></li>
+                    <li ><a href="{{ route('setting.get_diameter_search') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.diameter_search')</a></li>
+                    <li ><a href="{{ route('setting.get_bank_account_details') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_bank_account')</a></li>
                 </ul>
             </li>
-
-
-
-
-
         </ul>
 
     </section>
