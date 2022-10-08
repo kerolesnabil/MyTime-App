@@ -9,6 +9,7 @@ use App\Http\Services\VerificationServices;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,6 +20,10 @@ class LoginController extends Controller
 
     public function getViewLogin()
     {
+        if (Auth::check()){
+            return redirect(route('admin.homepage'));
+        }
+
         return view('dashboard.auth.login');
     }
 
@@ -50,7 +55,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        auth()->logout();
+        Auth::logout();
         Session::flush();
         return redirect(route('login'));
     }

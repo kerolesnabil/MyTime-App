@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>MY TIME| Log in</title>
@@ -38,14 +38,14 @@
     <div class="login-box-body">
         <p class="login-box-msg">تسجيل دخول المدرين</p>
 
-        <form action="{{ route('login') }}" method="post">
+        <form action="{{ route('login') }}" method="post" >
             {{ csrf_field() }}
             {{ method_field('post') }}
 
             @include('partials._errors')
 
             <div class="form-group has-feedback">
-                <input type="email" name="email" class="form-control" placeholder="@lang('site.email')">
+                <input type="email" name="email" class="form-control" placeholder="@lang('site.email')" s>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
 
