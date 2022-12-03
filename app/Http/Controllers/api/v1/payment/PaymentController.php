@@ -21,6 +21,20 @@ class PaymentController extends Controller
 
     }
 
+    public function createPayment()
+    {
+
+
+
+    }
+
+    public function getPaymentStatus($request)
+    {
+
+
+    }
+
+
 
 
 
