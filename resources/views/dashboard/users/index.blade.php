@@ -20,7 +20,7 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.users')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8">@lang('site.users')</h3>
 
                 </div><!-- end of box header -->
 
@@ -28,9 +28,9 @@
 
                     @if ($users->count() > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >@lang('site_user.user_name')</th>

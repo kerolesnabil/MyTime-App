@@ -66,6 +66,21 @@
 
                                 <div class="row mb-3 margin-bottom">
                                     <div class="col-md-6 pr-md-1">
+                                        <label>@lang('site_vendor.vendor_commercial_registration_num')</label>
+                                        <br>
+                                        <label style="color: #72afd2; font-size: 14px">{{$vendor->vendor_commercial_registration_num}}</label>
+                                    </div>
+
+                                    <div class="col-md-6 pr-md-1">
+                                        <label>@lang('site_vendor.vendor_tax_num')</label>
+                                        <br>
+                                        <label style="color: #72afd2; font-size: 14px">{{$vendor->vendor_tax_num}}</label>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="row mb-3 margin-bottom">
+                                    <div class="col-md-6 pr-md-1">
                                         <label>@lang('site_vendor.vendor_description')</label>
                                         <br>
                                         <label style="color: #72afd2; font-size: 14px">{{$vendor->vendor_description}}</label>
@@ -77,7 +92,7 @@
                                 <div class="row mb-3 margin-bottom">
                                     @if(!is_null($vendor->vendor_slider))
                                         @foreach($vendor->vendor_slider as $img_url)
-                                            <div class="col-md-4 pr-md-1">
+                                            <div class="col-md-3">
                                                 <img class="img_preview"  src="{{$img_url}}" style="width: 220px; height: 220px">
                                             </div>
                                         @endforeach
@@ -126,12 +141,12 @@
 
                                     <?php
 
-                                    if ( $vendor->vendor_wallet < 0){
-                                        $color = "#ff0006";
-                                    }
-                                    else{
-                                        $color = "#00a1ff";
-                                    }
+                                        if ( $vendor->vendor_wallet < 0){
+                                            $color = "#ff0006";
+                                        }
+                                        else{
+                                            $color = "#00a1ff";
+                                        }
                                     ?>
 
 

@@ -75,10 +75,8 @@ class ServiceController extends Controller
     public function getService($serviceId = null)
     {
 
-
         $mainCats = collect(Category::mainCategories())->toArray();
         $subCats  = collect(Category::getAllSubCats())->toArray();
-
         $allCats = array_merge($mainCats, $subCats);
 
 

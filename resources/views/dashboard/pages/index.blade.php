@@ -20,10 +20,10 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.pages')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site.pages')</h3>
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="{{ route('page.get_page') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                            <a href="{{ route('page.get_page') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
                     </div>
                 </div><!-- end of box header -->
@@ -32,9 +32,9 @@
 
                     @if ($pages->count() > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th style='font-size: 18px; font-weight: bold'>@lang('site_page.page_title')</th>
@@ -80,23 +80,23 @@
                                             <input type="hidden" name="page_id" value="{{$page->page_id}}">
                                             <?php
                                                 echo $page->is_active == 1 ?
-                                                    "<button style='font-size: 18px; font-weight: bold'type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 18px;' type='submit' class='activation_btn btn btn-block danger'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$page->page_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                    "<button style='font-size: 18px;' type='submit' class='activation_btn btn btn-info success'><i class='fa fa-check'></i> $activeBtn</button>
                                                      <input type='hidden' id= 'hidden_btn_$page->page_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a style='font-size: 18px; font-weight: bold' href="{{ route('page.get_page', $page->page_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='font-size: 18px;' href="{{ route('page.get_page', $page->page_id) }}" class="btn btn-success"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('page.destroy', $page->page_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style='font-size: 18px; font-weight: bold' type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='font-size: 18px;' type="submit" class="btn bg-purple delete"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>

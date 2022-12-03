@@ -90,5 +90,23 @@ class CouponUsed extends Model
                 ->first();
     }
 
+    public static function getUsersUsedCoupon($couponId)
+    {
+        return self::query()
+            ->select
+            (
+                'coupons.coupon_code',
+                'coupons.coupon_value',
+                'coupons.coupon_type',
+                'users.user_name',
+                'orders.order_id',
+                'coupons_used.created_at'
+            )
+            ->join('coupons','coupons.coupon_id', '=', 'coupons_used.coupon_id')
+            ->join('users','users.user_id', '=', 'coupons_used.user_id')
+            ->join('orders','orders.order_id', '=', 'coupons_used.order_id')
+            ->where('coupons_used.coupon_id','=', $couponId)
+            ->get();
+    }
 
 }

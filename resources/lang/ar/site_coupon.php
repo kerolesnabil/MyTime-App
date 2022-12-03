@@ -5,15 +5,15 @@ return [
 
     'no_order_coupon'                  => 'لا يوجد كوبون مستخدم في هذا الطلب',
     'coupon_id'                        => 'الرقم التعريفي للكوبون',
-    'coupon_type'                      => 'نوع الكوبون',
+    'coupon_type'                      => 'النوع',
     'coupon_type_value'                => 'مبلغ',
     'coupon_type_percent'              => 'نسبة',
-    'coupon_value'                     => 'قيمة الكوبون',
-    'coupon_code'                      => 'كود الكوبون',
-    'coupon_limited_num'               => 'الحد الاقصي لاستخدام الكوبون',
-    'coupon_used_times'                => 'مرات استخدام الكوبون',
-    'coupon_start_at'                  => 'تاريخ بداية الكوبون',
-    'coupon_end_at'                    => 'تاريخ نهاية الكوبون',
+    'coupon_value'                     => 'القيمة',
+    'coupon_code'                      => 'الكود',
+    'coupon_limited_num'               => 'الحد الاقصي للاستخدام',
+    'coupon_used_times'                => 'مرات الاستخدام',
+    'coupon_start_at'                  => 'تاريخ البداية',
+    'coupon_end_at'                    => 'تاريخ النهاية',
     'is_active'                        => 'حالة التفعيل',
     'rule_coupon_code.required'        => 'كود الكوبون مطلوب',
     'rule_coupon_code.string'          => 'كود الكوبون يجب ان يكون نص',
@@ -33,6 +33,8 @@ return [
     'rule_is_active.numeric'           => 'حالة تفعيل الكوبون يجب ان تكون رقم',
     'rule_is_active.min'               => 'حالة تفعيل الكوبون يجب ان تكون 0 او 1',
     'rule_is_active.max'               => 'حالة تفعيل الكوبون يجب ان تكون 0 او 1',
+    'used_coupon_users'                => 'مستخدمي الكوبون' ,
+    'coupon_used_time'                 => 'موعد استخدام الكوبون'
 
 
 

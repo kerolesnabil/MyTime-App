@@ -48,7 +48,7 @@ class PageController extends Controller
         else{
             /**************  create ***************/
             $pageImg = ImgHelper::uploadImage('images', $request->img);
-            $data['img'] = $pageImg;
+            $data['images'] = $pageImg;
             Page::createPage($data);
             session()->flash('success', __('site.created_successfully'));
         }

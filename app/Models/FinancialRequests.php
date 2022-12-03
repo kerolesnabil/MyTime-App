@@ -68,6 +68,10 @@ class FinancialRequests extends Model
                 $financialRequests = $financialRequests->where('financial_requests.status', '=', $attr['status']);
             }
 
+            if(isset($attr['user_id']) && intval($attr['user_id']) > 0){
+                $financialRequests = $financialRequests->where('financial_requests.user_id', '=', $attr['user_id']);
+            }
+
             $financialRequests = $financialRequests->orderBy('financial_requests.created_at','desc')->get();
             return $financialRequests;
     }

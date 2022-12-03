@@ -37,19 +37,19 @@ class SaveAppImagesRequest extends FormRequest
         }
 
         if (isset($request->user_splash['setting_value'])){
-            $rules['user_splash_img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['user_splash_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->user_logo['setting_value'])){
-            $rules['user_logo_img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['user_logo_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->vendor_splash['setting_value'])){
-            $rules['vendor_splash_img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['vendor_splash_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->vendor_logo['setting_value'])){
-            $rules['vendor_logo_img'] =  "image|mimes:jpg,jpeg,png|max:2048";
+            $rules['vendor_logo_img'] =  "images|mimes:jpg,jpeg,png|max:2048";
         }
 
         return $rules;
@@ -68,19 +68,19 @@ class SaveAppImagesRequest extends FormRequest
             'vendor_logo.setting_name.*.required'   => __('site_setting.rule_vendor_logo_setting_name.required'),
             'vendor_logo.setting_name.*.string'     => __('site_setting.rule_vendor_logo_setting_name.string'),
 
-            'user_splash_img.image'                  => __('site_setting.rule_user_splash_img.image'),
+            'user_splash_img.images'                  => __('site_setting.rule_user_splash_img.images'),
             'user_splash_img.mimes'                  => __('site_setting.rule_user_splash_img.mimes'),
             'user_splash_img.max'                    => __('site_setting.rule_user_splash_img.max'),
 
-            'user_logo_img.image'                    => __('site_setting.rule_user_logo_img.image'),
+            'user_logo_img.images'                    => __('site_setting.rule_user_logo_img.images'),
             'user_logo_img.mimes'                    => __('site_setting.rule_user_logo_img.mimes'),
             'user_logo_img.max'                      => __('site_setting.rule_user_logo_img.max'),
 
-            'vendor_splash_img.image'                => __('site_setting.rule_vendor_splash_img.image'),
+            'vendor_splash_img.images'                => __('site_setting.rule_vendor_splash_img.images'),
             'vendor_splash_img.mimes'                => __('site_setting.rule_vendor_splash_img.mimes'),
             'vendor_splash_img.max'                  => __('site_setting.rule_vendor_splash_img.max'),
 
-            'vendor_logo_img.image'                  => __('site_setting.rule_vendor_logo_img.image'),
+            'vendor_logo_img.images'                  => __('site_setting.rule_vendor_logo_img.images'),
             'vendor_logo_img.mimes'                  => __('site_setting.rule_vendor_logo_img.mimes'),
             'vendor_logo_img.max'                    => __('site_setting.rule_vendor_logo_img.max'),
         ];

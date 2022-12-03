@@ -23,7 +23,7 @@ class CreatePagesTable extends Migration {
 			$table->integer('page_id', true);
 			$table->integer('page_title');
 			$table->text('page_content');
-			$table->text('img')->nullable();
+			$table->text('images')->nullable();
 			$table->enum('page_position', array('first','last'));
 			$table->boolean('is_active')->default(1)->comment('0 => not active, 1 => active');
 			$table->timestamps();

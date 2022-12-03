@@ -25,7 +25,7 @@ class LangsSeeder extends Seeder
                     'lang_symbol'    => 'ar',
                     'lang_name'      => 'اللغة العربية',
                     'lang_direction' => 'rtl',
-                    'lang_img'       => 'dashboard_files/img/langs/ar.png',
+                    'lang_img'       => 'dashboard_files/images/langs/ar.png',
                     'created_at'     => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'     => Carbon::now()->format('Y-m-d H:i:s'),
                 ]
@@ -40,7 +40,7 @@ class LangsSeeder extends Seeder
                     'lang_symbol'    => 'en',
                     'lang_name'      => 'English',
                     'lang_direction' => 'ltr',
-                    'lang_img'       => 'dashboard_files/img/langs/en.png',
+                    'lang_img'       => 'dashboard_files/images/langs/en.png',
                     'created_at'     => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'     => Carbon::now()->format('Y-m-d H:i:s'),
                 ]

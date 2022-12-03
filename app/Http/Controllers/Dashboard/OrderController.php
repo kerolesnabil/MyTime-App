@@ -10,16 +10,27 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Page;
 use App\Models\Lang;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::getAllOrders(15);
-        return view('dashboard.orders.index')->with(['orders' => $orders]);
+        $attrs             = $request->all();
+        $attrs['paginate'] = 20;
+
+        $orders  = Order::getAllOrders($attrs);
+        $users   = User::getUsersByType('user', []);
+        $vendors = User::getUsersByType('vendor', []);
+
+        return view('dashboard.orders.index')->with([
+            'orders'  => $orders,
+            'users'   => $users,
+            'vendors' => $vendors
+        ]);
     }
 
 
@@ -39,20 +50,15 @@ class OrderController extends Controller
 
     public function reportOrders(Request $request)
     {
-        if (!empty($request->date_from) && !empty($request->date_to)){
 
-            $dateFrom = date('Y-m-d H:i:s', strtotime($request->date_from));
-            $dateTo   = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($request->date_to)));
-            $filteredOrders = Order::getOrdersWithFilters( $dateFrom, $dateTo);
-            return view('dashboard.orders.filtered_orders')->with(['orders' => $filteredOrders]);
-        }
+        $filteredOrders = Order::getOrdersWithFilters($request->all());
+        return view('dashboard.orders.filtered_orders')->with(['orders' => $filteredOrders]);
 
-        return response()->json(false);
     }
 
     public function showNewOrders($reportType)
     {
-        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly', 'all'];
 
         if (in_array($reportType, $reportTypes)){
             $orders = Order::getNewOrders(20, $reportType);

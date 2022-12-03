@@ -127,8 +127,8 @@ class Coupon extends Model
                     'coupon_limited_num',
                     'coupon_used_times',
                     'is_active'
-                )
-                ->get();
+                )->
+                get();
         return $coupons;
 
     }

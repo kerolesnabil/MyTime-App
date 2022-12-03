@@ -172,7 +172,7 @@ class VendorServices extends Model
         return true;
     }
 
-    public static function saveVendorService($data,$vendor_id)
+    public static function saveVendorService($data, $vendor_id)
     {
 
         if(isset($data['service_price_at_salon'])){
@@ -229,7 +229,19 @@ class VendorServices extends Model
                     app()->getLocale(),
                     'service_name'
                 ),
-                'categories.cat_img'
+                self::getValueWithSpecificLang(
+                    'categories.cat_name',
+                    app()->getLocale(),
+                    'cat_name'
+                ),
+                'vendor_services.service_id as main_service_id',
+                'categories.cat_img',
+                'vendor_services.service_title',
+                'vendor_services.service_price_at_salon',
+                'vendor_services.service_discount_price_at_salon',
+                'vendor_services.service_price_at_home',
+                'vendor_services.service_discount_price_at_home'
+
             )
             ->join('services','services.service_id','=','vendor_services.service_id')
             ->join('categories','categories.cat_id','=','services.cat_id')
@@ -386,6 +398,21 @@ class VendorServices extends Model
             return false;
         }
         return true;
+
+    }
+
+
+    public static function createVendorServices($data)
+    {
+        self::query()->insert($data);
+
+    }
+
+    public static function updateVendorServices($data)
+    {
+        foreach ($data as $item){
+            self::query()->where('vendor_service_id','=', $item['vendor_service_id'])->update($item);
+        }
 
     }
 

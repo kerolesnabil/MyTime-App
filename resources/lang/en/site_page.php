@@ -27,7 +27,7 @@ return [
     'rule_page_position.required'      => '',
     'rule_page_position.numeric'       => '',
     'rule_img.required'                => '',
-    'rule_img.image'                   => '',
+    'rule_img.images'                   => '',
     'rule_img.mimes'                   => '',
     'rule_img.max'                     => '',
     'rule_page_title.required'         => '',

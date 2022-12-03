@@ -10,17 +10,23 @@
     {{--<!-- Bootstrap 3.3.7 -->--}}
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard_files/css/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboard_files/css/skin-blue.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard_files/css/skin-purple.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard_files/css/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard_files/css/jquery.dataTables.min.css') }}">
 
     {{--Bootstrap icons 1.9.1--}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
-    @if (app()->getLocale() == 'ar')
+
+
+
+@if (app()->getLocale() == 'ar')
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/font-awesome-rtl.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/AdminLTE-rtl.min.css') }}">
         <link href="https://fonts.googleapis.com/css?family=Cairo:400,700" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/bootstrap-rtl.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dashboard_files/css/rtl.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
         <style>
             body, h1, h2, h3, h4, h5, h6 {
@@ -34,6 +40,13 @@
     @endif
 
     <style>
+        .print-btn{
+            margin-bottom: 10px;
+            margin-left: 5px;
+            font-size: 17px;
+            padding: 7px;
+        }
+
         .mr-2{
             margin-right: 5px;
         }
@@ -103,15 +116,19 @@
 
     <script src="{{ asset('dashboard_files/js/images_preview_v1.js') }}"></script>
 
+    {{-- google charts --}}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{ asset('dashboard_files/js/google_charts.js') }}"></script>
+
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-purple sidebar-mini">
 
 <div class="wrapper">
 
     <header class="main-header">
 
         {{--<!-- Logo -->--}}
-        <a href="{{ asset('dashboard') }}/index2.html" class="logo">
+        <a href="{{ asset('dashboard') }}" class="logo">
             {{--<!-- mini logo for sidebar mini 50x50 pixels -->--}}
             <span class="logo-mini"><b>My</b>T</span>
             <span class="logo-lg"><b>My</b> Time</span>
@@ -143,7 +160,7 @@
                                     <li><!-- start message -->
                                         <a href="#">
                                             <div class="pull-left">
-                                                <img src="{{ asset('dashboard_files/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                                                <img src="{{ asset('dashboard_files/images/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
                                             </div>
                                             <h4>
                                                 Support Team
@@ -196,7 +213,7 @@
                         </a>
                         <ul class="dropdown-menu">
 
-                            {{--<!-- User image -->--}}
+                            {{--<!-- User images -->--}}
                             <li class="user-header">
                                 <img src="{{ asset(auth()->user()->user_img) }}" class="img-circle" alt="User Image">
 
@@ -266,6 +283,7 @@
 {{--morris --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="{{ asset('dashboard_files/plugins/morris/morris.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 {{--custom js--}}
 <script src="{{ asset('dashboard_files/js/custom/image_preview.js') }}"></script>
@@ -273,6 +291,18 @@
 
 
 
+
+
+<script src="{{asset("dashboard_files/datatables/js/jquery.dataTables.min.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/dataTables.buttons.min.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/jszip.min.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/pdfmake.min.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/vfs_fonts.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/buttons.html5.min.js")}}"></script>
+<script src="{{asset("dashboard_files/datatables/js/buttons.colVis.min.js")}}"></script>
+
+
+<script src="{{asset("dashboard_files/js/datatable.js")}}"></script>
 
 <script>
     $(document).ready(function () {
@@ -307,22 +337,31 @@
             });
             n.show();
 
-        });//end of delete
+        });
 
-        // // image preview
-        // $(".image").change(function () {
-        //
-        //     if (this.files && this.files[0]) {
-        //         var reader = new FileReader();
-        //
-        //         reader.onload = function (e) {
-        //             $('.image-preview').attr('src', e.target.result);
-        //         }
-        //
-        //         reader.readAsDataURL(this.files[0]);
-        //     }
-        //
-        // });
+        // info
+        $('.print').click(function (e) {
+
+            var that = $(this)
+            e.preventDefault();
+
+            var n = new Noty({
+                text: "@lang('site.print')",
+                type: "warning",
+                killer: true,
+                buttons: [
+                    Noty.button("@lang('site.yes')", 'btn btn-success mr-2', function () {
+                        that.closest('form').submit();
+                    }),
+
+                    Noty.button("@lang('site.no')", 'btn btn-danger mr-2', function () {
+                        n.close();
+                    })
+                ]
+            });
+            n.show();
+
+        });
 
         CKEDITOR.config.language =  "{{ app()->getLocale() }}";
 

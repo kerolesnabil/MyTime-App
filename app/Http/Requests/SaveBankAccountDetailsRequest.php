@@ -25,7 +25,7 @@ class SaveBankAccountDetailsRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'bank_account_details.setting_value'  => 'required|string',
+            'bank_account_details.setting_value'  => 'required',
         ];
 
 
@@ -41,9 +41,7 @@ class SaveBankAccountDetailsRequest extends FormRequest
         return [
             'bank_account_details.setting_name.*.required' => __('site_setting.rule_bank_account_details_setting_name.required'),
             'bank_account_details.setting_name.*.string'   => __('site_setting.rule_bank_account_details_setting_name.string'),
-            'bank_account_details.setting_value.required'  => __('site_setting.rule_bank_account_details_setting_value.required'),
-            'bank_account_details.setting_value.string'    => __('site_setting.rule_bank_account_details_setting_value.string'),
-
+            'bank_account_details.setting_value.*.required' => __('site_setting.rule_bank_account_details_setting_value.required'),
         ];
     }
 }

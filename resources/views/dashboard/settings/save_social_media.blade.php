@@ -107,7 +107,7 @@
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
                                 <input hidden name="operation" type="text" value="<?php  echo $operation == 'edit' ? 'edit' : 'add' ?>">
-                                <button style="font-size: 18px; font-weight: bold" type="submit" class="btn btn-primary"><?php  echo $operation == 'edit' ? __('site.edit') : __('site.add') ?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                             </div>
                         </div>
 

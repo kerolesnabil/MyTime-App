@@ -33,7 +33,7 @@ class SaveAdminRequest extends FormRequest
             "user_email"         => "required|string|email",
             "user_date_of_birth" => "required|date",
             "user_img"           => "image|mimes:jpg,jpeg,png|max:10240",
-            "user_is_active"     =>"required|numeric|min:0|max:1",
+            "user_is_active"     => "required|numeric|min:0|max:1",
 
         ];
 
@@ -74,7 +74,7 @@ class SaveAdminRequest extends FormRequest
             'confirm_password.string'          => __('site_admin.rule_confirm_password.string'),
             'confirm_password.min'             => __('site_admin.rule_confirm_password.min'),
             'confirm_password.same'            => __('site_admin.rule_confirm_password.same'),
-            'user_img.image'                   => __('site_admin.rule_user_img.image'),
+            'user_img.images'                   => __('site_admin.rule_user_img.images'),
             'user_img.mimes'                   => __('site_admin.rule_user_img.mimes'),
             'user_img.max'                     => __('site_admin.rule_user_img.max'),
             'user_is_active.required'          => __('site_admin.rule_user_is_active.required'),

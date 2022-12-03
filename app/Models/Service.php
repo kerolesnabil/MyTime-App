@@ -96,7 +96,8 @@ class Service extends Model
                 'service_id',
                 self::getValueWithSpecificLang(
                     'service_name',
-                    app()->getLocale(), 'service_name'),
+                    app()->getLocale(), 'service_name'
+                ),
                 'cat_img'
             )
             ->join('categories','categories.cat_id','=','services.cat_id')
@@ -186,9 +187,21 @@ class Service extends Model
         return self::query()->select
         (
             'services.service_id',
-            self::getValueWithSpecificLang('services.service_name', app()->getLocale(), 'service_name'),
-            self::getValueWithSpecificLang('categories.cat_name', app()->getLocale(), 'sub_cat_name'),
-            self::getValueWithSpecificLang('parent_cats.cat_name', app()->getLocale(), 'main_cat_name')
+            self::getValueWithSpecificLang(
+                'services.service_name',
+                app()->getLocale(),
+                'service_name'
+            ),
+            self::getValueWithSpecificLang(
+                'categories.cat_name',
+                app()->getLocale(),
+                'sub_cat_name'
+            ),
+            self::getValueWithSpecificLang(
+                'parent_cats.cat_name',
+                app()->getLocale(),
+                'main_cat_name'
+            )
         )
         ->join('categories','categories.cat_id','=','services.cat_id')
         ->leftJoin('categories as parent_cats','parent_cats.cat_id','=','categories.parent_id')
@@ -211,6 +224,5 @@ class Service extends Model
         }
 
     }
-
 
 }

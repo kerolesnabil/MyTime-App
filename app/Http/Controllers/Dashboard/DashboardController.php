@@ -4,16 +4,27 @@
 namespace App\Http\Controllers\Dashboard;
 
 
+use App\Adpaters\IPayment;
 use App\Models\Ad;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\VendorDetail;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class DashboardController
 {
-    public function index()
+    public function index(Request $request)
     {
+
+ /*       $paymenyObj = app(IPayment::class);
+//        dd($paymenyObj->createPayment([
+//            "order_id" => 10,
+//            "user_id"  => 1,
+//        ]));
+
+        dd($paymenyObj->getPaymentInfo("dc27f4dd-db43-446a-a88d-d2fa3a401e18"));*/
 
         $data['daily_orders']   = Order::getNewOrders(20, 'daily')->total();
         $data['weekly_orders']  = Order::getNewOrders(20, 'weekly')->total();
@@ -60,6 +71,16 @@ class DashboardController
         if (!empty($data['available_ads'])){
             $data['available_ads'] = collect($data['available_ads'])->toArray()['total'];
         }
+
+
+        $attrs                        = $request->all();
+        $data['chart_orders_daily']   = collect(Order::getOrderChartsDaily($attrs))->toArray();
+        $data['chart_orders_monthly'] = collect(Order::getOrderChartsMonthly($attrs))->toArray();
+        $data['chart_orders_yearly']  = collect(Order::getOrderChartsYearly())->toArray();
+
+
+
+
         return view('dashboard.index', $data);
     }
 

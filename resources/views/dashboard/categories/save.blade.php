@@ -92,7 +92,7 @@
                             </div>
 
                             <div class="col-md-6 pr-md-1">
-                                <div id="img_holder" style="">
+                                <div id="img_holder">
                                     <?php
                                     if(isset($category->cat_id)){
                                         //edit
@@ -116,7 +116,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($category->cat_id)?  __('site.add') : __('site.edit')?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>
                             </div>
                         </div>
 

@@ -20,13 +20,13 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px; font-size: 20px; color: red; font-weight: bold">@lang('site.coupons')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px;  color: #605ca8; ">@lang('site.coupons')</h3>
 
                     <form action="{{ route('coupon.index') }}" method="get">
 
                         <div class="row">
                             <div class="col-md-4">
-                                <a style="font-size: 18px" href="{{ route('coupon.get_coupon') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                <a style="font-size: 18px" href="{{ route('coupon.get_coupon') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                             </div>
 
                         </div>
@@ -36,11 +36,16 @@
 
                 <div class="box-body">
 
-                    @if (!empty($coupons))
+                    <?php
+                        $activeBtn = __("site.activeBtn");
+                        $deactivateBtn = __("site.deactivateBtn");
+                    ?>
 
-                        <table class="table table-bordered table-hover">
+                    @if (count($coupons) > 0)
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+
+                            <thead class="bg-black">
                             <tr style="font-size: 18px">
                                 <th>#</th>
                                 <th>@lang('site_coupon.coupon_code')</th>
@@ -56,10 +61,7 @@
                             </thead>
 
                             <tbody>
-                            <?php
-                                $activeBtn = __("site.activeBtn");
-                                $deactivateBtn = __("site.deactivateBtn");
-                            ?>
+
                             @foreach ($coupons as $index => $coupon)
                                 <tr style="font-size: 17px">
                                     <td>{{ $index + 1 }}</td>
@@ -92,13 +94,16 @@
                                             ?>
                                         </form>
 
-                                        <a style='font-size: 17px' href="{{ route('coupon.get_coupon', $coupon->coupon_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='font-size: 17px' href="{{ route('coupon.get_coupon', $coupon->coupon_id) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
                                         <form action="{{ route('coupon.destroy', $coupon->coupon_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style='font-size: 17px' type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='font-size: 17px' type="submit" class="btn bg-purple delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
+
+                                        <a style='font-size: 17px' href="{{ route('coupon.get_users_used_coupon', $coupon->coupon_id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> @lang('site_coupon.used_coupon_users')</a>
+
 
                                     </td>
                                 </tr>

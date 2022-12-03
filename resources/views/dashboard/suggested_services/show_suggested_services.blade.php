@@ -19,7 +19,7 @@
             <div class="box box-primary">
 
                 <div class="box-header with-border">
-                    <h3 class="box-title" style="margin-bottom: 15px; font-size: 20px; color: red; font-weight: bold">@lang('site.suggested_services')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site.suggested_services')</h3>
                 </div><!-- end of box header -->
 
                 <div id="filtered-data-holder">
@@ -30,9 +30,9 @@
 
                     @if (count($services) > 0)
 
-                        <table class="table table-bordered table-hover margin-bottom">
+                        <table class="table table-responsive table_with_buttons_without_paging">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr style="font-size: 17px">
                                 <th>#</th>
                                 <th>@lang('site_service.vendor_name')</th>
@@ -40,6 +40,7 @@
                                 <th>@lang('site_service.sub_cat_suggested')</th>
                                 <th style="text-align: center">@lang('site_service.service_suggested_name')</th>
                                 <th style="text-align: center">@lang('site_service.created_at')</th>
+                                <th>@lang('site.action')</th>
 
 
                             </tr>
@@ -47,15 +48,34 @@
 
                             <tbody>
                             @foreach ($services as $index => $service)
-                                <tr style="font-size: 17px">
+
+                                <?php
+                                    if ($service->service_suggested_status == 0 && !is_null($service->service_suggested_status)){
+                                        $style = 'background-color: #ff8894';
+                                    }
+                                    elseif ($service->service_suggested_status == 1){
+                                        $style = 'background-color: #99f8af';
+                                    }
+                                    else{
+                                        $style = 'background-color: #fce59e';
+                                    }
+                                ?>
+
+                                <tr style="{{$style}}">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $service->vendor_name }}</td>
                                     <td>{{ $service->main_cat_suggested }}</td>
                                     <td>{{ $service->sub_cat_suggested }}</td>
                                     <td>{{ $service->service_suggested_name }}</td>
                                     <td style="text-align: center">{{ date_format($service->created_at, "Y-m-d")}}</td>
-                                </tr>
+                                    <td>
+                                        <?php if (is_null($service->service_suggested_status)): ?>
+                                            <a style='font-size: 17px' href="{{ route('suggested_service.accept_suggested_services', $service->service_suggested_id) }}" class="btn  btn-success btn-sm"> @lang('site.accept')</a>
+                                            <a style='font-size: 17px' href="{{ route('suggested_service.reject_suggested_service', $service->service_suggested_id) }}" class="btn bg-purple btn-sm"> @lang('site.reject')</a>
 
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
                             @endforeach
                             </tbody>
 

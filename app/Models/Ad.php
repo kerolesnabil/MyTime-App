@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Helpers\ImgHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\SoftDeletes;
+
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class Ad extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = "ads";
     protected $primaryKey = "ad_id";
@@ -27,7 +30,8 @@ class Ad extends Model
         'ad_cost',
         'ad_img',
         'ad_at_homepage',
-        'ad_at_discover_page'
+        'ad_at_discover_page',
+        'status'
     ];
 
 
@@ -126,7 +130,8 @@ class Ad extends Model
             'ad_cost',
             'ad_at_homepage',
             'ad_at_discover_page',
-            'users.user_name as vendor_name'
+            'users.user_name as vendor_name',
+            'ads.created_at'
         )
         ->join('users','users.user_id','=','ads.vendor_id')
         ->whereDate('ad_start_at','<=', $current_day)
@@ -146,9 +151,18 @@ class Ad extends Model
                 'ad_cost',
                 'ad_at_homepage',
                 'ad_at_discover_page',
-                'users.user_name as vendor_name'
+                'users.user_name as vendor_name',
+                'ads.created_at',
+                'ads.status'
             )
             ->join('users','users.user_id','=','ads.vendor_id')
             ->paginate($paginate);
+    }
+
+    public static function updateAdStatus($status, $adId)
+    {
+        self::query()->where('ad_id','=', $adId)->
+        update(['status' => $status]);
+
     }
 }

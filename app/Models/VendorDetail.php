@@ -53,6 +53,8 @@ class VendorDetail extends Model
                     'vendor_details.vendor_start_time',
                     'vendor_details.vendor_end_time',
                     'vendor_details.vendor_slider',
+                    'vendor_details.vendor_commercial_registration_num',
+                    'vendor_details.vendor_tax_num',
                     'vendor_details.vendor_description',
                     'users.user_img as vendor_logo',
                     'vendor_details.vendor_reviews_count',

@@ -23,7 +23,7 @@ class Page extends Model
     [
         'page_title',
         'page_content',
-        'img',
+        'images',
         'page_position',
         'show_in_user_app',
         'show_in_vendor_app',
@@ -41,7 +41,7 @@ class Page extends Model
                 'page_id',
                 self::getValueWithSpecificLang('page_title', app()->getLocale(),'page_title'),
                 self::getValueWithSpecificLang('page_content', app()->getLocale(),'page_content'),
-                'img'
+                'images'
             )
             ->where('is_active',1);
 
@@ -65,7 +65,7 @@ class Page extends Model
 
         foreach ($pages as $key => $page){
 
-            $pages[$key]["img"] = ImgHelper::returnImageLink($page["img"]);
+            $pages[$key]["images"] = ImgHelper::returnImageLink($page["images"]);
         }
 
         return $pages;
@@ -78,7 +78,7 @@ class Page extends Model
             (
                 'page_id',
                 self::getValueWithSpecificLang('page_title', app()->getLocale(),'page_title'),
-                'img',
+                'images',
                 'page_position',
                 'show_in_user_app',
                 'show_in_vendor_app',
@@ -94,7 +94,7 @@ class Page extends Model
                     'page_id',
                     'page_title',
                     'page_content',
-                    'img',
+                    'images',
                     'page_position',
                     'show_in_user_app',
                     'show_in_vendor_app',
@@ -103,7 +103,7 @@ class Page extends Model
                 ->where('page_id', '=', $pageId)
                 ->first();
 
-        $page["img"] = ImgHelper::returnImageLink($page["img"]);
+        $page["images"] = ImgHelper::returnImageLink($page["images"]);
         return $page;
     }
 
@@ -129,7 +129,7 @@ class Page extends Model
                     'show_in_vendor_app' => $data['show_in_vendor_app'],
                     'page_position'      => $data['page_position'],
                     'is_active'          => $data['is_active'],
-                    'img'                => $img,
+                    'images'                => $img,
                 ));
         }
 
@@ -145,7 +145,7 @@ class Page extends Model
             'show_in_vendor_app' => $data['show_in_vendor_app'],
             'page_position'      => $data['page_position'],
             'is_active'          => $data['is_active'],
-            'img'                => $data['img'],
+            'images'                => $data['images'],
             'created_at'      => now(),
             'updated_at'      => now(),
         ]);
