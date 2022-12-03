@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Adpaters\Implementation\HISMS;
+use App\Adpaters\Implementation\MoyasarPaymemt;
 use App\Adpaters\Implementation\TestSms;
+use App\Adpaters\IPayment;
 use App\Adpaters\ISMSGateway;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         //Ioc container
 
         //dependency manager
+        $this->app->bind(IPayment::class, MoyasarPaymemt::class);
 
         if(env("APP_ENV")=="local"){
             //mocking, faking

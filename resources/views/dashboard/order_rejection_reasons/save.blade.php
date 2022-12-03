@@ -46,7 +46,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($reason->rejection_reason_id)?  __('site.add') : __('site.edit')?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                             </div>
                         </div>
 

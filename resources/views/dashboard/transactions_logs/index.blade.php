@@ -20,7 +20,7 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site_financial_transactions.transactions_log')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site_financial_transactions.transactions_log')</h3>
                     <form id='filter_form'>
                         <div class="row">
                             <div class="col-md-8">
@@ -43,7 +43,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3" style="margin-top: 26px">
-                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-success"><i class="fa fa-search"></i> @lang('site.search')</button>
                                     </div>
                                 </div>
 
@@ -54,12 +54,13 @@
                 <div class="box-body">
                     @if ($logs->count() > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_user.user_name')</th>
+                                <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_user.user_type')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_type')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.amount')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_financial_transactions.transaction_notes')</th>
@@ -71,23 +72,24 @@
 
                             @foreach ($logs as $index => $log)
 
+
                                 <?php
                                     if($log->transaction_operation == 'increase'){
-                                        $class = 'class = bg-success';
+                                        $style = "background-color: #99f8af;";
                                     }
                                     else{
-                                        $class = 'class = bg-danger';
+                                        $style = "background-color: #ff8894;";
                                     }
-
                                 ?>
-                                <tr {{$class}}>
+
+                                <tr style="{{$style}}">
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->user_name }}</td>
+                                    <td style="text-align: center; font-size: 18px; font-weight: bold">@lang("site.user_type_$log->user_type") </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">@lang("site_financial_transactions.$log->transaction_operation") </td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->amount }}</td>
                                     <td style="font-size: 18px; font-weight: bold">{{ $log->transaction_notes }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $log->log_created_at }}</td>
-
                                 </tr>
                             @endforeach
                             </tbody>

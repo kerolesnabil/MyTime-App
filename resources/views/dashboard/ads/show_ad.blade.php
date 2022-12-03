@@ -109,7 +109,7 @@
                     </div><!-- end of box -->
                 </div>
                 <script>
-                    avatar_img_preview($('#img'), $('#img_holder'), 'img_preview', 'avatar_img')
+                    avatar_img_preview($('#images'), $('#img_holder'), 'img_preview', 'avatar_img')
                 </script>
 
 

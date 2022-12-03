@@ -19,23 +19,86 @@
             <div class="box box-primary">
 
                 <div class="box-header with-border">
-                    <h3 class="box-title" style="margin-bottom: 15px; font-size: 20px; color: red; font-weight: bold">@lang('site.orders')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site.orders')</h3>
 
-                    <form id='filter_form'>
+                    <form class="form-group" action="{{ route('order.index') }}" method="GET" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="row mb-3">
-                                    <div class="col-md-4">
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.user_name')</label>
+                                        <select name="user_id" class="form-control selectpicker" data-show-subtext="false" data-live-search="true">
+                                            <option value="all">@lang('site.all')</option>
+                                            <?php if (count($users) > 0): ?>
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->user_id}}">{{$user->user_name}}</option>
+                                                @endforeach
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.vendor_name')</label>
+                                        <select name="vendor_id" class="form-control selectpicker" data-show-subtext="false" data-live-search="true">
+
+                                            <option value="all">@lang('site.all')</option>
+                                            <?php if (count($vendors) > 0): ?>
+                                                @foreach($vendors as $vendor)
+                                                    <option value="{{$vendor->user_id}}">{{$vendor->user_name}}</option>
+                                                @endforeach
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.order_type')</label>
+                                        <select name="order_type" class="form-control selectpicker" data-show-subtext="false" data-live-search="true">
+                                            <option value="all">@lang('site.all')</option>
+                                            <option value="home">@lang('site_order.order_type_home')</option>
+                                            <option value="salon">@lang('site_order.order_type_salon')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.order_status') :</label>
+                                        <select name="order_status" class="form-control selectpicker"  data-show-subtext="false" data-live-search="true">
+                                            <option value="all">@lang('site.all')</option>
+                                            <option value="pending">@lang('site_order.order_status_pending')</option>
+                                            <option value="accepted">@lang('site_order.order_status_accepted')</option>
+                                            <option value="done">@lang('site_order.order_status_done')</option>
+                                            <option value="reschedule">@lang('site_order.order_status_reschedule')</option>
+                                            <option value="canceled">@lang('site_order.order_status_canceled')</option>
+                                            <option value="rejected">@lang('site_order.order_status_rejected')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.order_id')</label>
+                                        <input type="text" name="order_id" class="form-control" value="{{ request()->order_id }}">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label style="font-size: 16px; color: #000000">@lang('site_order.order_phone')</label>
+                                        <input type="text" name="order_phone" class="form-control" value="{{ request()->order_phone }}">
+                                    </div>
+
+                                    <div class="col-md-3">
                                         <label style="font-size: 16px; color: #000000">@lang('site.date_from') :</label>
                                         <input type="date" name="date_from" class="form-control" value="{{ request()->date_from }}">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label style="font-size: 16px; color: #000000">@lang('site.date_to') :</label>
                                         <input type="date" name="date_to" class="form-control" value="{{ request()->date_to }}">
                                     </div>
-                                    <div class="col-md-4" style="margin-top: 26px">
-                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+
+
+
+
+
+                                    <div class="col-md-3" style="margin-top: 26px">
+                                        <button style="font-size: 16px;" type="submit" class="btn btn-success"><i class="fa fa-search"></i> @lang('site.search')</button>
                                     </div>
                                 </div>
 
@@ -45,24 +108,16 @@
 
                 </div><!-- end of box header -->
 
-                <div id="filtered-data-holder">
-
-                </div>
-
                 <div class="box-body">
-
-                    @if(isset($report))
-                        <i class="fa fa-file-text-o" aria-hidden="true" style="font-size: 30px; display: inline"> <span style=" font-weight: bold;color: #0B90C4">@lang('site.report')</span></i>
-                        <hr>
-                    @endif
 
                     @if ($orders->count() > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr style="font-size: 17px">
                                 <th>#</th>
+                                <th>@lang('site_order.order_id')</th>
                                 <th>@lang('site_order.user_name')</th>
                                 <th>@lang('site_order.order_phone')</th>
                                 <th style="text-align: center">@lang('site_order.vendor_name')</th>
@@ -85,7 +140,10 @@
                             ?>
                             @foreach ($orders as $index => $order)
                                 <tr style="font-size: 17px">
-                                    <td>{{ $index + 1 }}</td>
+
+                                    <td>{{ $index }}</td>
+                                    <td>{{ $order->order_id  }}</td>
+
                                     <td>{{ $order->user_name }}</td>
                                     <td>{{ $order->order_phone }}</td>
                                     <td>{{ $order->vendor_name}}</td>
@@ -102,7 +160,7 @@
                                     <td>{{ $order->order_created_at}}</td>
 
                                     <td>
-                                        <a style="font-size: 17px" href="{{ route('order.show_order', $order->order_id) }}" class="btn btn-primary btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+                                        <a style="font-size: 17px" href="{{ route('order.show_order', $order->order_id) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
                                     </td>
 
                                 </tr>
@@ -124,35 +182,6 @@
                     @endif
 
                 </div><!-- end of box body -->
-
-                <script>
-                    $(document).ready(function () {
-                        $('form').on('click','.report_btn', function (e) {
-
-                            e.preventDefault();
-                            let formData = new FormData($('#filter_form')[0]);
-                            $.ajax({
-                                type: 'post',
-                                enctype: 'multipart/form-data',
-                                url: "{{route('order.report_order')}}",
-                                data : formData,
-                                processData: false,
-                                contentType: false,
-                                cache: false,
-                                success: function (data) {
-                                    if (data != false){
-                                        $('.box-body').remove();
-                                        $('#filtered-data-holder').append(data)
-                                    }
-                                },
-                            })
-
-                        });
-                    });
-
-                </script>
-
-
 
             </div><!-- end of box -->
 

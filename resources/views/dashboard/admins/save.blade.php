@@ -93,7 +93,7 @@
 
                         <div class="row mb-3 margin-bottom">
                             <div class="col-md-6 pr-md-1">
-                                <label>@lang('site_admin.img')</label>
+                                <label>@lang('site_admin.images')</label>
                                 <div class="custom-file">
                                     <input type="file" name="user_img" class="custom-file-input" id="img">
                                 </div>
@@ -119,7 +119,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($admin->user_id)?  __('site.add') : __('site.edit')?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>
                             </div>
                         </div>
 

@@ -68,7 +68,7 @@ class SaveCategoryRequest extends FormRequest
             'cat_name.string'            => __('site_category.rule_cat_name_string'),
             'cat_description.string'     => __('site_category.rule_cat_description_string'),
             'cat_img.required'           => __('site_category.rule_cat_img_required'),
-            'cat_img.image'              => __('site_category.rule_cat_img_image'),
+            'cat_img.images'              => __('site_category.rule_cat_img_image'),
             'cat_img.mimes'              => __('site_category.rule_cat_img_mimes'),
             'cat_img.max'                => __('site_category.rule_cat_img_max'),
             'cat_is_active.required'     => __('site_category.rule_cat_is_active_required'),

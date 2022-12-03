@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\Lang;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {

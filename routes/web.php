@@ -32,8 +32,9 @@ Route::group([
         Route::get('/', 'VendorController@index')->name('vendor.index');
         Route::post('update_vendor_activation', 'VendorController@updateActivateVendor')->name('vendor.update_activation');
         Route::get('/show_vendor/{id}', 'VendorController@showVendorById')->name('vendor.show_vendor');
-        Route::post('report_vendors', 'VendorController@reportVendors')->name('vendor.report_vendors');
         Route::get('/show_new_vendors/{report_type}', 'VendorController@showNewVendors')->name('vendor.show_new_vendors');
+        Route::post('save_vendor_services/{id}', 'VendorController@saveVendorServices')->name('vendor.save_vendor_services');
+        Route::get('save_vendor_services/{id}', 'VendorController@saveVendorServices')->name('vendor.save_vendor_services');
 
     });
 
@@ -67,7 +68,7 @@ Route::group([
     Route::prefix('orders')->group(function (){
         Route::get('/', 'OrderController@index')->name('order.index');
         Route::get('/show_order/{id}', 'OrderController@showOrderById')->name('order.show_order');
-        Route::post('report_orders', 'OrderController@reportOrders')->name('order.report_order');
+        Route::post('/report_orders', 'OrderController@reportOrders')->name('order.report_order');
         Route::get('/show_new_orders/{report_type}', 'OrderController@showNewOrders')->name('order.show_new_orders');
     });
 
@@ -75,6 +76,8 @@ Route::group([
         Route::get('/', 'AdController@index')->name('ad.index');
         Route::get('/show_ad/{id}', 'AdController@showAdById')->name('ad.show_ad');
         Route::get('/show_available_ads', 'AdController@showAvailableAds')->name('ad.show_available_ads');
+        Route::get('/reject_ad/{id}', 'AdController@rejectAd')->name('ad.reject_ads');
+        Route::get('/accept_ad/{id}', 'AdController@acceptAd')->name('ad.accept_ads');
     });
 
     Route::prefix('langs')->group(function (){
@@ -97,6 +100,7 @@ Route::group([
         Route::delete('destroy/{id}', 'CouponController@destroy')->name('coupon.destroy');
         Route::post('save/{id?}', 'CouponController@saveCoupon')->name('coupon.save_coupon');
         Route::get('get_coupon/{id?}', 'CouponController@getCoupon')->name('coupon.get_coupon');
+        Route::get('get_users_used_coupon/{coupon_id?}', 'CouponController@getUsersUsedCoupon')->name('coupon.get_users_used_coupon');
         Route::post('update_coupon_activation', 'CouponController@updateActivationCoupon')->name('coupon.update_activation');
     });
 
@@ -143,8 +147,19 @@ Route::group([
         Route::post('save/{id?}', 'ServiceController@saveService')->name('service.save_service');
         Route::get('get_service/{id?}', 'ServiceController@getService')->name('service.get_service');
         Route::delete('destroy/{id}', 'ServiceController@destroy')->name('service.destroy');
-        Route::get('show_suggested_service', 'ServiceController@showSuggestedService')->name('service.show_suggested_services');
     });
+
+    Route::prefix('suggested_services')->group(function (){
+
+        Route::get('show_suggested_service', 'SuggestedServiceController@showSuggestedService')->name('suggested_service.show_suggested_services');
+        Route::get('reject_suggested_service/{id}', 'SuggestedServiceController@rejectSuggestedService')->name('suggested_service.reject_suggested_service');
+        Route::get('accept_suggested_service/{id}', 'SuggestedServiceController@acceptSuggestedService')->name('suggested_service.accept_suggested_services');
+
+
+    });
+
+
+
 
 
     Route::prefix('financial_requests')->group(function (){
@@ -152,7 +167,6 @@ Route::group([
         Route::get('/show_withdrawal_requests', 'FinancialRequestsController@showWithdrawalRequests')->name('financial_request.show_withdrawal_requests');
         Route::get('/get_financial_request/{id}', 'FinancialRequestsController@getFinancialRequest')->name('financial_request.get_financial_request');
         Route::post('/update_financial_request/{id}', 'FinancialRequestsController@updateFinancialRequest')->name('financial_request.update_financial_request');
-
     });
 
 

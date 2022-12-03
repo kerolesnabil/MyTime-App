@@ -98,7 +98,7 @@
 
                         <div class="row mb-3 margin-bottom">
                             <div class="col-md-6 pr-md-1">
-                                <label>@lang('site_page.img')</label>
+                                <label>@lang('site_page.images')</label>
                                 <div class="custom-file">
                                     <input type="file" name="img" class="custom-file-input" id="img">
                                 </div>
@@ -125,7 +125,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($page->page_id)?  __('site.add') : __('site.edit')?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                             </div>
                         </div>
 
@@ -143,7 +143,7 @@
     </div><!-- end of content wrapper -->
 
     <script>
-        avatar_img_preview($('#img'), $('#img_holder'), 'img_preview', 'avatar_img')
+        avatar_img_preview($('#images'), $('#img_holder'), 'img_preview', 'avatar_img')
     </script>
 
 @endsection

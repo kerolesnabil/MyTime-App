@@ -37,10 +37,10 @@ class SaveLangRequest extends FormRequest
 
 
         if (is_null($this->request->get('lang_id'))){
-            $rules['lang_img'] =  "required|image|mimes:jpg,jpeg,png|max:10240";
+            $rules['lang_img'] =  "required|images|mimes:jpg,jpeg,png|max:10240";
         }
         else{
-            $rules['lang_img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['lang_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
         }
 
         return $rules;
@@ -65,7 +65,7 @@ class SaveLangRequest extends FormRequest
 
 
             'lang_img.required'       => __('site_lang.rule_lang_img.required'),
-            'lang_img.image'          => __('site_lang.rule_lang_img.image'),
+            'lang_img.images'          => __('site_lang.rule_lang_img.images'),
             'lang_img.mimes'          => __('site_lang.rule_lang_img.mimes'),
             'lang_img.max'            => __('site_lang.rule_lang_img.max'),
 

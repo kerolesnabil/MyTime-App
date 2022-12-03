@@ -24,7 +24,7 @@ class FinancialTransactionController extends Controller
         }
         $rules= [
             "amount"              => "required|integer",
-            "deposit_receipt_img" => "image|mimes:jpg,jpeg,png|max:3072",
+            "deposit_receipt_img" => "images|mimes:jpg,jpeg,png|max:3072",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -105,7 +105,7 @@ class FinancialTransactionController extends Controller
 
         $requests['deposit_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'deposit');
         $requests['withdrawal_requests'] = FinancialRequests::getFinancialRequestsByUserId(Auth::user()->user_id, 'withdrawal');
-        
+
         return ResponsesHelper::returnData($requests,'200','');
     }
 

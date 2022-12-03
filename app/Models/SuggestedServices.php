@@ -18,7 +18,8 @@ class SuggestedServices extends Model
         'vendor_id',
         'main_cat_suggested',
         'sub_cat_suggested',
-        'service_suggested_name'
+        'service_suggested_name',
+        'service_suggested_status'
     ];
 
 
@@ -35,23 +36,39 @@ class SuggestedServices extends Model
 
     }
 
-    public static function showSuggestedService()
+    public static function showSuggestedService($suggestedServiceId = null)
     {
-        return self::query()
+        $data = self::query()
             ->select(
+                'service_suggested_id',
                 'main_cat_suggested',
                 'sub_cat_suggested',
                 'service_suggested_name',
                 DB::raw('DATE_FORMAT(services_suggested_by_vendor.created_at, "%Y-%m-%d") as created_at'),
-                'user_name as vendor_name'
+                'user_name as vendor_name',
+                'service_suggested_status'
             )
             ->join('users','users.user_id','services_suggested_by_vendor.vendor_id')
-            ->orderBy('services_suggested_by_vendor.created_at', 'desc')
-            ->get();
+            ->orderBy('services_suggested_by_vendor.created_at', 'desc');
+
+            if (is_null($suggestedServiceId)){
+                $data = $data->get();
+            }
+            else{
+                $data = $data->where('service_suggested_id','=', $suggestedServiceId)->first();
+            }
+
+            return $data;
 
     }
 
 
+    public static function updateSuggestedServiceStatus($status, $suggestedServiceId)
+    {
+        self::query()->where('service_suggested_id','=', $suggestedServiceId)->
+        update(['service_suggested_status' => $status]);
+
+    }
 
 
 

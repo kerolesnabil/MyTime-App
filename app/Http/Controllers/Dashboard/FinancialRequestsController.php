@@ -23,7 +23,7 @@ class FinancialRequestsController extends Controller
     public function showWithdrawalRequests(Request $request)
     {
         $requestType = 'withdrawal';
-        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('withdrawal');
+        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('withdrawal', $request->all());
         return view('dashboard.financial_requests.show_financial_requests')->with(['requests' => $financial_requests, 'request_type' => $requestType]);
     }
 

@@ -13,7 +13,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $users= User::getUsersByType('admin');
+        $users= User::getUsersByType('admin', []);
         return view('dashboard.admins.index')->with(['admins'=> $users]);
     }
 

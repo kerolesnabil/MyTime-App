@@ -105,7 +105,7 @@
                                                 <div class='col-md-4 pr-md-1'>
                                                      <label style='font-size: 18px; font-weight: bold'>$deposit_receipt_img_label</label>
                                                      <br>
-                                                     <img class='img_preview'  src='$request->deposit_receipt_img' style='width: 500px; height: 500px'>
+                                                     <images class='img_preview'  src='$request->deposit_receipt_img' style='width: 500px; height: 500px'>
                                                 </div>
                                             </div>
                                         ";
@@ -207,7 +207,7 @@
 
                                                     <div class='col-md-6 pr-md-1'>
                                                         <div id='img_holder' style=''>
-                                                            <img class='img_preview'  id='avatar_img' src='$img_url'>
+                                                            <images class='img_preview'  id='avatar_img' src='$img_url'>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -217,7 +217,7 @@
 
                                 <div class="row margin-bottom">
                                     <div class="col-md-6 pl-md-1">
-                                        <button type="submit" class="btn btn-primary">@lang('site.save') </button>
+                                        <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                                     </div>
                                 </div>
 

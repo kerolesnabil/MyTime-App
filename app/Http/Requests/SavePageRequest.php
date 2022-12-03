@@ -37,10 +37,10 @@ class SavePageRequest extends FormRequest
 
 
         if (is_null($this->request->get('page_id'))){
-            $rules['img'] =  "required|image|mimes:jpg,jpeg,png|max:10240";
+            $rules['images'] =  "required|images|mimes:jpg,jpeg,png|max:10240";
         }
         else{
-            $rules['img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['images'] =  "images|mimes:jpg,jpeg,png|max:10240";
         }
 
 
@@ -70,10 +70,10 @@ class SavePageRequest extends FormRequest
             'is_active.max'               => __('site_page.rule_is_active.max'),
             'page_position.required'      => __('site_page.rule_page_position.required'),
             'page_position.numeric'       => __('site_page.rule_page_position.numeric'),
-            'img.required'                => __('site_page.rule_img.required'),
-            'img.image'                   => __('site_page.rule_img.image'),
-            'img.mimes'                   => __('site_page.rule_img.mimes'),
-            'img.max'                     => __('site_page.rule_img.max'),
+            'images.required'                => __('site_page.rule_img.required'),
+            'images.images'                   => __('site_page.rule_img.images'),
+            'images.mimes'                   => __('site_page.rule_img.mimes'),
+            'images.max'                     => __('site_page.rule_img.max'),
             'page_title.*.required'       => __('site_page.rule_page_title.required'),
             'page_title.*.string'         => __('site_page.rule_page_title.string'),
             'page_content.*.string'       => __('site_page.rule_page_content.string'),

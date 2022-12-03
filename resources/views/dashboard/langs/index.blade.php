@@ -20,14 +20,14 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.langs')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site.langs')</h3>
 
                     <form action="{{ route('page.index') }}" method="get">
 
                         <div class="row">
 
                             <div class="col-md-4">
-                                <a href="{{ route('lang.get_lang') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                <a href="{{ route('lang.get_lang') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                             </div>
 
                         </div>
@@ -39,12 +39,11 @@
 
                     @if (count($langs) > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th>#</th>
-                                <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_symbol')</th>
                                 <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_name')</th>
                                 <th style="font-size: 18px; font-weight: bold">@lang('site_lang.lang_direction')</th>
                                 <th style="text-align: center; font-size: 18px; font-weight: bold">@lang('site_lang.lang_is_active')</th>
@@ -60,7 +59,6 @@
                             @foreach ($langs as $index => $lang)
                                 <tr>
                                     <td style="font-size: 18px; font-weight: bold">{{ $index + 1 }}</td>
-                                    <td style="font-size: 18px; font-weight: bold">{{ $lang['lang_symbol']}}</td>
                                     <td style="font-size: 18px; font-weight: bold">{{ $lang['lang_name']}}</td>
                                     <td style="font-size: 18px; font-weight: bold"><?php echo __('site_lang.'.$lang['lang_direction'])?></td>
 
@@ -77,23 +75,23 @@
                                             <?php
                                                 $lang_id = $lang['lang_id'];
                                                 echo $lang['lang_is_active']== 1 ?
-                                                    "<button style='font-size: 18px; font-weight: bold' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
+                                                    "<button style='font-size: 18px;' type='submit' class='activation_btn btn btn-block'><i class='fa fa-times'> $deactivateBtn</i></button>
                                                      <input type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='false'>
                                                     "
                                                     :
-                                                    "<button type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
-                                                     <input style='font-size: 18px; font-weight: bold' type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='true'>
+                                                    "<button type='submit' class='activation_btn btn btn-info btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
+                                                     <input style='font-size: 18px;' type='hidden' id= 'hidden_btn_$lang_id' name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
 
-                                        <a style='font-size: 18px; font-weight: bold' href="{{ route('lang.get_lang', $lang['lang_id']) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style='font-size: 18px;' href="{{ route('lang.get_lang', $lang['lang_id']) }}" class="btn btn-success"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('lang.destroy', $lang['lang_id']) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style='font-size: 18px; font-weight: bold' type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style='font-size: 18px;' type="submit" class="btn bg-purple delete"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>

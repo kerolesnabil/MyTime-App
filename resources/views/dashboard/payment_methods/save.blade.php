@@ -73,7 +73,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> <?php echo !isset($payment_method->payment_method_id)?  __('site.add') : __('site.edit')?></button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                             </div>
                         </div>
 
@@ -91,7 +91,7 @@
     </div><!-- end of content wrapper -->
 
     <script>
-        avatar_img_preview($('#img'), $('#img_holder'), 'img_preview', 'avatar_img')
+        avatar_img_preview($('#images'), $('#img_holder'), 'img_preview', 'avatar_img')
     </script>
 
 @endsection

@@ -26,7 +26,7 @@
 
                         <table class="table table-bordered table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th>#</th>
                                 <th>@lang('site_user.user_name')</th>

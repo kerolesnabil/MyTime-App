@@ -34,9 +34,9 @@ function avatar_img_preview(input_file_id, img_holder_id, img_style_func_name, i
 
 function images_previews(input_file_id, holder_img_id, image_id, func_style_img, func_style_input_text, type_file = null, input_file_slider_name = null, slider_counter_id = null) {
 
-    // holder_img_id ==> div will hold img
-    // type_file ( slider or image )
-    // func_style_img ==> css func name for image or slider
+    // holder_img_id ==> div will hold images
+    // type_file ( slider or images )
+    // func_style_img ==> css func name for images or slider
     // func_style_input_text=> col-md-3 pr-md-1 or col-md-6 pr-md-1
     // object_name_has_slider ==> $place
     $("#"+input_file_id).on('change', function () {
@@ -65,7 +65,7 @@ function images_previews(input_file_id, holder_img_id, image_id, func_style_img,
                         let row_div = $("<div class='row mb-3'>", {
                         });
 
-                        let image = $("<img />", {
+                        let image = $("<images />", {
                             "src": this.result,
                             "class": func_style_img,
                         });
@@ -133,7 +133,7 @@ function images_previews(input_file_id, holder_img_id, image_id, func_style_img,
             }
             else {
                 count_current_files = 0;
-                
+
                 for( let i = count_current_files ; i < count_of_files; i++) {
                     let reader = new FileReader();
                     reader.onload = function () {
@@ -141,7 +141,7 @@ function images_previews(input_file_id, holder_img_id, image_id, func_style_img,
                         console.log(img_id);
 
 
-                        let image = $("<img />", {
+                        let image = $("<images />", {
                             "src": this.result,
                             "class": func_style_img ,
                             "id": image_id,

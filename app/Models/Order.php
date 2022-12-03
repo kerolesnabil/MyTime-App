@@ -374,11 +374,12 @@ class Order extends Model
 
     }
 
-    public static function getAllOrders($paginate)
+    public static function getAllOrders($attrs)
     {
-        return self::query()
+        $orders = self::query()
                 ->select(
                     'orders.order_id',
+                    'orders.vendor_id',
                     'orders.order_custom_date as order_date',
                     'orders.order_custom_time as order_time',
                     'orders.order_type',
@@ -396,7 +397,52 @@ class Order extends Model
                 ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
                 ->join('users', 'orders.user_id', '=', 'users.user_id')
                 ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
-                ->orderBy('orders.created_at','desc')->paginate($paginate);
+                ->orderBy('orders.created_at','desc');
+
+        if(isset($attrs['date_from']) && $attrs['date_from'] != ''){
+            $attrs['date_from'] = date('Y-m-d H:i:s', strtotime($attrs['date_from']));
+            $orders = $orders->where('orders.created_at','>=', $attrs['date_from']);
+        }
+
+        if(isset($attrs['date_to']) && $attrs['date_to'] != ''){
+            $attrs['date_to'] = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($attrs['date_to'])));
+            $orders = $orders->where('orders.created_at','<=', $attrs['date_to']);
+        }
+
+        if(isset($attrs['order_type']) && $attrs['order_type'] != '' &&  $attrs['order_type'] != 'all'){
+            $orders = $orders->where('orders.order_type','=', $attrs['order_type']);
+        }
+
+        if(isset($attrs['order_status']) && $attrs['order_status'] != '' &&  $attrs['order_status'] != 'all'){
+            $orders = $orders->where('orders.order_status','=', $attrs['order_status']);
+        }
+
+        if(isset($attrs['order_id']) && $attrs['order_id'] != ''){
+            $orders = $orders->where('orders.order_id','=', $attrs['order_id']);
+        }
+
+        if(isset($attrs['user_id']) && $attrs['user_id'] != '' &&  $attrs['user_id'] != 'all'){
+            $orders = $orders->where('orders.user_id','=', $attrs['user_id']);
+        }
+
+        if(isset($attrs['vendor_id']) && $attrs['vendor_id'] != '' &&  $attrs['vendor_id'] != 'all'){
+            $orders = $orders->where('orders.vendor_id','=', $attrs['vendor_id']);
+        }
+
+        if(isset($attrs['order_phone']) && $attrs['order_phone'] != ''){
+            $orders = $orders->where('orders.order_phone','like', $attrs['order_phone']);
+        }
+
+
+        if(isset($attrs['paginate']) && $attrs['paginate'] != ''){
+            $orders = $orders->paginate($attrs['paginate']);
+        }
+        else{
+            $orders = $orders->get();
+        }
+
+        return $orders;
+
     }
 
     public static function getOrderById($orderId)
@@ -428,34 +474,6 @@ class Order extends Model
             ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
             ->where('orders.order_id','=', $orderId)->first();
 
-    }
-
-    public static function getOrdersWithFilters($date_from, $date_to)
-    {
-        return self::query()
-            ->select(
-                'orders.order_id',
-                'orders.order_custom_date as order_date',
-                'orders.order_custom_time as order_time',
-                'orders.order_type',
-                'orders.order_status',
-                'orders.is_paid',
-                'vendors.user_name as vendor_name',
-                'users.user_name',
-                self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method'),
-                DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d %H:%i") as order_created_at'),
-                'order_taxes_cost',
-                'order_total_price',
-                'order_app_profit',
-                'order_phone'
-            )
-            ->join('users as vendors', 'orders.vendor_id', '=', 'vendors.user_id')
-            ->join('users', 'orders.user_id', '=', 'users.user_id')
-            ->join('payment_methods','orders.payment_method_id', '=','payment_methods.payment_method_id')
-            ->orderBy('orders.created_at','desc')
-            ->where('orders.created_at','>=', $date_from)
-            ->where('orders.created_at','<=', $date_to)
-            ->get();
     }
 
     public static function getOrdersOfVendorByKeyWord($vendorId, $orderId = null, $username =null)
@@ -498,6 +516,101 @@ class Order extends Model
         }
 
         return $orders;
+    }
+
+
+    public static function getOrderChartsDaily($attr)
+    {
+        $dbDateFormat = '%Y-%m-%d';
+        $dateFrom     = Carbon::now()->firstOfMonth()->format('Y-m-d');
+        $dateTo       = Carbon::now()->lastOfMonth()->format('Y-m-d');
+
+        if (isset($attr['order_count_daily_form_month']) && $attr['order_count_daily_form_month'] != ''){
+
+            $dateFrom     = Carbon::createFromFormat('Y-m', $attr['order_count_daily_form_month'])->
+                            firstOfMonth()->format('Y-m-d');
+            $dateTo       = Carbon::createFromFormat('Y-m', $attr['order_count_daily_form_month'])->
+                            lastOfMonth()->format('Y-m-d');
+        }
+
+        $data      = self::getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat);
+        $loopStart = date('Y-m-d', strtotime($dateFrom));
+        $loopEnd   = date('Y-m-d', strtotime($dateTo));
+
+
+        for ($i = $loopStart; $i <= $loopEnd; $i++){
+            if (!isset($data[$i])){
+                $data[$i] = 0;
+            }
+
+
+        }
+
+        return $data;
+    }
+
+    public static function getOrderChartsMonthly($attr)
+    {
+        $dbDateFormat = '%Y-%m';
+        $dateFrom     = Carbon::now()->firstOfYear()->format('Y-m');
+        $dateTo       = Carbon::now()->lastOfYear()->format('Y-m');
+
+        if (isset($attr['order_count_monthly_form_year']) && $attr['order_count_monthly_form_year'] != ''){
+
+            $dateFrom     = Carbon::createFromFormat('Y', $attr['order_count_monthly_form_year'])->
+                            firstOfYear()->format('Y-m');
+            $dateTo       = Carbon::createFromFormat('Y', $attr['order_count_monthly_form_year'])->
+                            lastOfYear()->format('Y-m');
+        }
+
+        $data  = self::getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat);
+
+        $loopStart = date('Y-m', strtotime($dateFrom));
+        $loopEnd   = date('Y-m', strtotime($dateTo));
+
+        for ($i = $loopStart; $i <= $loopEnd; $i++){
+            if (!isset($data[$i])){
+                $data[$i] = 0;
+            }
+        }
+
+        return $data;
+    }
+
+    public static function getOrderChartsYearly()
+    {
+        $dateFrom     = Carbon::now()->subYears(5)->format('Y');
+        $dateTo       = Carbon::now()->format('Y');
+        $dbDateFormat = '%Y';
+        return self::getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat);
+    }
+
+
+
+
+
+
+
+
+    private static function getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat)
+    {
+        $data =  self::query()->
+            select(
+                    DB::raw('COUNT(*) as `count`, DATE_FORMAT(created_at, "'. $dbDateFormat .'") as date')
+            )->
+            where(DB::raw('DATE_FORMAT(created_at, "'. $dbDateFormat .'")'), '>=', $dateFrom)->
+            where(DB::raw('DATE_FORMAT(created_at, "'. $dbDateFormat .'")'), '<=', $dateTo)->
+            groupBy('date')->
+            orderBy('date', 'ASC')->
+            get();
+
+
+        $result = [];
+        foreach ($data as $key => $item){
+            $key          = $item->date;
+            $result[$key] = $item->count;
+        }
+        return $result;
     }
 
 }

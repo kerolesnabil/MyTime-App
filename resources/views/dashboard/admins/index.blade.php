@@ -23,7 +23,7 @@
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site.admins')</h3>
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="{{ route('admin.get_admin') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                            <a href="{{ route('admin.get_admin') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
                     </div>
 
@@ -31,11 +31,16 @@
 
                 <div class="box-body">
 
-                    @if ($admins->count() > 0)
+                    <?php
+                        $activeBtn = __("site.activeBtn");
+                        $deactivateBtn = __("site.deactivateBtn");
+                    ?>
 
-                        <table class="table table-bordered table-hover">
+                    @if (count($admins) > 0)
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+
+                            <thead class="bg-black">
                             <tr style="font-weight: bold; font-size: 18px">
                                 <th>#</th>
                                 <th>@lang('site_admin.admin_name')</th>
@@ -48,10 +53,7 @@
                             </thead>
 
                             <tbody>
-                            <?php
-                                $activeBtn = __("site.activeBtn");
-                                $deactivateBtn = __("site.deactivateBtn");
-                            ?>
+
                             @foreach ($admins as $index=>$user)
                                 <tr style="font-weight: bold; font-size: 16px">
                                     <td>{{ $index + 1 }}</td>
@@ -64,13 +66,13 @@
                                             echo $user->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?></td>
                                     <td>
-                                        <a style="font-weight: bold; font-size: 16px" href="{{ route('admin.get_admin', $user->user_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style="font-weight: bold; font-size: 16px" href="{{ route('admin.get_admin', $user->user_id) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('admin.destroy', $user->user_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style="font-weight: bold; font-size: 16px" type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style="font-weight: bold; font-size: 16px" type="submit" class="btn bg-purple delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
                                     </td>
                                 </tr>

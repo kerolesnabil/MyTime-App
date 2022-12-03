@@ -21,7 +21,7 @@ return [
     'rule_lang_is_active.min'      => '',
     'rule_lang_is_active.max'      => '',
     'rule_lang_img.required'       => '',
-    'rule_lang_img.image'          => '',
+    'rule_lang_img.images'          => '',
     'rule_lang_img.mimes'          => '',
     'rule_lang_img.max'            => '',
 

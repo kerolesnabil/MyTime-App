@@ -59,7 +59,7 @@ class AdController extends Controller
 
             $rules= [
                 "ad_title" => "required|string",
-                "ad_img"   => "nullable|image|mimes:jpg,jpeg,png|max:3072",
+                "ad_img"   => "nullable|images|mimes:jpg,jpeg,png|max:3072",
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -87,13 +87,12 @@ class AdController extends Controller
 
         }
         else {
-
             $rules= [
                 "ad_at_location"        => "required",
                 "ad_days"               => "required|integer",
                 "ad_title"              => "required|string",
                 "ad_start_at"           => "required|date",
-                'ad_img'                => 'required|image|mimes:jpg,jpeg,png|max:3072',
+                'ad_img'                => 'required|images|mimes:jpg,jpeg,png|max:3072',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -130,23 +129,13 @@ class AdController extends Controller
             if ($wallet->user_wallet < $cost){
                 return ResponsesHelper::returnData([],'400',__('vendor.wallet_amount_not_enough'));
             }
-            else{
-
-                event(new CreateAd(
-                    Auth::user()->user_id,
-                    $wallet->user_wallet,
-                    $cost
-                ));
-            }
-
 
             $dataArr["ad_img"]=ImgHelper::uploadImage('images', $request->ad_img);
-
         }
 
         $ad = Ad::saveAd($dataArr);
 
-        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('vendor.save_data'));
+        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('site_add_wait.save_ad_waiting'));
 
     }
 

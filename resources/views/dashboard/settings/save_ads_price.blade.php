@@ -21,7 +21,7 @@
             <div class="box box-primary">
 
                 <div class="box-header">
-                    <h1 class="box-title" style="color: red; font-size: 20px; font-weight: bold"> <?php echo __('site.edit')?> @lang('site_setting.ads_prices')</h1>
+                    <h1 class="box-title" style="color: #605ca8 font-size: 20px; font-weight: bold"> <?php echo __('site.edit')?> @lang('site_setting.ads_prices')</h1>
                 </div><!-- end of box header -->
 
                 <div class="box-body">
@@ -70,7 +70,7 @@
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> {{__('site.edit')}}</button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
                             </div>
                         </div>
 

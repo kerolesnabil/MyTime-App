@@ -1,11 +1,11 @@
-// image preview
-$(".image").change(function () {
+// images preview
+$(".images").change(function () {
 
     if (this.files && this.files[0]) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $('.image-preview').attr('src', e.target.result);
+            $('.images-preview').attr('src', e.target.result);
         }
 
         reader.readAsDataURL(this.files[0]);

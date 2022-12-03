@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 class TransactionLogController extends Controller
 {
 
-
-
     public function index(Request $request)
     {
         $logs =  TransactionLog::getTransactionsLogs(20, $request->all());

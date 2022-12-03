@@ -31,7 +31,7 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang($title)</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang($title)</h3>
 
                     <form id='filter_form'>
                         <div class="row">
@@ -56,7 +56,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3" style="margin-top: 26px">
-                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                                        <button style="font-size: 16px;" type="submit" class="report_btn btn btn-success"><i class="fa fa-search"></i> @lang('site.search')</button>
                                     </div>
                                 </div>
 
@@ -68,11 +68,11 @@
 
                 <div class="box-body">
 
-                    @if ($requests->count() > 0)
+                    @if (count($requests) > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th>@lang('site_user.user_name')</th>
@@ -91,20 +91,22 @@
 
                                     if (is_null($request->status)){
                                         $status_label =  'site_financial_transactions.request_waiting';
-                                        $class =  $class = 'class = bg-warning';
+                                        $style  = 'background-color: #fce59e;';
                                     }
                                     elseif ($request->status == 0){
                                         $status_label =  'site_financial_transactions.request_not_approved';
-                                        $class =  $class = 'class = bg-danger';
+                                        $style  = 'background-color: #ff8894;';
+
                                     }
                                     else{
                                         $status_label =  'site_financial_transactions.request_approved';
-                                        $class =  $class = 'class = bg-success';
+                                        $style  = 'background-color: #99f8af;';
+
                                     }
 
                                 ?>
 
-                                <tr {{$class}}>
+                                <tr style="{{$style}}">
                                     <td style='text-align: center; font-size: 18px; font-weight: bold' >{{ $index + 1 }}</td>
                                     <td style="font-size: 18px; font-weight: bold">{{ $request->user_name }}</td>
                                     <td style="text-align: center; font-size: 18px; font-weight: bold">{{ $request->amount }}</td>
@@ -119,7 +121,7 @@
 
                                         @if(is_null($request->status))
 
-                                            <a style='font-size: 17px' href="{{ route('financial_request.get_financial_request', $request->f_t_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.show')</a>
+                                            <a style='font-size: 17px' href="{{ route('financial_request.get_financial_request', $request->f_t_id) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> @lang('site.show')</a>
                                         @endif
                                     </td>
 

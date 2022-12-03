@@ -144,7 +144,7 @@ class SettingsSeeder extends Seeder
                 [
                     'setting_name'  => '{"ar":"تفاصيل الحساب البنكي للتطبيق", "en":"App bank account details"}',
                     'setting_key'   => 'bank_account_details',
-                    'setting_value' => 'details',
+                    'setting_value' => '{"bank_name":"saudi bank name", "account_number":"0000", "iban_number":"12345"}',
                     'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
                 ]

@@ -11,7 +11,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users= User::getUsersByType('user');
+        $users= User::getUsersByType('user', []);
         return view('dashboard.users.index')->with(['users'=>$users]);
     }
 
@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function showNewUsers($reportType)
     {
-        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly', 'all'];
 
         if (in_array($reportType, $reportTypes)){
             $users = User::getNewUsers(20, $reportType,'user');

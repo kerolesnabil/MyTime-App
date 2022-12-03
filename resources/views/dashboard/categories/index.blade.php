@@ -20,11 +20,11 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.categories')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8">@lang('site.categories')</h3>
 
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="{{ route('category.get_category') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                            <a href="{{ route('category.get_category') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                         </div>
                     </div>
 
@@ -32,11 +32,16 @@
 
                 <div class="box-body">
 
-                    @if ($categories->count() > 0)
+                    <?php
+                        $activeBtn = __("site.activeBtn");
+                        $deactivateBtn = __("site.deactivateBtn");
+                    ?>
 
-                        <table class="table table-bordered table-hover">
+                    @if (count($categories) > 0)
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th>@lang('site_category.cat_name')</th>
@@ -48,10 +53,7 @@
                             </thead>
 
                             <tbody>
-                            <?php
-                                $activeBtn = __("site.activeBtn");
-                                $deactivateBtn = __("site.deactivateBtn");
-                            ?>
+
                             @foreach ($categories as $index => $category)
                                 <tr>
                                     <td style="font-size: 16px">{{ $index + 1 }}</td>
@@ -86,19 +88,19 @@
                                             ?>
                                         </form>
 
-                                        <a style="font-size: 16px" href="{{ route('category.get_category', $category->cat_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style="font-size: 16px" href="{{ route('category.get_category', $category->cat_id) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('category.destroy', $category->cat_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style="font-size: 16px" type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style="font-size: 16px" type="submit" class="btn bg-purple delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
-                                        <a style="font-size: 16px" href="{{ route('category.get_category_services', $category->cat_id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_category_services')</a>
+                                        <a style="font-size: 16px" href="{{ route('category.get_category_services', $category->cat_id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_category_services')</a>
 
                                         @if($category->has_children != 0)
-                                            <a style="font-size: 16px" href="{{ route('category.get_sub_category', $category->cat_id) }}" class="btn btn-warning btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_sub_cats')</a>
+                                            <a style="font-size: 16px" href="{{ route('category.get_sub_category', $category->cat_id) }}" class="btn bg-purple btn-sm"><i class="fa fa-eye"></i> @lang('site_category.show_sub_cats')</a>
                                         @endif
 
 

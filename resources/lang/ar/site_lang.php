@@ -21,7 +21,7 @@ return [
     'rule_lang_is_active.min'      => '*حالة التفعيل يجب ان 0 او 1',
     'rule_lang_is_active.max'      => '*حالة التفعيل يجب ان 0 او 1',
     'rule_lang_img.required'       => '*صورة اللغة مطلوبة',
-    'rule_lang_img.image'          => '*صورة اللغة ملف غير صحيح',
+    'rule_lang_img.images'          => '*صورة اللغة ملف غير صحيح',
     'rule_lang_img.mimes'          => '*صورة اللغة يجب ان تكون png,jpg,jpeg',
     'rule_lang_img.max'            => '*مساحة صورة اللغة يجب ان تكون اقل من 10 ميجا',
 

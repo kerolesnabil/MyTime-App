@@ -224,6 +224,7 @@ class SettingController extends Controller
     {
         $bankAccountDetails                     = Setting::getSettingByKey('bank_account_details', 'web');
         $bankAccountDetails['setting_name']     = json_decode($bankAccountDetails['setting_name'], true);
+        $bankAccountDetails['setting_value']    = json_decode($bankAccountDetails['setting_value'], true);
 
         $langs = Lang::getAllLangs();
 
@@ -236,12 +237,13 @@ class SettingController extends Controller
 
     public function saveBankAccountDetails(SaveBankAccountDetailsRequest $request)
     {
+        $bankAccountDetailsSettingName  = json_encode($request->bank_account_details['setting_name']);
+        $bankAccountDetailsSettingValue = json_encode($request->bank_account_details['setting_value']);
 
-        $bankAccountDetailsSettingName = json_encode($request->bank_account_details['setting_name']);
-        Setting::saveSettingByKey('bank_account_details', $request->bank_account_details['setting_value'], $bankAccountDetailsSettingName);
+        Setting::saveSettingByKey('bank_account_details', $bankAccountDetailsSettingValue, $bankAccountDetailsSettingName);
 
         session()->flash('success', __('site.updated_successfully'));
-        return redirect(route('admin.homepage'));
+        return redirect(route('setting.get_bank_account_details'));
 
     }
 }

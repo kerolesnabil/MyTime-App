@@ -5,7 +5,7 @@ return [
 
     'order_basic_data'                        => 'بيانات الطلب الاساسية',
     'user_name'                               => 'اسم العميل',
-    'vendor_name'                             => 'اسم الصالون او الاخصائي',
+    'vendor_name'                             => 'اسم مزود الخدمة',
     'order_type'                              => 'نوع الطلب',
     'order_status'                            => 'حالة الطلب',
     'payment_method'                          => 'طريقة الدفع',
@@ -45,5 +45,6 @@ return [
     'item_total_price_before_discount'        => 'السعر الكلي للخدمة قبل الخصم',
     'item_total_price_after_discount'         => 'السعر الكلي للخدمة بعد الخصم',
     'order_coupon'                            => 'الكوبون المستخدم',
+    'order_id'                                => 'رقم الطلب'
 
 ];

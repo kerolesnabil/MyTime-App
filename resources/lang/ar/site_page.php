@@ -27,7 +27,7 @@ return [
     'rule_page_position.required'      => '*مكان الصفحة مطلوب',
     'rule_page_position.numeric'       => '*مكان الصفحة',
     'rule_img.required'                => '*صورة الصفحة مطلوبة',
-    'rule_img.image'                   => '*صورة الصفحة ملف غير صحيح',
+    'rule_img.images'                   => '*صورة الصفحة ملف غير صحيح',
     'rule_img.mimes'                   => '*صورة الصفحة يجب ان تكون png,jpg,jpeg',
     'rule_img.max'                     => '*مساحة صورة اللغة يجب ان تكون اقل من 10 ميجا',
     'rule_page_title.required'         => '*يرجي ادخال عنوان الصفحة بجميع اللغات',

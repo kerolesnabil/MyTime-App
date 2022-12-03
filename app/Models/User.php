@@ -159,9 +159,9 @@ class User extends Authenticatable
         return $users;
     }
 
-    public static function getUsersByType($type)
+    public static function getUsersByType($type, $attrs)
     {
-        // $type => user || vendor
+        // $type => user || vendor || admin
 
         $users =
             self::query()
@@ -179,8 +179,23 @@ class User extends Authenticatable
 
         if ($type == 'vendor'){
 
-            $users = $users->addSelect('vendor_details.vendor_type')->join('vendor_details', 'vendor_details.user_id', 'users.user_id');
+            $users = $users->addSelect('vendor_details.vendor_type')->
+            join('vendor_details', 'vendor_details.user_id', 'users.user_id');
         }
+
+        if(isset($attrs['date_from']) && $attrs['date_from'] != ''){
+
+            $attrs['date_from'] = date('Y-m-d H:i:s', strtotime($attrs['date_from']));
+            $users = $users->where('users.created_at','>=', $attrs['date_from']);
+        }
+
+        if(isset($attrs['date_to']) && $attrs['date_to'] != ''){
+
+            $attrs['date_to'] = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($attrs['date_to'])));
+            $users = $users->where('users.created_at','<=', $attrs['date_to']);
+        }
+
+
 
         return $users->paginate(15);
     }
@@ -242,6 +257,8 @@ class User extends Authenticatable
                 ->select
                 (
 
+                    'user_id',
+                    'user_wallet',
                     'user_name as vendor_name',
                     'user_phone as vendor_phone',
                     'user_email as vendor_email',
@@ -273,7 +290,7 @@ class User extends Authenticatable
 
     public static function saveAdminData($data, $userId = null, $options = null)
     {
-        // $options (array) => image, password
+        // $options (array) => images, password
 
         $dataToBeSaved['user_type']          = 'admin';
         $dataToBeSaved['user_name']          = $data['user_name'];

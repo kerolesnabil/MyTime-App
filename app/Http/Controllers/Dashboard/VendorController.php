@@ -2,18 +2,35 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Service;
 use App\Models\User;
 use App\Models\VendorDetail;
+use App\Models\VendorServices;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $vendors = User::getUsersByType('vendor');
-        return view('dashboard.vendors.index')->with(['vendors'=>$vendors]);
+
+        $vendors = User::getUsersByType('vendor', $request->all());
+
+        $orders = Order::getAllOrders([]);
+
+        foreach ($vendors as $vendor){
+
+
+            $vendor['total_orders'] = $orders->where('vendor_id','=',$vendor->user_id)->count();
+            $vendor['done_orders'] = $orders->where('vendor_id','=',$vendor->user_id)
+                                     ->where('order_status','=','done')->count();
+
+        }
+        return view('dashboard.vendors.index')->with(['vendors'=> $vendors]);
     }
 
     public function updateActivateVendor(Request $request)
@@ -47,35 +64,9 @@ class VendorController extends Controller
     }
 
 
-    public function reportVendors(Request $request)
-    {
-        if (!empty($request->date_from) && !empty($request->date_to)){
-
-            $dateFrom = date('Y-m-d H:i:s', strtotime($request->date_from));
-            $dateTo   = date('Y-m-d H:i:s', strtotime('+23 hour +59 minutes +59 seconds',strtotime($request->date_to)));
-
-            $allStatusOfOrder = ['pending', 'accepted', 'done', 'reschedule', 'canceled', 'rejected'];
-
-
-            if ($request->order_status != 'no_status' && in_array($request->order_status, $allStatusOfOrder)){
-                $vendorHaveFilteredOrders = User::getUsersHaveOrdersWithFilters('vendor',$dateFrom, $dateTo, $request->order_status);
-            }
-            else {
-                $vendorHaveFilteredOrders = User::getUsersHaveOrdersWithFilters('vendor',$dateFrom, $dateTo);
-            }
-
-            return view('dashboard.vendors.filtered_vendors')->with(['vendors' => $vendorHaveFilteredOrders]);
-        }
-
-        return response()->json(false);
-
-
-    }
-
-
     public function showNewVendors($reportType)
     {
-        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly'];
+        $reportTypes= ['daily', 'weekly', 'monthly', 'yearly', 'all'];
 
         if (in_array($reportType, $reportTypes)){
             $users = User::getNewUsers(20, $reportType,'vendor');
@@ -84,5 +75,73 @@ class VendorController extends Controller
 
         session()->flash('warning', __('site.report_type_wrong'));
         return redirect()->back();
+    }
+
+
+    public function saveVendorServices(Request $request , $vendorId)
+    {
+
+        $vendorData = User::getUserTypeVendor($vendorId);
+        $allServices = Service::gelAllServices();
+        $vendorServices = VendorServices::getAllServicesOfVendor($vendorId);
+
+        if ($request->method() == 'POST'){
+            $vendorServicesIds      = collect($vendorServices)->pluck('main_service_id')->toArray();
+            $servicesIdsWillCreate  = array_diff($request->get('service_id'), $vendorServicesIds);
+            $servicesIdsWillUpdate  = array_intersect($request->get('service_id'), $vendorServicesIds);
+
+            $servicesDataWillUpdate = $this->handelVendorServicesWillUpdate($request, $vendorServices, $servicesIdsWillUpdate);
+            $servicesDataWillCreate = array_values($this->handelVendorServicesWillCreate($request, $vendorId, $servicesIdsWillCreate));
+
+            VendorServices::updateVendorServices($servicesDataWillUpdate);
+            VendorServices::createVendorServices($servicesDataWillCreate);
+
+            session()->flash('success', __('site.saved_successfully'));
+            return redirect(route('vendor.save_vendor_services', $vendorId));
+        }
+
+
+
+        return view('dashboard.vendors.save_vendor_services')->with([
+            'all_services'    => $allServices,
+            'vendor_services' => $vendorServices,
+            'vendor'          => $vendorData,
+        ]);
+    }
+
+    private function handelVendorServicesWillCreate(Request $request, $vendorId, $servicesIdsWillCreate)
+    {
+        $data = [];
+        foreach ($servicesIdsWillCreate as $key => $id){
+
+            $data[$key]['vendor_id']                       = $vendorId;
+            $data[$key]['service_id']                      = $id;
+            $data[$key]['service_title']                   = $request->get('service_title')[$id];
+            $data[$key]['service_price_at_salon']          = $request->get('service_price_at_salon')[$id];
+            $data[$key]['service_discount_price_at_salon'] = $request->get('service_discount_price_at_salon')[$id];
+            $data[$key]['service_price_at_home']           = $request->get('service_price_at_home')[$id];
+            $data[$key]['service_discount_price_at_home']  = $request->get('service_discount_price_at_home')[$id];
+            $data[$key]['updated_at']                      = now();
+            $data[$key]['created_at']                      = now();
+        }
+        return $data;
+    }
+
+
+    private function handelVendorServicesWillUpdate(Request $request, $oldVendorServicesData, $servicesIdsWillUpdate)
+    {
+        $data = [];
+        foreach ($servicesIdsWillUpdate as $key => $id){
+
+            $oldVendorServiceObj                     = collect($oldVendorServicesData)->where('main_service_id', '=', $id)->first();
+            $data[$key]['vendor_service_id']               = $oldVendorServiceObj->service_id;
+            $data[$key]['service_title']                   = $request->get('service_title')[$id];
+            $data[$key]['service_price_at_salon']          = $request->get('service_price_at_salon')[$id];
+            $data[$key]['service_discount_price_at_salon'] = $request->get('service_discount_price_at_salon')[$id];
+            $data[$key]['service_price_at_home']           = $request->get('service_price_at_home')[$id];
+            $data[$key]['service_discount_price_at_home']  = $request->get('service_discount_price_at_home')[$id];
+        }
+
+        return $data;
     }
 }

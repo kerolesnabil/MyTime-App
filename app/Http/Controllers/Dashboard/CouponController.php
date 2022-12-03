@@ -6,6 +6,7 @@ use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveCouponRequest;
 use App\Models\Coupon;
+use App\Models\CouponUsed;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
@@ -84,6 +85,14 @@ class CouponController extends Controller
         Coupon::findOrFail($id)->delete();
         session()->flash('success', __('site.deleted_successfully'));
         return back();
+    }
+
+    public function getUsersUsedCoupon(Request $request, $couponId)
+    {
+        $usersUsedCoupon = collect(CouponUsed::getUsersUsedCoupon($couponId))->toArray();
+
+
+        return view('dashboard.coupons.users_used_coupon')->with(['data' => $usersUsedCoupon]);
     }
 
 }

@@ -31,7 +31,7 @@
                         {{ csrf_field() }}
 
 
-                        <label style="font-size: 18px">@lang('site_setting.setting_name')</label>
+                        <label style="font-size: 18px; color: #605ca8 ">@lang('site_setting.setting_name')</label>
                         <div class="row mb-3 margin-bottom">
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
@@ -41,26 +41,30 @@
                             @endforeach
                         </div>
 
-                        <label style="font-size: 18px">@lang('site_setting.bank_account_details')</label>
-                        <div class="row mb-3 margin-bottom">
-                            <div class="col-md-6 pr-md-1">
+                        <div class="row mb-3 margin-bottom"  >
+                            <div class="col-md-4">
+                                <label style="font-size: 18px">@lang('site_setting.bank_name')</label>
+                                <input name="bank_account_details[setting_value][bank_name]" class="form-control" value="{{$bank_account_details['setting_value']['bank_name']}}">
+                            </div>
 
-                                <textarea style="font-weight: bold; font-size: 14px;" name="bank_account_details[setting_value]" rows="5" class="form-control">{{$bank_account_details['setting_value']}}</textarea>
+                            <div class="col-md-4">
+                                <label style="font-size: 18px">@lang('site_setting.account_number')</label>
+                                <input name="bank_account_details[setting_value][account_number]" class="form-control" value="{{$bank_account_details['setting_value']['account_number']}}">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label style="font-size: 18px">@lang('site_setting.iban_number')</label>
+                                <input name="bank_account_details[setting_value][iban_number]" class="form-control" value="{{$bank_account_details['setting_value']['iban_number']}}">
                             </div>
                         </div>
 
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> {{__('site.edit')}}</button>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>
                             </div>
                         </div>
-
-
                     </form><!-- end of form -->
-
-
-
                 </div><!-- end of box body -->
 
             </div><!-- end of box -->

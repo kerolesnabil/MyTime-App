@@ -20,7 +20,7 @@
 
                 <div class="box-header with-border">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.order_rejection_reason')</h3>
+                    <h3 class="box-title" style="margin-bottom: 15px; color: #605ca8;">@lang('site.order_rejection_reason')</h3>
 
                     <form action="{{ route('order_rejection_reason.index') }}" method="get">
 
@@ -28,7 +28,7 @@
 
 
                             <div class="col-md-4">
-                                <a href="{{ route('order_rejection_reason.get_order_rejection_reason') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                <a href="{{ route('order_rejection_reason.get_order_rejection_reason') }}" class="btn btn-success"><i class="fa fa-plus"></i> @lang('site.add')</a>
                             </div>
 
                         </div>
@@ -40,9 +40,9 @@
 
                     @if ($reasons->count() > 0)
 
-                        <table class="table table-bordered table-hover">
+                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
 
-                            <thead style="background-color: rgba(0,0,0,0.88); color: white">
+                            <thead class="bg-black">
                             <tr>
                                 <th style='text-align: center; font-size: 18px; font-weight: bold' >#</th>
                                 <th style="font-size: 18px; font-weight: bold">@lang('site_order_rejection_reason.rejection_reason')</th>
@@ -61,13 +61,13 @@
 
                                     <td style="text-align: center">
 
-                                        <a style="font-size: 16px; font-weight: bold" href="{{ route('order_rejection_reason.get_order_rejection_reason', $reason->rejection_reason_id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
+                                        <a style="font-size: 16px; font-weight: bold" href="{{ route('order_rejection_reason.get_order_rejection_reason', $reason->rejection_reason_id) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
 
 
                                         <form action="{{ route('order_rejection_reason.destroy', $reason->rejection_reason_id) }}" method="post" style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
-                                            <button style="font-size: 16px; font-weight: bold" type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
+                                            <button style="font-size: 16px; font-weight: bold" type="submit" class="btn bg-purple delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
                                         </form>
 
                                     </td>
