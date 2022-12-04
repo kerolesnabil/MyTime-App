@@ -61,6 +61,9 @@ return [
     'logged_out_successfully'                 => 'تم تسجيل الخروج بنجاح',
     'support_message_sent_successfully'       => 'تم إرسال رسالة الدعم بنجاح',
     'page_type_entered_is_wrong'              => 'نوع الصفحة الذي أدخلته خاطئ',
+    'payment_method_not_online_can_not_paid'  => 'نوع الدفع ليس اونلاين لا يمكن اتمام عملية الدفع',
+    'order_already_paid'    => 'تم دفع الطلب سابقا'
+
 
 
 

@@ -46,6 +46,7 @@ class Order extends Model
 
     public static function createOrder($order)
     {
+        $appProfit = '';
         return self::create([
             "user_id"                                 => $order['user_id'],
             "vendor_id"                               => $order['vendor_id'],
@@ -457,6 +458,7 @@ class Order extends Model
                 'orders.is_paid',
                 'vendors.user_name as vendor_name',
                 'users.user_name',
+                'payment_methods.payment_method_type',
                 self::getValueWithSpecificLang('payment_methods.payment_method_name', app()->getLocale(), 'payment_method'),
                 DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d _ %H:%i") as order_created_at'),
                 'orders.order_total_items_price_before_discount',

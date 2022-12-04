@@ -60,4 +60,7 @@ return [
     'logged_out_successfully'                 => 'Successfully logged out',
     'support_message_sent_successfully'       => 'Support message has been sent successfully',
     'page_type_entered_is_wrong'              => 'The page type you entered is wrong',
+    'payment_method_not_online_can_not_paid'  => 'Payment type is not online. Payment cannot be completed',
+    'order_already_paid'    => 'The order has already been paid'
+
 ];

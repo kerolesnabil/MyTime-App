@@ -182,8 +182,13 @@ Route::group([
     'namespace' =>'Dashboard'
 ],function (){
 
+
     Route::get('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'getViewLogin'] )->name("login");
     Route::post('/login',[\App\Http\Controllers\Dashboard\Auth\LoginController::class,'login']);
     Route::get('/logout', [\App\Http\Controllers\Dashboard\Auth\LoginController::class, 'logout'])->name("logout");
 
+
+
 });
+
+Route::post('/moyasar-callback', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'getPaymentStatus']);
