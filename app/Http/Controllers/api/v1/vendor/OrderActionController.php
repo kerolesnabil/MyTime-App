@@ -21,7 +21,7 @@ class OrderActionController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',trans('api.not_vendor'));
         }
 
         $rules = [
@@ -38,13 +38,13 @@ class OrderActionController extends Controller
         }
 
         if(!Order::checkIfVendorHaveOrder($request->order_id,$vendor['vendor']->user_id)){
-            return ResponsesHelper::returnError('400','You do not have the permission to make any action on this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status != 'pending') {
-            return ResponsesHelper::returnError('400','Order Status not pending, You can not reschedule this order');
+            return ResponsesHelper::returnError('400',__('api.can_not_reschedule_order'));
         }
 
         $data['order_id']              = $request->order_id;
@@ -57,7 +57,7 @@ class OrderActionController extends Controller
         Order::changeStatusOfOrder('reschedule', $request->order_id);
         Order::createSuggestedDates($data);
 
-        return ResponsesHelper::returnData([],'200','Rescheduled successfully');
+        return ResponsesHelper::returnData([],'200',__('api.rescheduled_successfully'));
     }
 
     public function rejectOrder(Request $request)
@@ -65,7 +65,7 @@ class OrderActionController extends Controller
 
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',trans('api.not_vendor'));
         }
 
         $rules = [
@@ -80,13 +80,13 @@ class OrderActionController extends Controller
         }
 
         if(!Order::checkIfVendorHaveOrder($request->order_id,$vendor['vendor']->user_id)){
-            return ResponsesHelper::returnError('400','You do not have the permission to make any action on this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status != 'pending') {
-            return ResponsesHelper::returnError('400','Order Status not pending, You can not reject this order');
+            return ResponsesHelper::returnError('400',__('api.can_not_reject_order'));
         }
 
 
@@ -98,7 +98,7 @@ class OrderActionController extends Controller
         OrderRejection::createOrderRejectionReasons($data);
         Order::changeStatusOfOrder('rejected', $request->order_id);
 
-        return ResponsesHelper::returnData([],'200','The order was successfully rejected');
+        return ResponsesHelper::returnData([],'200',__('api.order_successfully_rejected'));
     }
 
     public function acceptOrder(Request $request, $orderId)
@@ -106,7 +106,7 @@ class OrderActionController extends Controller
 
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -117,21 +117,21 @@ class OrderActionController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return ResponsesHelper::returnError('400', 'The selected order id is invalid.');
+            return ResponsesHelper::returnError('400', __('api.order_id_invalid'));
         }
 
         if(!Order::checkIfVendorHaveOrder($orderId, $vendor['vendor']->user_id)){
-            return ResponsesHelper::returnError('400','You do not have the permission to make any action on this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($orderId);
 
         if ($orderStatus->order_status != 'pending') {
-            return ResponsesHelper::returnError('400','Order Status not pending, You can not accept this order');
+            return ResponsesHelper::returnError('400',__('api.can_not_accept_order'));
         }
 
         Order::changeStatusOfOrder('accepted', $orderId);
-        return ResponsesHelper::returnSuccessMessage('This order has been successfully accepted', '200');
+        return ResponsesHelper::returnSuccessMessage(__('api.order_accepted_successfully'), '200');
     }
 
     public function doneOrder(Request $request, $orderId)
@@ -139,7 +139,7 @@ class OrderActionController extends Controller
 
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400', __('api.not_vendor'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -154,14 +154,17 @@ class OrderActionController extends Controller
         }
 
         if(!Order::checkIfVendorHaveOrder($orderId, $vendor['vendor']->user_id)){
-            return ResponsesHelper::returnError('400','You do not have the permission to make any action on this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($orderId);
 
         if ($orderStatus->order_status != 'accept') {
-            return ResponsesHelper::returnError('400','Order Status not accept, You can not make this order done');
+            return ResponsesHelper::returnError('400',__('api.can_not_done_order'));
         }
+
+
+        // @TODO Mass3ood
 
        // make order done
        // process on app profit
@@ -173,7 +176,7 @@ class OrderActionController extends Controller
         $allReasons = OrderRejectionReason::getAllReasons();
 
         if(empty($allReasons)){
-            return ResponsesHelper::returnData($allReasons, '200', 'There are no reasons for rejection yet');
+            return ResponsesHelper::returnData($allReasons, '200', __('api.no_reasons_for_rejection'));
         }
         return ResponsesHelper::returnData($allReasons, '200', '');
     }

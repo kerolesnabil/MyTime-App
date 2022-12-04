@@ -94,10 +94,10 @@ class UserController extends Controller
             app(ISMSGateway::class)->sendSms($user->user_phone, $message);
 
         } catch (\Exception $ex) {
-            return ResponsesHelper::returnError('', 'some error in send sms');
+            return ResponsesHelper::returnError('', __('api.error_in_send_sms'));
         }
 
-        return ResponsesHelper::returnData(['user' => $user], '200', 'register successfully');
+        return ResponsesHelper::returnData(['user' => $user], '200', __('api.register_successfully'));
     }
 
 
@@ -106,7 +106,7 @@ class UserController extends Controller
 
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $userProfile['user_name']    = $user['user']->user_name;
@@ -122,7 +122,7 @@ class UserController extends Controller
     {
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $request->request->add(['user_id' => $user['user']->user_id]);
@@ -148,7 +148,7 @@ class UserController extends Controller
         }
 
 
-        return ResponsesHelper::returnData([], '200', 'updated successfully');
+        return ResponsesHelper::returnData([], '200', __('api.updated_successfully'));
 
     }
 

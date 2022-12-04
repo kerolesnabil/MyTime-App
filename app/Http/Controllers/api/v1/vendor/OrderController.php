@@ -23,14 +23,14 @@ class OrderController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
 
         $listOfOrders = Order::listOfOrdersOfVendor($vendor['vendor']->user_id);
 
         if(empty($listOfOrders)){
-            return ResponsesHelper::returnData($listOfOrders, '200', 'This vendor has no orders yet');
+            return ResponsesHelper::returnData($listOfOrders, '200', __('api.no_orders_yet'));
         }
 
         return ResponsesHelper::returnData($listOfOrders, '200', '');
@@ -41,7 +41,7 @@ class OrderController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -56,7 +56,7 @@ class OrderController extends Controller
         }
 
         if (!Order::checkIfVendorHaveOrder($orderId, $vendor['vendor']->user_id)){
-            return ResponsesHelper::returnError('400','This vendor does not have this order');
+            return ResponsesHelper::returnError('400',__('api.vendor_not_has_this_order'));
         }
 
         $detailsOfOrder = Order::getOrderDetailsOfVendor($vendor['vendor']->user_id, $orderId);
@@ -88,7 +88,7 @@ class OrderController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
         $rules = [
             "keyword" => "required",
@@ -114,7 +114,7 @@ class OrderController extends Controller
 
         $data = collect($data)->toArray();
         if (empty($data)){
-            return ResponsesHelper::returnError( '400', 'not found data for this keyword !');
+            return ResponsesHelper::returnError( '400', __('api.not_found_data_for_this_keyword'));
         }
 
         return ResponsesHelper::returnData($data, '200', '');

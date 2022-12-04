@@ -75,7 +75,7 @@ class AuthController extends Controller
         $check = $this->verificationServices->checkOTPCode($request->code, $request->user_id);
 
         if (!$check) {
-            return ResponsesHelper::returnError('400', __('code incorrect'));
+            return ResponsesHelper::returnError('400', __('api.code_incorrect'));
         }
 
         $this->verificationServices->removeOTPCode($request->code);
@@ -84,14 +84,14 @@ class AuthController extends Controller
 
         $user->token = $user->createToken('mobile')->accessToken;
 
-        return ResponsesHelper::returnData($user, '200', 'login');
+        return ResponsesHelper::returnData($user, '200', __('api.login'));
     }
 
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
 
-        return ResponsesHelper::returnSuccessMessage('Successfully logged out', '200');
+        return ResponsesHelper::returnSuccessMessage(__('api.logged_out_successfully'), '200');
     }
 
 }

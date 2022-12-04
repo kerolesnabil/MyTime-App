@@ -21,13 +21,13 @@ class WishListController extends Controller
         $user['user']=Auth::user();
 
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $wishList = WishList::showWishListOfUser($user['user']->user_id);
 
         if (empty($wishList)){
-            ResponsesHelper::returnError('400', 'Wish List is empty');
+            ResponsesHelper::returnError('400', __('api.wish_list_is_empty'));
         }
 
         $data = [];
@@ -55,7 +55,7 @@ class WishListController extends Controller
 
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $rules = [
@@ -71,15 +71,15 @@ class WishListController extends Controller
         }
 
         if (!$request->service_location == "home" || !$request->service_location == "salon") {
-            return ResponsesHelper::returnError('400', 'Service location must be salon or home');
+            return ResponsesHelper::returnError('400', __('api.service_location_must_be_salon_or_home'));
         }
 
         if (!VendorServices::checkIfVendorHasService($request->vendor_id, $request->vendor_service_id)){
-            return ResponsesHelper::returnData([],'400',"This service cannot be added because it does't belong to this vendor");
+            return ResponsesHelper::returnData([],'400',"");
         }
 
         if (!VendorServices::checkIfServiceProvidedInSpecificLocation($request->vendor_id, $request->vendor_service_id, $request->service_location)){
-            return ResponsesHelper::returnError('400', "This service is not provided in $request->service_location, it cannot be added to the cart");
+            return ResponsesHelper::returnError('400', __('api.this_service_not_provided_location') ." ". $request->service_location);
         }
 
 
@@ -95,7 +95,7 @@ class WishListController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $request->request->add(['wish_list_item_id' => $wishListItemId]);
@@ -111,13 +111,13 @@ class WishListController extends Controller
 
         if (!WishList::checkIfUserHasSpecificWishListItem($user['user']->user_id, $request->wish_list_item_id))
         {
-            return ResponsesHelper::returnError('400','This favorite item does not belong to you, you do not have permission to delete it');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
 
         WishList::deleteItemFromWishList($request->wish_list_item_id);
 
-        return ResponsesHelper::returnData([], '200', 'Deleted successfully');
+        return ResponsesHelper::returnData([], '200', __('api.deleted_successfully'));
 
     }
 

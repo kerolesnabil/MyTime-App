@@ -30,7 +30,7 @@ class PagesController extends Controller
 
         if(!$request->type == 'vendor' || !$request->type == 'user')
         {
-             return ResponsesHelper::returnError(400,'The type you entered is wrong');
+             return ResponsesHelper::returnError(400,__('api.page_type_entered_is_wrong'));
         }
 
 

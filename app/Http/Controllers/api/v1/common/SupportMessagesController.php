@@ -34,7 +34,7 @@ class SupportMessagesController extends Controller
 
         $supportMessage = SupportMessage::createSupportMessage($user['user']->user_id, $request);
 
-        return ResponsesHelper::returnData(['order_id' => $supportMessage->support_message_id], '200', 'Support message has been sent successfully');
+        return ResponsesHelper::returnData(['order_id' => $supportMessage->support_message_id], '200', __('api.support_message_sent_successfully'));
     }
 
 }

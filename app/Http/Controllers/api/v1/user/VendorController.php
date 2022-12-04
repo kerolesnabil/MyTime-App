@@ -41,9 +41,9 @@ class VendorController extends Controller
 
 
         if (empty($vendorData['vendor_information'])) {
-            return ResponsesHelper::returnError('400', 'Not found data for this vendor');
+            return ResponsesHelper::returnError('400', __('api.not_found_data_for_vendor'));
         }
-        
+
         return ResponsesHelper::returnData($vendorData, '200', '');
     }
 
@@ -63,7 +63,7 @@ class VendorController extends Controller
         $vendorReviews = OrderReview::getVendorReviews($request->vendor_id);
 
         if (empty($vendorReviews)) {
-            return ResponsesHelper::returnError('400', 'not found reviews for this vendor right now !');
+            return ResponsesHelper::returnError('400', __('api.not_found_reviews_for_vendor'));
         }
 
         return ResponsesHelper::returnData($vendorReviews, '200', '');
@@ -88,7 +88,7 @@ class VendorController extends Controller
 
 
         if (empty($vendorPackages)) {
-            return ResponsesHelper::returnError('400', 'not found package for this vendor right now !');
+            return ResponsesHelper::returnError('400', __('api.not_found_package_for_vendor'));
         }
 
 
@@ -136,14 +136,14 @@ class VendorController extends Controller
         $vendorCategoryServices['main_category'] = Category::mainCategoryByCatId($cat_id);
 
         if (!count($vendorCategoryServices['main_category'])){
-            return ResponsesHelper::returnError(400, 'This main category does not belong to this vendor');
+            return ResponsesHelper::returnError(400, __('api.main_category_not_belong_to_vendor'));
         }
 
         $vendorCategoryServices['sub_categories'] = vendorServices::subCategoriesOfVendorByCatId($cat_id, $vendorId);
 
         if (!count($vendorCategoryServices['sub_categories'])){
 
-            return ResponsesHelper::returnError(400,'This category does not contain sub categories');
+            return ResponsesHelper::returnError(400,__('api.category_not_contain_sub_categories'));
         }
 
 
@@ -161,7 +161,7 @@ class VendorController extends Controller
         ];
 
         if (!$request->service_type == 'home' || !$request->service_type == 'salon'){
-            return ResponsesHelper::returnError(400,'service_type must be salon or home');
+            return ResponsesHelper::returnError(400,__('api.service_location_must_be_salon_or_home'));
         }
         $validator = Validator::make($request->all(), $rules);
 
@@ -174,7 +174,7 @@ class VendorController extends Controller
 
 
         if (!count($vendorServicesOfSubCategory)) {
-            return ResponsesHelper::returnError('400', 'not found services for this category!');
+            return ResponsesHelper::returnError('400', __('api.not_found_services_to_category'));
         }
 
 

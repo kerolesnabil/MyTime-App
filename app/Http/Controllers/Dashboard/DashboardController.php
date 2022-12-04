@@ -26,6 +26,8 @@ class DashboardController
 
         dd($paymenyObj->getPaymentInfo("dc27f4dd-db43-446a-a88d-d2fa3a401e18"));*/
 
+
+
         $data['daily_orders']   = Order::getNewOrders(20, 'daily')->total();
         $data['weekly_orders']  = Order::getNewOrders(20, 'weekly')->total();
         $data['monthly_orders'] = Order::getNewOrders(20, 'monthly')->total();
