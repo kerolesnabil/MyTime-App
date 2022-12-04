@@ -20,7 +20,7 @@ class FinancialTransactionController extends Controller
     {
         if(Auth::user()->user_type!='vendor'){
 
-            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
+            return ResponsesHelper::returnError('400',trans('api.not_vendor'));
         }
         $rules= [
             "amount"              => "required|integer",
@@ -59,7 +59,7 @@ class FinancialTransactionController extends Controller
 
         if(Auth::user()->user_type!='vendor'){
 
-            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
+            return ResponsesHelper::returnError('400',trans('api.not_vendor'));
         }
         $rules= [
             "amount"            => "required|integer",
@@ -90,7 +90,7 @@ class FinancialTransactionController extends Controller
     public function showFinancialRequests()
     {
         if(Auth::user()->user_type!='vendor'){
-            return ResponsesHelper::returnError('400',trans('vendor.not_vendor'));
+            return ResponsesHelper::returnError('400',trans('api.not_vendor'));
         }
 
         if (Auth::user()->user_wallet >= 0){

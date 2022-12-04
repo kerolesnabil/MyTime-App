@@ -152,7 +152,7 @@ class Order extends Model
     public static function changePaymentMethodOfOrder($data, $userId)
     {
         if (!self::checkIfUserHaveOrder($data->order_id, $userId)){
-            return ['data' => [], 'code' =>400, 'msg' => "You don't have permission to change payment method of this order"];
+            return ['data' => [], 'code' =>400, 'msg' => __('api.can_not_change_order_payment_method')];
         }
 
         self::where('order_id', '=', $data->order_id)
@@ -161,7 +161,7 @@ class Order extends Model
                 'payment_method_id'    => $data->payment_method_id
         ));
 
-        return ['data' => [], 'code' =>200, 'msg' => "Payment method of order updated successfully"];
+        return ['data' => [], 'code' =>200, 'msg' => __('api.order_payment_method_updated')];
     }
 
     public static function changeStatusOfOrder($status, $orderId)

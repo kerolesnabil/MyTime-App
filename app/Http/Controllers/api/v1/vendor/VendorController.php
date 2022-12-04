@@ -32,7 +32,7 @@ class VendorController extends Controller
         $vendor = Auth::user();
 
         if($vendor->user_type!='vendor'){
-           return ResponsesHelper::returnError('400','you are not a vendor');
+           return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $data['vendor_information']                      = User::getUserTypeVendor($vendor->user_id);
@@ -64,7 +64,7 @@ class VendorController extends Controller
         $vendorReviews = OrderReview::getVendorReviews($vendor['vendor']->user_id);
 
         if (empty($vendorReviews)) {
-            return ResponsesHelper::returnError('400', 'not found reviews for this vendor right now !');
+            return ResponsesHelper::returnError('400', __('api.not_found_reviews_for_vendor'));
         }
         return ResponsesHelper::returnData($vendorReviews, '200', '');
     }
@@ -108,7 +108,7 @@ class VendorController extends Controller
 
         } catch (\Exception $ex) {
 
-            return ResponsesHelper::returnError('400', 'some error in send sms');
+            return ResponsesHelper::returnError('400', __('api.error_in_send_sms'));
         }
 
         return ResponsesHelper::returnData(['user' => $user, 'user_detail' => $user_detail], '200', '');
@@ -118,7 +118,7 @@ class VendorController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $vendorDetailsData = collect(VendorDetail::getVendorDetailProfile($vendor['vendor']->user_id))->toArray();
@@ -144,7 +144,7 @@ class VendorController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
 
@@ -246,7 +246,7 @@ class VendorController extends Controller
         }
 
 
-        return ResponsesHelper::returnData([], '200', 'Updated successfully');
+        return ResponsesHelper::returnData([], '200', __('api.updated_successfully'));
 
     }
 
@@ -255,7 +255,7 @@ class VendorController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $rules = [
@@ -273,12 +273,12 @@ class VendorController extends Controller
         $reportTimeTypes = ['weekly', 'monthly', 'yearly'];
         if (!in_array($request['report_time_type'], $reportTimeTypes)){
 
-            return ResponsesHelper::returnError('400',__('vendor.report_time_type_not_found'));
+            return ResponsesHelper::returnError('400',__('api.not_found_report_type'));
         }
 
         $reportNameTypes = ['views', 'reviews'];
         if (!in_array($request['report_name_type'], $reportNameTypes)){
-            return ResponsesHelper::returnError('400',__('vendor.report_name_type_not_found'));
+            return ResponsesHelper::returnError('400',__('api.not_found_report_type'));
         }
 
         $report = VendorDetail::getVendorReport($vendor['vendor']->user_id, $request['report_time_type'], $request['report_name_type']);

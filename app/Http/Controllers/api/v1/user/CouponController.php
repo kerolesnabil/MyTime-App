@@ -19,7 +19,7 @@ class CouponController extends Controller
 
         if($couponCode == ''){
             $data['data'] = [];
-            $data['msg']  = 'No coupon entered';
+            $data['msg']  = __('api.no_coupon_entered');
             return $data;
         }
 

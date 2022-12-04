@@ -43,7 +43,7 @@ class ServiceController extends Controller
         $user=Auth::user();
         if( $user->user_type!='vendor')
         {
-            return ResponsesHelper::returnError('400','yor are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $data = Category::mainCategories();
@@ -57,7 +57,7 @@ class ServiceController extends Controller
         $user=Auth::user();
         if( $user->user_type!='vendor')
         {
-            return ResponsesHelper::returnError('400','yor are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['parent_id' => $parenId]);
@@ -89,7 +89,7 @@ class ServiceController extends Controller
         $user=Auth::user();
         if( $user->user_type!='vendor')
         {
-            return ResponsesHelper::returnError('400','yor are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['cat_id' => $catId]);
@@ -113,7 +113,7 @@ class ServiceController extends Controller
     {
 
         if(Auth::user()->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         if(isset($vendor_service_id))
@@ -121,11 +121,11 @@ class ServiceController extends Controller
             $service= VendorServices::getServiceById($vendor_service_id);
 
             if (empty($service)){
-                return ResponsesHelper::returnError('400',__('vendor.not_found'));
+                return ResponsesHelper::returnError('400',__('api.not_vendor'));
             }
             if($service->vendor_id!=Auth::user()->user_id)
             {
-                return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
+                return ResponsesHelper::returnError('400',__('api.this_service_is_not_for_vendor'));
             }
         }
 
@@ -153,7 +153,7 @@ class ServiceController extends Controller
         $vendor['vendor']=Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $service= VendorServices::getServiceById($service_id);
@@ -163,7 +163,7 @@ class ServiceController extends Controller
         }
         if($service->vendor_id!=Auth::user()->user_id)
         {
-            return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
+            return ResponsesHelper::returnError('400',__('api.this_service_is_not_for_vendor'));
         }
 
         $service = Service::getService($service->service_id, 'api');
@@ -179,22 +179,22 @@ class ServiceController extends Controller
         $vendor['vendor']=Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $service= VendorServices::getServiceById($vendor_service_id);
 
         if (empty($service)){
-            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+            return ResponsesHelper::returnError('400',__('api.not_found'));
         }
         if($service->vendor_id!=Auth::user()->user_id)
         {
-            return ResponsesHelper::returnError('400',__('vendor.This_service_is_not_for_you'));
+            return ResponsesHelper::returnError('400',__('api.this_service_is_not_for_vendor'));
         }
 
         VendorServices::deleteService($vendor_service_id);
 
-        return ResponsesHelper::returnSuccessMessage(__('vendor.delete_data'),'200');
+        return ResponsesHelper::returnSuccessMessage(__('api.deleted_successfully'),'200');
 
     }
 
@@ -203,7 +203,7 @@ class ServiceController extends Controller
         $vendor['vendor']=Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
 }
 
         $allServicesOfVendor = VendorServices::getAllServicesOfVendor($vendor['vendor']->user_id);
@@ -216,7 +216,7 @@ class ServiceController extends Controller
         $vendor['vendor']=Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $rules = [
@@ -237,7 +237,7 @@ class ServiceController extends Controller
 
 
         $validator = Validator::make($request->all(), $rules,
-            ["services_ids.*.exists"   => __("vendor.services_ids_not_exists"),]
+            ["services_ids.*.exists"   => __("api.services_ids_not_exists"),]
         );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -253,7 +253,7 @@ class ServiceController extends Controller
         }
         DB::commit();
 
-        return ResponsesHelper::returnData((isset($packageId)? intval($packageId) : (int) $service->service_id),'200',__('vendor.save_data'));
+        return ResponsesHelper::returnData((isset($packageId)? intval($packageId) : (int) $service->service_id),'200',__('api.data_saved'));
 
     }
 
@@ -261,7 +261,7 @@ class ServiceController extends Controller
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['package_id' => $packageId]);
@@ -277,11 +277,11 @@ class ServiceController extends Controller
 
         if(empty($data))
         {
-            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+            return ResponsesHelper::returnError('400', __('api.not_found'));
         }
         if(!isset($data->package_services_ids))
         {
-            return ResponsesHelper::returnError('400',__('vendor.this_id_not_package'));
+            return ResponsesHelper::returnError('400',__('api.this_id_not_package'));
         }
         $servicesIds = explode(',',$data->package_services_ids);
 
@@ -302,13 +302,13 @@ class ServiceController extends Controller
         $vendor['vendor']=Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $request->request->add(['package_id' => $packageId]);
 
         $rules = [
-            "package_id"     => "required|exists:services,service_id|exists:vendor_services,service_id",
+            "package_id" => "required|exists:services,service_id|exists:vendor_services,service_id",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -322,14 +322,14 @@ class ServiceController extends Controller
         Service::deletePackage($request->package_id);
         VendorServices::deleteServiceOfPackage($request->package_id);
         DB::commit();
-        return ResponsesHelper::returnSuccessMessage(__('vendor.delete_data'),'200');
+        return ResponsesHelper::returnSuccessMessage(__('api.deleted_successfully'),'200');
     }
 
     public function getAllPackageOfVendor()
     {
         $vendor['vendor']=Auth::user();
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $packages = collect(Service::getAllPackageByVendor($vendor['vendor']->user_id));
@@ -368,7 +368,7 @@ class ServiceController extends Controller
         $vendor['vendor'] = Auth::user();
 
         if($vendor['vendor']->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
         $rules = [
@@ -383,7 +383,7 @@ class ServiceController extends Controller
 
         SuggestedServices::createSuggestedService($request, $vendor['vendor']->user_id);
 
-        return ResponsesHelper::returnData([],'200',__('vendor.save_data'));
+        return ResponsesHelper::returnData([],'200', __('api.data_saved'));
 
     }
 }

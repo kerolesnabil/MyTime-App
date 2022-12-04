@@ -20,7 +20,7 @@ class OrderCartController extends Controller
         $user['user'] = Auth::user();
 
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $cartItems = self::getItemsPriceInCart($user['user']->user_id);
@@ -56,7 +56,7 @@ class OrderCartController extends Controller
         $user['user'] = Auth::user();
 
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $rules = [
@@ -73,16 +73,16 @@ class OrderCartController extends Controller
         }
 
         if (!$request->service_location == "home" || !$request->service_location == "salon") {
-            return ResponsesHelper::returnError('400', 'Service location must be salon or home');
+            return ResponsesHelper::returnError('400', __('api.service_location_must_be_salon_or_home'));
         }
 
 
         if (!VendorServices::checkIfVendorHasService($request->vendor_id, $request->vendor_service_id)) {
-            return ResponsesHelper::returnError('400', 'It is not possible to order from more than one vendor');
+            return ResponsesHelper::returnError('400', __('api.can_not_order_from_more_vendor'));
         }
 
         if (!VendorServices::checkIfServiceProvidedInSpecificLocation($request->vendor_id, $request->vendor_service_id, $request->service_location)){
-            return ResponsesHelper::returnError('400', "This service is not provided in $request->service_location, it cannot be added to the cart");
+            return ResponsesHelper::returnError('400', __('api.this_service_not_provided_location') ." ".$request->service_location);
         }
 
         $orderCartItem = OrderCart::checkIfItemAddedToCartPreviously($user['user']->user_id, $request->vendor_id, $request->vendor_service_id, $request->service_location);
@@ -90,7 +90,7 @@ class OrderCartController extends Controller
             // update count
             $itemNewQuantity = $orderCartItem->service_quantity + $request->service_quantity;
             OrderCart::updateItemQuantityInCart($orderCartItem->order_cart_id, $itemNewQuantity);
-            return ResponsesHelper::returnData([],200,'Service added successfully to cart');
+            return ResponsesHelper::returnData([],200,__('api.service_added_successfully_to_cart'));
 
         }
 
@@ -98,11 +98,11 @@ class OrderCartController extends Controller
 
         if (is_object($serviceLocationOfCart)){
             if($request->service_location !== $serviceLocationOfCart->service_location){
-                return ResponsesHelper::returnError('400', 'Services cannot be order in more than one location');
+                return ResponsesHelper::returnError('400', __('api.services_can_not_order_in_more_location'));
             }
 
             if($request->vendor_id !== $serviceLocationOfCart->vendor_id){
-                return ResponsesHelper::returnError('400', 'Services cannot be ordered from more than one vendor');
+                return ResponsesHelper::returnError('400', __('api.can_not_order_from_more_vendor'));
             }
         }
 
@@ -113,7 +113,7 @@ class OrderCartController extends Controller
     {
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $request->request->add(['order_cart_item_id' => $orderCartItemId]);
@@ -128,33 +128,33 @@ class OrderCartController extends Controller
         }
 
         if (empty(OrderCart::checkIfUserHasItemInCart($user['user']->user_id, $orderCartItemId))){
-            return ResponsesHelper::returnError('400','This user does not have permission to remove this service from the cart');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         OrderCart::deleteItemFromCart($orderCartItemId);
-        return ResponsesHelper::returnData([],'200', 'Service deleted form cart successfully');
+        return ResponsesHelper::returnData([],'200', __('api.service_deleted_form_cart_successfully'));
     }
 
     public function deleteOrderCart()
     {
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
 
 
         if (OrderCart::deleteOrderCart($user['user']->user_id) == 0){
-            return ResponsesHelper::returnError('400', 'The cart is empty, there is nothing to delete');
+            return ResponsesHelper::returnError('400', __('api.cart_empty_nothing_to_delete'));
         }
-        return ResponsesHelper::returnData([],'200', 'Order cart successfully');
+        return ResponsesHelper::returnData([],'200', __('api.cart_successfully_emptied'));
     }
 
     public function updateItemQtyInCart(Request $request)
     {
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $rules = [
@@ -171,11 +171,11 @@ class OrderCartController extends Controller
 
 
         if(empty(OrderCart::checkIfUserHasItemInCart($user['user']->user_id, $request->order_cart_item_id))){
-            return ResponsesHelper::returnError('400','This user does not have permission to remove this services from the cart');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         OrderCart::updateItemQuantityInCart($request->order_cart_item_id, $request->quantity);
-        return ResponsesHelper::returnData([],'200', 'Item quantity Updated');
+        return ResponsesHelper::returnData([],'200', __('api.item_qty_updated'));
 
     }
 

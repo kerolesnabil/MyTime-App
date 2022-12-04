@@ -46,7 +46,7 @@ class AdController extends Controller
 
 
         if(Auth::user()->user_type!='vendor'){
-            return ResponsesHelper::returnError('400','you are not a vendor');
+            return ResponsesHelper::returnError('400', trans('api.not_vendor'));
         }
 
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
@@ -163,7 +163,7 @@ class AdController extends Controller
         $ad = Ad::getAd($id);
 
         if (empty($ad)){
-            return ResponsesHelper::returnError('400',__('vendor.not_found'));
+            return ResponsesHelper::returnError('400', __('vendor.not_found'));
         }
         if($ad->vendor_id!=Auth::user()->user_id)
         {

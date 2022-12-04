@@ -25,7 +25,7 @@ class PriceServiceController extends Controller
     {
         $user['user'] = Auth::user();
         if ($user['user']->user_type != 'user') {
-            return ResponsesHelper::returnError('400', 'you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $rules = [
@@ -119,7 +119,7 @@ class PriceServiceController extends Controller
 
 
         if (array_diff($serviceIds, $serviceObjsIds)) {
-            return ResponsesHelper::returnError('400', 'You can not make an order from more than one vendor');
+            return ResponsesHelper::returnError('400', __('api.can_not_order_from_more_vendor'));
         }
 
         $servicePriceData = $serviceObjs;

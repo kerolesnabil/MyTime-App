@@ -20,7 +20,7 @@ class OrderActionController extends Controller
 
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $rules = [
@@ -37,30 +37,30 @@ class OrderActionController extends Controller
         }
 
         if (!Order::checkIfUserHaveOrder($request->order_id, $user['user']->user_id)){
-            return ResponsesHelper::returnError('400','You don\'t have permission to review this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status !=  'done'){
-            return ResponsesHelper::returnError('400','The status of order is not done yet, you can not review now');
+            return ResponsesHelper::returnError('400','');
         }
 
         if (! OrderReview::checkIfUserReviewOrder($request->order_id, $user['user']->user_id ) ){
-            return ResponsesHelper::returnError('400', 'This order has already been reviewed by this user');
+            return ResponsesHelper::returnError('400', __('api.you_can_not_review_now'));
         }
 
         Order::updateRatedStatusOfOrder($request->order_id);
 
         $review = OrderReview::addOrderReview($request, $user['user']->user_id);
-        return ResponsesHelper::returnData(['order_review_id' => $review], '200', 'Review added successfully');
+        return ResponsesHelper::returnData(['order_review_id' => $review], '200', __('api.review_added_successfully'));
     }
 
     public function changePaymentMethodOfOrder(Request $request)
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $rules = [
@@ -76,13 +76,13 @@ class OrderActionController extends Controller
         }
 
         if (!Order::checkIfUserHaveOrder($request->order_id, $user['user']->user_id)){
-            return ResponsesHelper::returnError('400','You don\'t have permission to change payment method for this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status !=  'accepted'){
-            return ResponsesHelper::returnError('400','The status of order is not accepted yet, you can not change payment method now');
+            return ResponsesHelper::returnError('400','');
         }
 
 
@@ -96,7 +96,7 @@ class OrderActionController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -111,17 +111,17 @@ class OrderActionController extends Controller
         }
 
         if (!Order::checkIfUserHaveOrder($request->order_id, $user['user']->user_id)){
-            return ResponsesHelper::returnError('400','You don\'t have permission to cancel this order');
+            return ResponsesHelper::returnError('400', __('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status !=  'pending'){
-            return ResponsesHelper::returnError('400','Order status not pending, you can not cancel this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         Order::changeStatusOfOrder('canceled', $orderId);
-        return ResponsesHelper::returnData([], '200', 'The order has been successfully canceled');
+        return ResponsesHelper::returnData([], '200', __('api.order_canceled_successfully'));
 
     }
 
@@ -129,7 +129,7 @@ class OrderActionController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -144,20 +144,20 @@ class OrderActionController extends Controller
         }
 
         if (!Order::checkIfUserHaveOrder($request->order_id, $user['user']->user_id)){
-            return ResponsesHelper::returnError('400','You don\'t have permission to cancel this order');
+            return ResponsesHelper::returnError('400', __('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status !=  'reschedule'){
-            return ResponsesHelper::returnError('400','Order status not reschedule, you can not get suggested dates for this order');
+            return ResponsesHelper::returnError('400', __('api.can_not_get_suggested_dates'));
         }
 
         $suggestedDates = Order::getSuggestedDatesOfOrderOfUser($request->order_id);
 
 
         if (is_null($suggestedDates)){
-            return ResponsesHelper::returnError('400','There are no suggested dates by the vendor for this order');
+            return ResponsesHelper::returnError('400', __('api.can_not_get_suggested_dates'));
         }
 
         $data['suggested_dates'] = json_decode($suggestedDates->suggested_date_by_vendor,true);
@@ -171,7 +171,7 @@ class OrderActionController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400', __('api.you_are_not_user'));
         }
 
         $rules = [
@@ -188,13 +188,13 @@ class OrderActionController extends Controller
 
 
         if (!Order::checkIfUserHaveOrder($request->order_id, $user['user']->user_id)){
-            return ResponsesHelper::returnError('400','You don\'t have permission to cancel this order');
+            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderStatus = Order::getOrderStatus($request->order_id);
 
         if ($orderStatus->order_status !=  'reschedule'){
-            return ResponsesHelper::returnError('400','Order status not reschedule, you can not change date of this order');
+            return ResponsesHelper::returnError('400',__('api.can_not_change_date'));
         }
 
 
@@ -202,7 +202,7 @@ class OrderActionController extends Controller
 
         Order::changeStatusOfOrder('pending', $request->order_id);
 
-        return ResponsesHelper::returnData([], '200', 'Order date updated successfully');
+        return ResponsesHelper::returnData([], '200', __('api.order_date_updated'));
     }
 
 }

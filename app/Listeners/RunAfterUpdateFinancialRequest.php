@@ -20,8 +20,8 @@ class RunAfterUpdateFinancialRequest
         // deposit 1 => increase wallet by user id
         // deposit 2 => create log
 
-        // deposit 1 => decrease wallet by user id
-        // deposit 2 => create log
+        // withdraw 1 => decrease wallet by user id
+        // withdraw 2 => create log
 
         $request =  FinancialRequests::getFinancialRequestsByRequestId($event->requestId);
 

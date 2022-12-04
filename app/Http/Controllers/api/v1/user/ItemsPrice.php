@@ -24,7 +24,7 @@ trait ItemsPrice
         $orderCart = OrderCart::showOrderCart($userId);
 
         if (empty($orderCart)){
-            return ResponsesHelper::returnError('400','There are no items in the cart');
+            return ResponsesHelper::returnError('400',__('api.no_items_in_cart_to_make_order'));
         }
 
         $data = [];

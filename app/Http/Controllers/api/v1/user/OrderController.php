@@ -30,12 +30,12 @@ class OrderController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $listOfOrders = Order::getOrdersListOrDetailsOfUser($user['user']->user_id);
         if(empty($listOfOrders)){
-            return ResponsesHelper::returnData($listOfOrders, '200', 'This user has not made an order yet');
+            return ResponsesHelper::returnData($listOfOrders, '200', __('api.user_not_made_an_order_yet'));
         }
 
         return ResponsesHelper::returnData($listOfOrders, '200', '');
@@ -46,7 +46,7 @@ class OrderController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $request->request->add(['order_id' => $orderId]);
@@ -64,7 +64,7 @@ class OrderController extends Controller
 
         if(empty($detailsOfOrder)){
 
-            return ResponsesHelper::returnError('400', "You don't have permission to get details of this order");
+            return ResponsesHelper::returnError('400', __('api.not_have_permission_to_do_process'));
         }
 
 
@@ -101,7 +101,7 @@ class OrderController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
 
@@ -118,7 +118,7 @@ class OrderController extends Controller
             $itemsTotalPrice = self::getTotalPriceOfItems($user['user']->user_id)->getData();
         }
         if (!isset($itemsTotalPrice->data)){
-            return ResponsesHelper::returnError('400','There are no items in the cart to make order');
+            return ResponsesHelper::returnError('400',__('api.no_items_in_cart_to_make_order'));
         }
 
         $data['total_price']  = $itemsTotalPrice->data;
@@ -158,7 +158,7 @@ class OrderController extends Controller
     {
         $user['user']=Auth::user();
         if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400','you are not a user');
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
         $request->request->add(['user_id' => $user['user']->user_id]);
@@ -199,7 +199,6 @@ class OrderController extends Controller
             }
         }
 
-
         OrderCart::deleteOrderCart($request->user_id);
 
 
@@ -235,7 +234,7 @@ class OrderController extends Controller
 
 
         if (!isset($itemsTotalPrice->data)){
-            return ResponsesHelper::returnError('400','There are no items in the cart to make order');
+            return ResponsesHelper::returnError('400',__('api.no_items_in_cart_to_make_order'));
         }
 
         $itemsTotalPrice = collect($itemsTotalPrice->data)->toArray();
