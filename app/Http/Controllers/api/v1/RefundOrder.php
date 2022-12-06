@@ -46,9 +46,8 @@ trait RefundOrder
 
             // change order (is_paid) col
             Order::changeOrderPaidCol($orderObj->order_id, 0);
-
-
         }
+        return true;
 
     }
 

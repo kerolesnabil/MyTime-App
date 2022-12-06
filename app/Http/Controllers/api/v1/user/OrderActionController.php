@@ -127,10 +127,7 @@ use RefundOrder;
         // refund money if it paid
         $this->refundOrderCost($orderId);
 
-
-
         return ResponsesHelper::returnData([], '200', __('api.order_canceled_successfully'));
-
     }
 
     public function getSuggestedDatesOfOrder(Request $request, $orderId)
