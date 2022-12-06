@@ -454,6 +454,8 @@ class Order extends Model
     {
         return self::query()
             ->select(
+                'orders.user_id',
+                'orders.vendor_id',
                 'orders.order_id',
                 'orders.order_custom_date as order_date',
                 'orders.order_custom_time as order_time',
