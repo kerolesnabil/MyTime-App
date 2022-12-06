@@ -34,7 +34,7 @@ trait RefundOrder
 
             // decrease vendor wallet
             $moneyWillDecreaseFromVendor = floatval($orderObj->order_total_price) - floatval($orderObj->order_app_profit);
-            $arNotes = "تم سحب $moneyWillDecreaseFromVendor ريال سعودي قيمة تكلفة الطلب رقم )$orderObj->order_id )";
+            $arNotes = "تم سحب $moneyWillDecreaseFromVendor ريال سعودي قيمة تكلفة الطلب رقم ($orderObj->order_id )";
             $enNotes = "$orderObj->order_total_price SAR has been withdrawn, the value of the cost of the order No  ($orderObj->order_id)";
             $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
 
