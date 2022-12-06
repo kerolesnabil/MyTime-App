@@ -44,9 +44,9 @@ class PaymentController extends Controller
             $requestPaymentDataWillUpdate['request_headers'] = $request->header();
             $requestPaymentDataWillUpdate['request_body'] = $request->all();
             RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
-            
+
             if ($request->get('status') == 'paid' && $request->get('currency') == 'SAR'){
-                if (empty($requestPaymentObj->order_id)){
+                if ($requestPaymentObj->order_id != null){
                     //  case order
                     $orderData = Order::getOrderById($requestPaymentObj->order_id);
 
@@ -68,6 +68,8 @@ class PaymentController extends Controller
                     $arChargeNotes = "تم ايداع مبلغ $requestPaymentObj->amount قيمة تكلفة الطلب رقم ($orderData->order_id )";
                     $enChargeNotes = "$requestPaymentObj->amount has been deposited, the value of the cost of the order No  ($orderData->order_id)";
                     $notes   = '{"ar":"'.$arChargeNotes.'", "en":"'.$enChargeNotes.'"}';
+
+                    $userId = $orderData->vendor_id;
                 }
                 else{
                     // case charge wallet
@@ -75,11 +77,12 @@ class PaymentController extends Controller
                     $arNotes = " تم ايداع مبلغ $amountWillCharge ريال سعودي ";
                     $enNotes = "amount has been deposited $amountWillCharge SAR";
                     $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+                    $userId = $requestPaymentObj->user_id;
                 }
 
                 // charge vendor wallet (deposit)
                 event(new ChargeWallet(
-                    $requestPaymentObj->user_id,
+                    $userId,
                     $requestPaymentObj->amount,
                     $notes
                 ));
