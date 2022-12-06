@@ -200,6 +200,12 @@ class PaymentController extends Controller
 
         RequestPaymentTransaction::createRequestPaymentTransaction($requestPaymentData);
 
+        return ResponsesHelper::returnData([
+            'online_payment_url' => $paymentUrl
+        ],
+            '200',
+            ''
+        );
     }
 
 }
