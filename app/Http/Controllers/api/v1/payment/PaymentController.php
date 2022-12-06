@@ -94,75 +94,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function refundOrderCost(Request $request)
-    {
-        $user['user'] = Auth::user();
-        if($user['user']->user_type!='user'){
-            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
-        }
 
-        $rules = [
-            "order_id" => "required|numeric|exists:orders,order_id",
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return ResponsesHelper::returnValidationError('400', $validator);
-        }
-
-        if (!Order::checkIfUserHaveOrder($request->get('order_id'), $user['user']->user_id)){
-            return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
-        }
-
-        $orderObj = Order::getOrderById($request->get('order_id'));
-
-        // check if order is not paid
-        if ($orderObj->is_paid != 1){
-            return ResponsesHelper::returnError('400', __('api.order_already_not_paid'));
-        }
-
-
-        // check if order status cancel or rejected
-        if ($orderObj->order_status != 'canceled' && $orderObj->order_status != 'rejected'){
-            return ResponsesHelper::returnError('400', __('api.can_not_refund_order_status_not_reject_or_cancel'));
-        }
-
-
-        // check if order is online
-        if ($orderObj->payment_method_type != 'online'){
-            return ResponsesHelper::returnError('400', __('api.payment_method_not_online_can_not_paid'));
-        }
-
-        $requestObj = RequestPaymentTransaction::getRequestPaymentByOrderIdAndUserId($orderObj->order_id, $user['user']->user_id);
-
-        if (!is_null($requestObj->invoice_id)){
-
-            // refund money
-            $paymentObj = app(IPayment::class);
-            $paymentObj->refundOrderMoney($requestObj->payment_id);
-
-            // change order (is_paid) col
-            Order::changeOrderPaidCol($orderObj->order_id, 0);
-
-
-            // decrease vendor wallet
-            $moneyWillDecreaseFromVendor = floatval($orderObj->order_total_price) - floatval($orderObj->order_app_profit);
-            $arNotes = "تم سحب $moneyWillDecreaseFromVendor ريال سعودي قيمة تكلفة الطلب رقم )$orderObj->order_id )";
-            $enNotes = "$orderObj->order_total_price SAR has been withdrawn, the value of the cost of the order No  ($orderObj->order_id)";
-            $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
-
-            event(new DecreaseWallet(
-                $orderObj->vendor_id,
-                $moneyWillDecreaseFromVendor,
-                $notes
-
-            ));
-
-        }
-
-
-    }
 
     public function chargeWalletPayment(Request $request)
     {

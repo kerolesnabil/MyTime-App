@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\vendor;
 
 use App\Helpers\ResponsesHelper;
+use App\Http\Controllers\api\v1\RefundOrder;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderRejection;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 
 class OrderActionController extends Controller
 {
+    use RefundOrder;
 
     public function rescheduleOrderDate(Request $request)
     {
@@ -97,6 +99,9 @@ class OrderActionController extends Controller
 
         OrderRejection::createOrderRejectionReasons($data);
         Order::changeStatusOfOrder('rejected', $request->order_id);
+
+        // refund money to user
+        $this->refundOrderCost($request->order_id);
 
         return ResponsesHelper::returnData([],'200',__('api.order_successfully_rejected'));
     }

@@ -64,16 +64,6 @@ class RequestPaymentTransaction extends Model
     public static function getRequestPaymentByOrderIdAndUserId($orderId, $userId)
     {
         return self::query()
-            ->select(
-                'id',
-                'invoice_id',
-                'user_id',
-                'order_id',
-                'request_type',
-                'amount',
-                'request_headers',
-                'request_body'
-            )
             ->where('order_id', $orderId)
             ->where('user_id', $userId)
             ->first();

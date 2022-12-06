@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1\user;
 
 use App\Helpers\ResponsesHelper;
+use App\Http\Controllers\api\v1\RefundOrder;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderReview;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 
 class OrderActionController extends Controller
 {
+use RefundOrder;
 
     public function addOrderReview(Request $request)
     {
@@ -121,6 +123,12 @@ class OrderActionController extends Controller
         }
 
         Order::changeStatusOfOrder('canceled', $orderId);
+
+        // refund money if it paid
+        $this->refundOrderCost($orderId);
+
+
+
         return ResponsesHelper::returnData([], '200', __('api.order_canceled_successfully'));
 
     }
