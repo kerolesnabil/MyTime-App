@@ -37,12 +37,15 @@ class PaymentController extends Controller
 
         $invoiceId = $request->get('id');
 
+
+
         $requestPaymentObj = RequestPaymentTransaction::getRequestPaymentTransactionByInvoiceId($invoiceId);
 
         if (is_object($requestPaymentObj)){
             // update request payment transaction data
+            $requestPaymentDataWillUpdate['payment_id']      = $request->get('payments')[0]['id'];
             $requestPaymentDataWillUpdate['request_headers'] = $request->header();
-            $requestPaymentDataWillUpdate['request_body'] = $request->all();
+            $requestPaymentDataWillUpdate['request_body']    = $request->all();
             RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
 
             if ($request->get('status') == 'paid' && $request->get('currency') == 'SAR'){
@@ -137,9 +140,8 @@ class PaymentController extends Controller
 
             // refund money
             $paymentObj = app(IPayment::class);
-            $paymentObj->refundOrderMoney($requestObj->invoice_id);
-
-
+            $paymentObj->refundOrderMoney($requestObj->payment_id);
+            
             // change order (is_paid) col
             Order::changeOrderPaidCol($orderObj->order_id, 0);
 
