@@ -21,9 +21,8 @@ trait RefundOrder
         $orderObj = Order::getOrderById($orderId);
 
         // check if order is paid && check if order status cancel or rejected
-        if ($orderObj->is_paid == 1 &&
-            $orderObj->order_status != 'canceled' &&
-            $orderObj->order_status != 'rejected' &&
+        if (($orderObj->order_status == 'canceled' || $orderObj->order_status == 'rejected') &&
+            $orderObj->is_paid == 1 &&
             $orderObj->payment_method_type != 'cash'
         ){
 
