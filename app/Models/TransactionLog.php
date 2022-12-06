@@ -34,7 +34,8 @@ class TransactionLog extends Model
                 'users.user_name',
                 'users.user_type'
             )
-            ->join('users','users.user_id','=','transactions_log.user_id');
+            ->join('users','users.user_id','=','transactions_log.user_id')->
+            orderBy('transactions_log.created_at','desc');
 
 
         if(isset($attr['date_from']) && !empty($attr['date_from'])){

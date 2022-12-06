@@ -322,8 +322,7 @@ class OrderController extends Controller
             $notes
         ));
 
-        // // increase vendor wallet
-
+        // increase vendor wallet
         $arChargeNotes = "تم ايداع مبلغ $orderData->order_total_price قيمة تكلفة الطلب رقم ($orderData->order_id )";
         $enChargeNotes = "$orderData->order_total_price has been deposited, the value of the cost of the order No  ($orderData->order_id)";
         $notes   = '{"ar":"'.$arChargeNotes.'", "en":"'.$enChargeNotes.'"}';
