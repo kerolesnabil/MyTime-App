@@ -44,30 +44,45 @@ class PaymentController extends Controller
             $requestPaymentDataWillUpdate['request_headers'] = $request->header();
             $requestPaymentDataWillUpdate['request_body'] = $request->all();
             RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
+            
+            if ($request->get('status') == 'paid' && $request->get('currency') == 'SAR'){
+                if (empty($requestPaymentObj->order_id)){
+                    //  case order
+                    $orderData = Order::getOrderById($requestPaymentObj->order_id);
 
-            Log::info($request->get('status') ." ------- ". $request->get('currency') );
+                    // decrease app profit from vendor wallet
+                    $arNotes = "تم سحب $orderData->order_app_profit ريال سعودي قيمة ارباح التطبيق في الطلب رقم ($orderData->order_id )";
+                    $enNotes = "$orderData->order_app_profit app profit SAR, the value of the application profit in order No. ($orderData->order_id ) has been withdrawn";
+                    $notes = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
 
-            Log::info($request->get('status') == 'paid' && $request->get('currency') == 'SAR');
-
-            if ($request->get('status') == 'paid' &&
-                $request->get('currency') == 'SAR'
-            ){
-                if ($requestPaymentObj->order_id != null){
-                    // update order paid (is paid) col
-                    Order::changeOrderPaidCol($requestPaymentObj->order_id, 1);
-                }
-                else{
-                    $arNotes = " تم ايداع مبلغ $requestPaymentObj->amount ريال سعودي ";
-                    $enNotes = "amount has been deposited $requestPaymentObj->amount SAR";
-                    $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
-
-                    // charge vendor wallet (deposit)
-                    event(new ChargeWallet(
-                        $requestPaymentObj->user_id,
-                        $requestPaymentObj->amount,
+                    event(new DecreaseWallet(
+                        $orderData->vendor_id,
+                        $orderData->order_app_profit,
                         $notes
                     ));
+
+                    // update order paid (is paid) col
+                    Order::changeOrderPaidCol($requestPaymentObj->order_id, 1);
+
+                    // msgs for deposit money in vendor wallet
+                    $arChargeNotes = "تم ايداع مبلغ $requestPaymentObj->amount قيمة تكلفة الطلب رقم ($orderData->order_id )";
+                    $enChargeNotes = "$requestPaymentObj->amount has been deposited, the value of the cost of the order No  ($orderData->order_id)";
+                    $notes   = '{"ar":"'.$arChargeNotes.'", "en":"'.$enChargeNotes.'"}';
                 }
+                else{
+                    // case charge wallet
+                    $amountWillCharge = $requestPaymentObj->amount;
+                    $arNotes = " تم ايداع مبلغ $amountWillCharge ريال سعودي ";
+                    $enNotes = "amount has been deposited $amountWillCharge SAR";
+                    $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+                }
+
+                // charge vendor wallet (deposit)
+                event(new ChargeWallet(
+                    $requestPaymentObj->user_id,
+                    $requestPaymentObj->amount,
+                    $notes
+                ));
             }
 
         }
