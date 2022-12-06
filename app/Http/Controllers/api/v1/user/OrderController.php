@@ -311,6 +311,9 @@ class OrderController extends Controller
 
     private function payOrderByWallet($orderData)
     {
+
+
+
         // decrease app profit from user wallet
         $arNotes = "تم سحب $orderData->order_total_price ريال سعودي قيمة تكلفة الطلب رقم ($orderData->order_id )";
         $enNotes = "$orderData->order_total_price app profit SAR, the value of cost of order No. ($orderData->order_id ) has been withdrawn";
@@ -344,7 +347,8 @@ class OrderController extends Controller
             $notes
         ));
 
-
+        // update order paid (is paid) col
+        Order::changeOrderPaidCol($orderData->order_id, 1);
     }
 
     private function payOrderByOnline($orderData)
@@ -353,8 +357,6 @@ class OrderController extends Controller
         $data['currency']             = 'SAR';
         $data['description']          = 'Order payment invoice';
         $data['callback_url']         = url('moyasar-callback');
-
-
 
         $paymentObj = app(IPayment::class);
         $paymentUrl = $paymentObj->createPayment($data);
