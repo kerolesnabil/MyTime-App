@@ -39,9 +39,7 @@ class MoyasarPaymemt implements IPayment
     {
 
         $paymentService = new \Moyasar\Providers\PaymentService();
-        $payment = $paymentService->fetch("6ef68758-bdfb-44b4-b984-1688a3350884");
-
-        dd($payment);
+        $payment = $paymentService->fetch("$paymentId");
         $payment->refund();
 
     }
