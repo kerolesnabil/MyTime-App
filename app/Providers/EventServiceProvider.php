@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\ChargeWallet;
 use App\Events\CreateAd;
+use App\Events\DecreaseWallet;
 use App\Events\UpdateFinancialRequest;
+use App\Listeners\RunAfterChargeWallet;
 use App\Listeners\RunAfterCreateAd;
+use App\Listeners\RunAfterDecreaseWallet;
 use App\Listeners\RunAfterUpdateFinancialRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -28,6 +32,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         UpdateFinancialRequest::class => [
             RunAfterUpdateFinancialRequest::class,
+        ],
+        ChargeWallet::class => [
+            RunAfterChargeWallet::class,
+        ],
+        DecreaseWallet::class => [
+            RunAfterDecreaseWallet::class,
         ],
     ];
 

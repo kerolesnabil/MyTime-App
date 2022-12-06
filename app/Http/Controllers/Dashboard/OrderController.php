@@ -62,7 +62,15 @@ class OrderController extends Controller
 
         if (in_array($reportType, $reportTypes)){
             $orders = Order::getNewOrders(20, $reportType);
-            return view('dashboard.orders.index')->with(['orders' => $orders, 'report' => 'report']);
+
+            $users   = User::getUsersByType('user', []);
+            $vendors = User::getUsersByType('vendor', []);
+            return view('dashboard.orders.index')->with([
+                'orders' => $orders,
+                'report' => 'report',
+                'users'  => $users,
+                'vendors'  => $vendors,
+            ]);
         }
 
 

@@ -62,7 +62,11 @@ return [
     'support_message_sent_successfully'       => 'تم إرسال رسالة الدعم بنجاح',
     'page_type_entered_is_wrong'              => 'نوع الصفحة الذي أدخلته خاطئ',
     'payment_method_not_online_can_not_paid'  => 'نوع الدفع ليس اونلاين لا يمكن اتمام عملية الدفع',
-    'order_already_paid'    => 'تم دفع الطلب سابقا'
+    'order_already_paid'                      => 'تم دفع تكلفة الطلب سابقا',
+    'order_already_not_paid'                  => 'لم يتم دفع تكلفة الطلب مسبقا',
+    'wallet_not_enough_to_pay'                => 'المحفظة غير كافية لدفع تكلفة الطلب، يمكنك الدفع بطريقة أخرى أو شحن المحفظة',
+    'can_not_refund_order_status_not_reject_or_cancel' => 'لا يمكن استرداد تكلفة الطلب لأنه لم يتم رفض الطلب أو إلغاؤه',
+
 
 
 

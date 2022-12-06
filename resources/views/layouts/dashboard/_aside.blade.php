@@ -39,6 +39,8 @@
                     <li ><a href="{{ route('financial_request.show_deposit_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.deposit_requests')</a></li>
                     <li ><a href="{{ route('financial_request.show_withdrawal_requests') }}"><i class="fa fa-circle-o"></i>@lang('site_financial_transactions.withdrawal_requests')</a></li>
                     <li ><a href="{{ route('setting.get_bank_account_details') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_bank_account')</a></li>
+                    <li ><a href="{{ route('setting.get_app_profit_percentage') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.app_profit_percentage')</a></li>
+                    <li ><a href="{{ route('setting.get_tax_rate') }}"><i class="fa fa-circle-o"></i>@lang('site_setting.tax_rate')</a></li>
 
                 </ul>
 

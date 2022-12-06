@@ -23,7 +23,8 @@ Route::group([
     Route::group(['middleware' => ['auth:api']] ,function () {
 
         Route::get('/get-payment-methods', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'getPaymentMethods']);
-        Route::post('/create-order-payment', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'createOrderPayment']);
+        Route::post('/refund-order', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'refundOrderCost']);
+
 
 
         Route::get('/wish-list', [\App\Http\Controllers\api\v1\user\WishListController::class, 'showWishListOfUser']);

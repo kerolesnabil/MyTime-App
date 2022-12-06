@@ -36,7 +36,7 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="bank_account_details[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$bank_account_details['setting_name'][$lang['lang_symbol']]}}">
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="bank_account_details[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$bank_account_details['setting_name'][$lang['lang_symbol']]}}" readonly>
                                 </div>
                             @endforeach
                         </div>

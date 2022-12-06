@@ -63,8 +63,24 @@ return [
     'bank_name'                                             => 'اسم البنك',
     'account_number'                                        => 'رقم الحساب',
     'iban_number'                                           => 'رقم الايبان',
+    'app_profit_percentage'                                 => 'نسبة ارباح التطبيق',
+    'app_profit_percentage_value'                           => 'قيمة نسبة ارباح التطبيق %',
+    'rule_app_profit_percentage_setting_name.required'      => 'يرجي ادخال اسم إعداد نسبة ارباح التطبيق بجميع اللغات',
+    'rule_app_profit_percentage_setting_name.string'        => 'اسم إعداد نسبة ارباح التطبيق يجب ان يكون نص',
+    'rule_app_profit_percentage_setting_value.required'     => 'قيمة نسبة ارباح التطبيق مطلوبة',
+    'rule_app_profit_percentage_setting_value.numeric'      => 'قيمة نسبة ارباح التطبيق يجب ان تكون رقم',
+    'rule_app_profit_percentage_setting_value.min'          => 'قيمة نسبة ارباح التطبيق يجب ان تكون اكبر من 1',
+    'rule_app_profit_percentage_setting_value.max'          => 'قيمة نسبة ارباح التطبيق يجب ان تكون اقل من 100',
 
 
+    'tax_rate'                                 => 'نسبة الضريبة المضافة',
+    'tax_rate_value'                           => 'قيمة نسبة الضريبة المضافة %',
+    'rule_tax_rate_setting_name.required'      => 'يرجي ادخال اسم إعداد الضريبة المضافة بجميع اللغات',
+    'rule_tax_rate_setting_name.string'        => 'اسم إعداد نسبة الضريبة المضافة يجب ان يكون نص',
+    'rule_tax_rate_setting_value.required'     => 'قيمة نسبة الضريبة المضافة مطلوبة',
+    'rule_tax_rate_setting_value.numeric'      => 'قيمة نسبة الضريبة المضافة يجب ان تكون رقم',
+    'rule_tax_rate_setting_value.min'          => 'قيمة نسبة الضريبة المضافة يجب ان تكون اكبر من 1',
+    'rule_tax_rate_setting_value.max'          => 'قيمة نسبة الضريبة المضافة يجب ان تكون اقل من 100',
 
 
 ];

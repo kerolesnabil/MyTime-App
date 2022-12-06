@@ -10,7 +10,7 @@ interface IPayment
 
     public function getPaymentInfo($paymentId);
 
-    //public function refundPayment($paymentId);
+    public function refundOrderMoney($paymentId);
 
 
 }

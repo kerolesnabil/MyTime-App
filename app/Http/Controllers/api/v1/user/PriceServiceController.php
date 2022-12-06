@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\v1\user;
 use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Models\VendorServices;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -76,8 +77,11 @@ class PriceServiceController extends Controller
 
         }
 
-        $orderPrice['order_taxes_rate']  = "10%";
-        $orderPrice['order_taxes_cost']  = (intval($orderPrice['order_taxes_rate']) / 100) * $orderPrice['order_total_items_price_after_discount'];
+        $taxRate  = Setting::getSettingByKey('tax_rate', 'web');
+        $taxValue = $taxRate['setting_value'];
+
+        $orderPrice['order_taxes_rate']  = floatval($taxValue) / 100;
+        $orderPrice['order_taxes_cost']  = $orderPrice['order_taxes_rate'] * $orderPrice['order_total_items_price_after_discount'];
         $orderPrice['order_total_price'] = $orderPrice['order_total_items_price_after_discount'] + $orderPrice['order_taxes_cost'];
 
 

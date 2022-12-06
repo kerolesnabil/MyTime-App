@@ -26,6 +26,16 @@ class NotificationToken extends Model
         ]);
     }
 
+    public static function getNotificationByToken($token)
+    {
+        return  self::query()
+            ->select(
+                'token'
+            )
+            ->where('token', $token)->first();
+
+    }
+
 
 
 }

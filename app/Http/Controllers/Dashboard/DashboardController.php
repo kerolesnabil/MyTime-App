@@ -18,13 +18,13 @@ class DashboardController
     public function index(Request $request)
     {
 
- /*       $paymenyObj = app(IPayment::class);
+/*        $paymenyObj = app(IPayment::class);
 //        dd($paymenyObj->createPayment([
 //            "order_id" => 10,
 //            "user_id"  => 1,
 //        ]));
 
-        dd($paymenyObj->getPaymentInfo("dc27f4dd-db43-446a-a88d-d2fa3a401e18"));*/
+        dd($paymenyObj->getPaymentInfo("ba70fd56-5e34-4dd2-868b-2cc56bd1fbc4"));*/
 
 
 

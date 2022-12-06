@@ -136,6 +136,16 @@ Route::group([
             Route::post('save', 'SettingController@saveDiameterSearch')->name('setting.save_diameter_search');
         });
 
+        Route::prefix('app_profit_percentage')->group(function (){
+            Route::get('get_app_profit_percentage', 'SettingController@getAppProfitPercentage')->name('setting.get_app_profit_percentage');
+            Route::post('save', 'SettingController@saveAppProfitPercentage')->name('setting.save_app_profit_percentage');
+        });
+
+        Route::prefix('tax_rate')->group(function (){
+            Route::get('get_tax_rate', 'SettingController@getAddedTaxRate')->name('setting.get_tax_rate');
+            Route::post('save', 'SettingController@saveAddedTaxRate')->name('setting.save_tax_rate');
+        });
+
         Route::prefix('bank_account_details')->group(function (){
             Route::get('get_bank_account_details', 'SettingController@getBankAccountDetails')->name('setting.get_bank_account_details');
             Route::post('save', 'SettingController@saveBankAccountDetails')->name('setting.save_bank_account_details');
@@ -191,4 +201,4 @@ Route::group([
 
 });
 
-Route::post('/moyasar-callback', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'getPaymentStatus']);
+Route::post('/moyasar-callback', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'paymentCallback']);
