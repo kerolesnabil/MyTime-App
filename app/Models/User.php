@@ -288,6 +288,17 @@ class User extends Authenticatable
 
     }
 
+    public static function getUserById($userId)
+    {
+        $user =  self::where('user_id', $userId)->first();
+        if (!is_null($user)){
+            $user->user_img = ImgHelper::returnImageLink($user->user_img);
+        }
+
+        return $user;
+
+    }
+
     public static function saveAdminData($data, $userId = null, $options = null)
     {
         // $options (array) => images, password

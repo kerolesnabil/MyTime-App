@@ -6,9 +6,11 @@ use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveAdsPricesRequest;
 use App\Http\Requests\SaveAppImagesRequest;
+use App\Http\Requests\SaveAppProfitPercentageRequest;
 use App\Http\Requests\SaveBankAccountDetailsRequest;
 use App\Http\Requests\SaveDiameterSearchRequest;
 use App\Http\Requests\SaveSocialMediaRequest;
+use App\Http\Requests\SaveTaxRateRequest;
 use App\Models\Lang;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -49,7 +51,7 @@ class SettingController extends Controller
             $settingName = json_encode($request->setting_name);
             $settingValue = json_encode($request->setting_value);
             Setting::saveSettingByKey('social_media', $settingValue, $settingName);
-            session()->flash('success', __('site.updated_successfully'));
+            session()->flash('success', __('site.saved_successfully'));
         }
         else{
             /**************  create ***************/
@@ -152,7 +154,7 @@ class SettingController extends Controller
         }
 
 
-        session()->flash('success', __('site.updated_successfully'));
+        session()->flash('success', __('site.saved_successfully'));
         return redirect(route('admin.homepage'));
     }
 
@@ -189,7 +191,7 @@ class SettingController extends Controller
         $adPriceInDiscoverPageSettingName = json_encode($request->ad_price_in_discover_page['setting_name']);
         Setting::saveSettingByKey('price_ad_in_discover_page', $request->ad_price_in_discover_page['setting_value'], $adPriceInDiscoverPageSettingName);
 
-        session()->flash('success', __('site.updated_successfully'));
+        session()->flash('success', __('site.saved_successfully'));
         return redirect(route('admin.homepage'));
 
     }
@@ -215,7 +217,7 @@ class SettingController extends Controller
         $diameterSearchSettingName = json_encode($request->diameter_search['setting_name']);
         Setting::saveSettingByKey('diameter_search', $request->diameter_search['setting_value'], $diameterSearchSettingName);
 
-        session()->flash('success', __('site.updated_successfully'));
+        session()->flash('success', __('site.saved_successfully'));
         return redirect(route('admin.homepage'));
 
     }
@@ -242,8 +244,60 @@ class SettingController extends Controller
 
         Setting::saveSettingByKey('bank_account_details', $bankAccountDetailsSettingValue, $bankAccountDetailsSettingName);
 
-        session()->flash('success', __('site.updated_successfully'));
+        session()->flash('success', __('site.saved_successfully'));
         return redirect(route('setting.get_bank_account_details'));
+
+    }
+
+
+
+    public function getAppProfitPercentage()
+    {
+        $appProfit                  = Setting::getSettingByKey('app_profit_percentage', 'web');
+        $appProfit['setting_name']  = json_decode($appProfit['setting_name'], true);
+
+
+        $langs = Lang::getAllLangs();
+        return view('dashboard.settings.save_app_profit_percentage')->with(
+            [
+                'app_profit_percentage' => $appProfit,
+                'langs'           => $langs
+            ]);
+    }
+
+    public function saveAppProfitPercentage(SaveAppProfitPercentageRequest $request)
+    {
+        $appProfitPercentageSettingName = json_encode($request->get("app_profit_percentage")['setting_name']);
+        $appProfitPercentageValue       = $request->get('app_profit_percentage')['setting_value'];
+
+        Setting::saveSettingByKey('app_profit_percentage', $appProfitPercentageValue, $appProfitPercentageSettingName);
+        session()->flash('success', __('site.saved_successfully'));
+        return redirect(route('admin.homepage'));
+
+    }
+
+    public function getAddedTaxRate()
+    {
+        $taxRate                  = Setting::getSettingByKey('tax_rate', 'web');
+        $taxRate['setting_name']  = json_decode($taxRate['setting_name'], true);
+
+
+        $langs = Lang::getAllLangs();
+        return view('dashboard.settings.save_tax_rate')->with(
+            [
+                'tax_rate' => $taxRate,
+                'langs'    => $langs
+            ]);
+    }
+
+    public function saveAddedTaxRate(SaveTaxRateRequest $request)
+    {
+        $taxRateSettingName = json_encode($request->get("tax_rate")['setting_name']);
+        $taxRateValue       = $request->get('tax_rate')['setting_value'];
+
+        Setting::saveSettingByKey('tax_rate', $taxRateValue, $taxRateSettingName);
+        session()->flash('success', __('site.saved_successfully'));
+        return redirect(route('admin.homepage'));
 
     }
 }

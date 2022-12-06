@@ -37,7 +37,7 @@
                                 @foreach($langs as $lang)
                                     <div class="col-md-6 pr-md-1">
                                         <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                        <input style="font-size: 18px" type="text" name="setting_name[{{$lang['lang_symbol']}}]" class="form-control" value="{{$social_media['setting_name'][$lang['lang_symbol']]}}">
+                                        <input style="font-size: 18px" type="text" name="setting_name[{{$lang['lang_symbol']}}]" class="form-control" value="{{$social_media['setting_name'][$lang['lang_symbol']]}}" readonly>
                                     </div>
                                 @endforeach
                             </div>

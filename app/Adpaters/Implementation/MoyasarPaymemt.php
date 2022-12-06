@@ -21,16 +21,11 @@ class MoyasarPaymemt implements IPayment
 
         // @TODO Mass3ood => ask moyasar in meta data
 
-
-
-
         $invoiceService = $invoiceService->create([
             'amount'               => $data['amount'],
             'currency'             => $data['currency'],
             'description'          => $data['description'],
             'callback_url'         => $data['callback_url'],
-            "metadata['user_id']"  => $data['metadata']['user_id'],
-            "metadata['order_id']" => $data['metadata']['order_id'],
         ]);
 
 
@@ -38,6 +33,19 @@ class MoyasarPaymemt implements IPayment
         return $invoiceService->url;
 
     }
+
+
+    public function refundOrderMoney($paymentId)
+    {
+
+        $paymentService = new \Moyasar\Providers\PaymentService();
+        $payment = $paymentService->fetch("6ef68758-bdfb-44b4-b984-1688a3350884");
+
+        dd($payment);
+        $payment->refund();
+
+    }
+
 
     public function getPaymentInfo($paymentId)
     {
@@ -56,5 +64,4 @@ class MoyasarPaymemt implements IPayment
         ];
 
     }
-
 }

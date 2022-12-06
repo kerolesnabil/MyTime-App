@@ -61,6 +61,9 @@ return [
     'support_message_sent_successfully'       => 'Support message has been sent successfully',
     'page_type_entered_is_wrong'              => 'The page type you entered is wrong',
     'payment_method_not_online_can_not_paid'  => 'Payment type is not online. Payment cannot be completed',
-    'order_already_paid'    => 'The order has already been paid'
+    'order_already_paid'                      => 'The order cost has already been paid',
+    'order_already_ot_paid'                   => 'The order cost has not been paid previously',
+    'wallet_not_enough_to_pay'                => 'Sorry, the wallet is not enough to pay the cost of the order, you can pay in another way or charge the wallet',
+    'can_not_refund_order_status_not_reject_or_cancel' => 'The cost of the order cannot be refunded because the order has not been rejected or cancelled',
 
 ];

@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.homepage') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
                 <li><a href="{{ route('admin.homepage') }}"> @lang('site.settings')</a></li>
-                <li><a href="{{ route('setting.get_diameter_search') }}"> @lang('site_setting.diameter_search')</a></li>
+                <li><a href="{{ route('setting.get_tax_rate') }}"> @lang('site_setting.tax_rate')</a></li>
                 <li class="active"><?php echo __('site.edit')?></li>
             </ol>
         </section>
@@ -21,13 +21,13 @@
             <div class="box box-primary">
 
                 <div class="box-header">
-                    <h1 class="box-title" style="color: #605ca8; font-size: 20px; font-weight: bold"> <?php echo __('site.edit')?> @lang('site_setting.diameter_search')</h1>
+                    <h1 class="box-title" style="color: #605ca8; font-size: 20px; font-weight: bold"> <?php echo __('site.edit')?> @lang('site_setting.tax_rate')</h1>
                 </div><!-- end of box header -->
 
                 <div class="box-body">
 
                     @include('partials._errors')
-                    <form class="form-group" action="{{ route('setting.save_diameter_search') }}" method="POST" enctype="multipart/form-data">
+                    <form class="form-group" action="{{ route('setting.save_tax_rate') }}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
 
@@ -36,21 +36,21 @@
                             @foreach($langs as $lang)
                                 <div class="col-md-6 pr-md-1">
                                     <label style="color: #007cff; font-size: 18px">{{$lang['lang_symbol']}}</label>
-                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="diameter_search[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$diameter_search['setting_name'][$lang['lang_symbol']]}}" readonly>
+                                    <input style="font-weight: bold; font-size: 14px;" type="text" name="tax_rate[setting_name][{{$lang['lang_symbol']}}]" class="form-control" value="{{$tax_rate['setting_name'][$lang['lang_symbol']]}}" readonly>
                                 </div>
                             @endforeach
                         </div>
 
-                        <label style="font-size: 18px">@lang('site_setting.diameter_search_value')</label>
+                        <label style="font-size: 18px">@lang('site_setting.tax_rate_value')</label>
                         <div class="row mb-3 margin-bottom">
                             <div class="col-md-6 pr-md-1">
-                                <input style="font-weight: bold; font-size: 14px;" type="text" name="diameter_search[setting_value]" class="form-control" value="{{$diameter_search['setting_value']}}">
+                                <input style="font-weight: bold; font-size: 14px;" type="text" name="tax_rate[setting_value]" class="form-control" value="{{$tax_rate['setting_value']}}">
                             </div>
                         </div>
 
                         <div class="row margin-bottom">
                             <div class="col-md-6 pl-md-1">
-                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>                            </div>
+                                <button type="submit" class="btn btn-success"></i> @lang('site.save')</button>
                             </div>
                         </div>
 

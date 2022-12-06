@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\api\v1\user;
 
+use App\Adpaters\Implementation\MoyasarPaymemt;
+use App\Adpaters\IPayment;
+use App\Events\ChargeWallet;
+use App\Events\DecreaseWallet;
 use App\Helpers\ImgHelper;
 use App\Helpers\OrderActionNamesHelper;
 use App\Helpers\ResponsesHelper;
@@ -13,7 +17,9 @@ use App\Models\OrderCart;
 use App\Models\OrderItem;
 use App\Models\OrderRejection;
 use App\Models\PaymentMethod;
+use App\Models\RequestPaymentTransaction;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -104,7 +110,6 @@ class OrderController extends Controller
             return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
         }
 
-
         $data  = [];
         if (isset($request->coupon_code))
         {
@@ -185,6 +190,16 @@ class OrderController extends Controller
         }
 
         $orderTotalData = $this->orderDataHandler($request);
+        $paymentMethod = PaymentMethod::getPaymentMethodById($orderTotalData['payment_method_id']);
+
+        // check if user wallet is enough to pay order
+        if ($paymentMethod->payment_method_type == 'wallet')
+        {
+            $check = $this->checkIfUserWalletIsEnoughToPayOrder($user['user']->user_id, $orderTotalData['order_total_price']);
+            if (!empty($check)){
+                return $check;
+            }
+        }
 
         $storedOrderData = Order::createOrder($orderTotalData);
 
@@ -202,15 +217,21 @@ class OrderController extends Controller
         OrderCart::deleteOrderCart($request->user_id);
 
 
+        $paymentFunctionName = "payOrderBy" . ucwords($paymentMethod->payment_method_type);
+        $paymentFunction = $this->$paymentFunctionName($storedOrderData);
 
-        //calc admin profit
-        //based on setting, get margin percent and apply it on total price
-        //then if the payment method was cash,
-        //you should decrease the calculated amount from the vendor's wallet
+        if (!empty($paymentFunction)){
+            return $paymentFunction;
+        }
 
-        //online payment
-        //you should increase (total order amount - the calculated amount) from the vendor's wallet
-        return ResponsesHelper::returnData(['order_id' => $storedOrderData->order_id], '200', 'Order created successfully');
+
+        return ResponsesHelper::returnData([
+            'order_id' => $storedOrderData->order_id,
+            'online_payment_url' => ''
+        ],
+            '200',
+            'Order created successfully'
+        );
 
     }
 
@@ -224,7 +245,6 @@ class OrderController extends Controller
             if ($coupon['status'] == false){
                 $data['coupon'] = $coupon;
             }
-
 
             $itemsTotalPrice = self::getTotalPriceOfItems($orderSubData->user_id, $coupon)->getData();
         }
@@ -264,5 +284,101 @@ class OrderController extends Controller
         return $orderTotalData;
     }
 
+
+    public function checkIfUserWalletIsEnoughToPayOrder($userId, $orderCost)
+    {
+        $userObj  = User::getUserById($userId);
+
+        if (floatval($orderCost) > floatval($userObj->user_wallet)){
+            return ResponsesHelper::returnError('400', __('api.wallet_not_enough_to_pay'));
+        }
+    }
+
+    private function payOrderByCash($orderData)
+    {
+        // decrease app profit from vendor wallet
+        $arNotes = "تم سحب $orderData->order_app_profit ريال سعودي قيمة ارباح التطبيق في الطلب رقم ($orderData->order_id )";
+        $enNotes = "$orderData->order_app_profit app profit SAR, the value of the application profit in order No. ($orderData->order_id ) has been withdrawn";
+        $notes = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+
+        event(new DecreaseWallet(
+            $orderData->vendor_id,
+            $orderData->order_app_profit,
+            $notes
+        ));
+
+    }
+
+    private function payOrderByWallet($orderData)
+    {
+        // decrease app profit from user wallet
+        $arNotes = "تم سحب $orderData->order_total_price ريال سعودي قيمة تكلفة الطلب رقم ($orderData->order_id )";
+        $enNotes = "$orderData->order_total_price app profit SAR, the value of cost of order No. ($orderData->order_id ) has been withdrawn";
+        $notes = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+
+        event(new DecreaseWallet(
+            $orderData->user_id,
+            $orderData->order_total_price,
+            $notes
+        ));
+
+        // // increase vendor wallet
+
+        $arChargeNotes = "تم ايداع مبلغ $orderData->order_total_price قيمة تكلفة الطلب رقم ($orderData->order_id )";
+        $enChargeNotes = "$orderData->order_total_price has been deposited, the value of the cost of the order No  ($orderData->order_id)";
+        $notes   = '{"ar":"'.$arChargeNotes.'", "en":"'.$enChargeNotes.'"}';
+
+        event(new ChargeWallet(
+            $orderData->vendor_id,
+            $orderData->order_total_price,
+            $notes
+        ));
+
+        // decrease app profit from vendor wallet
+        $arNotes = "تم سحب $orderData->order_app_profit ريال سعودي قيمة ارباح التطبيق في الطلب رقم ($orderData->order_id )";
+        $enNotes = "$orderData->order_app_profit app profit SAR, the value of the application profit in order No. ($orderData->order_id ) has been withdrawn";
+        $notes = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+
+        event(new DecreaseWallet(
+            $orderData->vendor_id,
+            $orderData->order_app_profit,
+            $notes
+        ));
+
+
+    }
+
+    private function payOrderByOnline($orderData)
+    {
+        $data['amount']               = intval(floatval($orderData->order_total_price) * 100);
+        $data['currency']             = 'SAR';
+        $data['description']          = 'Order payment invoice';
+        $data['callback_url']         = url('moyasar-callback');
+
+
+
+        $paymentObj = app(IPayment::class);
+        $paymentUrl = $paymentObj->createPayment($data);
+        $urlValues  = parse_url($paymentUrl);
+        $path       = explode('/', $urlValues['path']);
+
+
+        $requestPaymentData['invoice_id']   = $path[2];
+        $requestPaymentData['user_id']      = $orderData->user_id;
+        $requestPaymentData['order_id']     = $orderData->order_id;
+        $requestPaymentData['request_type'] = 'order';
+        $requestPaymentData['amount']       = floatval($orderData->order_total_price);
+
+        RequestPaymentTransaction::createRequestPaymentTransaction($requestPaymentData);
+
+        return ResponsesHelper::returnData([
+            'order_id'           => $orderData->order_id,
+            'online_payment_url' => $paymentUrl
+        ],
+            '200',
+            'Order created successfully'
+        );
+
+    }
 
 }

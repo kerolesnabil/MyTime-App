@@ -47,10 +47,12 @@ class Setting extends Model
     public static function getTax()
     {
         // This is a temporary function to get the tax value
-        $tax = "10";
-        $taxValue = intval($tax) /100;
+        $tax = self::getSettingByKey('tax_rate', 'web');
+        $tax = $tax['setting_value'];
 
-        $data['tax_rate'] = $tax;
+        $taxValue = floatval($tax) / 100;
+
+        $data['tax_rate']  = $tax;
         $data['tax_value'] = $taxValue;
         return $data;
     }

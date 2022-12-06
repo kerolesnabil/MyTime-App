@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\api\v1\payment;
 
 use App\Adpaters\Implementation\MoyasarPaymemt;
+use App\Adpaters\IPayment;
 use App\Adpaters\ISMSGateway;
+use App\Events\ChargeWallet;
+use App\Events\DecreaseWallet;
 use App\Helpers\ResponsesHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -27,9 +30,50 @@ class PaymentController extends Controller
 
     }
 
-    public function createOrderPayment(Request $request)
-    {
 
+    public function paymentCallback(Request $request)
+    {
+        Log::info($request->all());
+
+        $invoiceId = $request->get('id');
+
+        $requestPaymentObj = RequestPaymentTransaction::getRequestPaymentTransactionByInvoiceId($invoiceId);
+
+        if (is_object($requestPaymentObj)){
+            // update request payment transaction data
+            $requestPaymentDataWillUpdate['request_headers'] = $request->header();
+            $requestPaymentDataWillUpdate['request_body'] = $request->all();
+            RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
+
+
+            if ($request->get('status') == 'paid' &&
+                $request->get('currency') == 'SAR' &&
+                intval($request->get('currency')) / 100 == intval($requestPaymentObj->amount)
+            ){
+
+                if ($requestPaymentObj->order_id != null){
+                    // update order paid (is paid) col
+                    Order::changeOrderPaidCol($requestPaymentObj->order_id, 1);
+                }
+                else{
+                    $arNotes = " تم ايداع مبلغ $requestPaymentObj->amount ريال سعودي ";
+                    $enNotes = "amount has been deposited $requestPaymentObj->amount SAR";
+                    $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+
+                    // charge vendor wallet (deposit)
+                    event(new ChargeWallet(
+                        $requestPaymentObj->user_id,
+                        $requestPaymentObj->amount,
+                        $notes
+                    ));
+                }
+            }
+
+        }
+    }
+
+    public function refundOrderCost(Request $request)
+    {
         $user['user'] = Auth::user();
         if($user['user']->user_type!='user'){
             return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
@@ -45,16 +89,21 @@ class PaymentController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-
         if (!Order::checkIfUserHaveOrder($request->get('order_id'), $user['user']->user_id)){
             return ResponsesHelper::returnError('400',__('api.not_have_permission_to_do_process'));
         }
 
         $orderObj = Order::getOrderById($request->get('order_id'));
 
-        // check if order not paid
-        if ($orderObj->is_paid == 1){
-            return ResponsesHelper::returnError('400', __('api.order_already_paid'));
+        // check if order is not paid
+        if ($orderObj->is_paid != 1){
+            return ResponsesHelper::returnError('400', __('api.order_already_not_paid'));
+        }
+
+
+        // check if order status cancel or rejected
+        if ($orderObj->order_status != 'canceled' && $orderObj->order_status != 'rejected'){
+            return ResponsesHelper::returnError('400', __('api.can_not_refund_order_status_not_reject_or_cancel'));
         }
 
 
@@ -63,43 +112,73 @@ class PaymentController extends Controller
             return ResponsesHelper::returnError('400', __('api.payment_method_not_online_can_not_paid'));
         }
 
+        $requestObj = RequestPaymentTransaction::getRequestPaymentByOrderIdAndUserId($orderObj->order_id, $user['user']->user_id);
 
-        $data['amount']               = intval($orderObj->order_total_price) * 100;
-        $data['currency']             = 'SAR';
-        $data['description']          = 'Order payment invoice';
-        $data['callback_url']         = url('moyasar-callback');
-        $data["metadata"]['user_id']  = $user['user']->user_id;
-        $data["metadata"]['order_id'] = $user['user']->order_id;
+        if (!is_null($requestObj->invoice_id)){
+
+            // refund money
+            $paymentObj = app(IPayment::class);
+            $paymentObj->refundOrderMoney($requestObj->invoice_id);
 
 
-        $paymentUrl = app(MoyasarPaymemt::class)->createPayment($data);
+            // change order (is_paid) col
+            Order::changeOrderPaidCol($orderObj->order_id, 0);
 
-        return ResponsesHelper::returnData($paymentUrl, '200');
+
+            // decrease vendor wallet
+            $moneyWillDecreaseFromVendor = floatval($orderObj->order_total_price) - floatval($orderObj->order_app_profit);
+            $arNotes = "تم سحب $moneyWillDecreaseFromVendor ريال سعودي قيمة تكلفة الطلب رقم )$orderObj->order_id )";
+            $enNotes = "$orderObj->order_total_price SAR has been withdrawn, the value of the cost of the order No  ($orderObj->order_id)";
+            $notes   = '{"ar":"'.$arNotes.'", "en":"'.$enNotes.'"}';
+
+            event(new DecreaseWallet(
+                $orderObj->vendor_id,
+                $moneyWillDecreaseFromVendor,
+                $notes
+
+            ));
+
+        }
+
+
     }
 
-    public function getPaymentStatus(Request $request)
+    public function chargeWalletPayment(Request $request)
     {
+        $user['user']=Auth::user();
+        if($user['user']->user_type!='user'){
+            return ResponsesHelper::returnError('400',__('api.you_are_not_user'));
+        }
 
-        Log::info($request->all());
+        $rules = [
+            "amount" => "required|numeric|min:1"
+        ];
 
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return ResponsesHelper::returnValidationError('400', $validator);
+        }
 
-        return 'wowo';
-        $paymentInfo = app(MoyasarPaymemt::class)->getPaymentInfo("");
+        $data['amount']                     = floatval($request->get('amount')) * 100;
+        $data['currency']                   = 'SAR';
+        $data['description']                = 'charge wallet';
+        $data['callback_url']               = url('moyasar-callback');
+        $data["metadata"]['user_id']        = null;
+        $data["metadata"]['order_id']       = $user['user']->user_id;
 
+        $paymentObj                         = app(IPayment::class);
+        $paymentUrl                         = $paymentObj->createPayment($data);
+        $urlValues                          = parse_url($paymentUrl);
+        $path                               = explode('/', $urlValues['path']);
 
-        $data['user_id']  = '';
-        $data['order_id'] = '';
-        $data['request_type'] = '';
-        $data['amount'] = '';
-        $data['request_headers'] = $request->header();
-        $data['request_body'] = $request->all();
+        $requestPaymentData['invoice_id']   = $path[2];
+        $requestPaymentData['user_id']      = $user['user']->user_id;
+        $requestPaymentData['order_id']     = null;
+        $requestPaymentData['request_type'] = 'charge_wallet';
+        $requestPaymentData['amount']       = floatval($request->get('amount'));
 
-        RequestPaymentTransaction::createRequestPaymentTransaction($data);
-
-
-
+        RequestPaymentTransaction::createRequestPaymentTransaction($requestPaymentData);
 
     }
-
 
 }

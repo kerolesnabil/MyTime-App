@@ -151,5 +151,32 @@ class SettingsSeeder extends Seeder
             );
         }
 
+        $settingCheck = DB::table('settings')->where('setting_key', 'app_profit_percentage')->get();
+        if (!count($settingCheck)) {
+            DB::table('settings')->insert(
+                [
+                    'setting_name'  => '{"ar":"نسبة ارباح التطبيق", "en":"Application profit percentage"}',
+                    'setting_key'   => 'app_profit_percentage',
+                    'setting_value' => 10,
+                    'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                ]
+            );
+        }
+
+        $settingCheck = DB::table('settings')->where('setting_key', 'tax_rate')->get();
+        if (!count($settingCheck)) {
+            DB::table('settings')->insert(
+                [
+                    'setting_name'  => '{"ar":"نسبة الضريبة المضافة", "en":"Added tax rate"}',
+                    'setting_key'   => 'tax_rate',
+                    'setting_value' => 10,
+                    'created_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                    'updated_at'    => Carbon::now()->format('Y-m-d H:i:s'),
+                ]
+            );
+        }
+
+
     }
 }

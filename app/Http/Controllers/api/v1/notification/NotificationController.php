@@ -25,9 +25,13 @@ class NotificationController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        NotificationToken::createNotificationToken($request);
-        return ResponsesHelper::returnSuccessMessage('','200');
+        $checkIfTokenUnique =  NotificationToken::getNotificationByToken($request->get('token'));
 
+        if (!is_object($checkIfTokenUnique)){
+            NotificationToken::createNotificationToken($request);
+        }
+        
+        return ResponsesHelper::returnSuccessMessage('','200');
     }
 
 

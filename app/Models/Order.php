@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\ImgHelper;
+use App\Helpers\OrderHelper;
 use App\Helpers\ResponsesHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,10 @@ class Order extends Model
 
     public static function createOrder($order)
     {
-        $appProfit = '';
+        $appProfitObj        = Setting::getSettingByKey('app_profit_percentage', 'web');
+        $appProfitPercentage = floatval($appProfitObj['setting_value']);
+        $appProfitOfOrder    = OrderHelper::calculateOrderAppProfit($order['order_total_price'], $appProfitPercentage);
+
         return self::create([
             "user_id"                                 => $order['user_id'],
             "vendor_id"                               => $order['vendor_id'],
@@ -65,7 +69,7 @@ class Order extends Model
             "order_taxes_rate"                        => $order['order_taxes_rate'],
             "order_taxes_cost"                        => $order['order_taxes_cost'],
             "order_total_price"                       => $order['order_total_price'],
-            "order_app_profit"                        => 0,
+            "order_app_profit"                        => $appProfitOfOrder,
             "order_status"                            => 'pending'
         ]);
     }
@@ -587,13 +591,6 @@ class Order extends Model
         return self::getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat);
     }
 
-
-
-
-
-
-
-
     private static function getOrderChartsBasedOnType($dateFrom, $dateTo, $dbDateFormat)
     {
         $data =  self::query()->
@@ -614,5 +611,16 @@ class Order extends Model
         }
         return $result;
     }
+
+    public static function changeOrderPaidCol($orderId, $isPaid)
+    {
+        // paid => 1, not_paid => 0
+
+        self::where('order_id', '=', $orderId)
+            ->update(array(
+                'is_paid'    => $isPaid,
+            ));
+    }
+
 
 }

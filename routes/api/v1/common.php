@@ -13,7 +13,7 @@ Route::group([
     Route::group(['middleware' => ['auth:api']],function () {
 
         Route::post('/support-message', [\App\Http\Controllers\api\v1\common\SupportMessagesController::class, 'addSupportMessage']);
-
+        Route::post('/charge-wallet', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'chargeWalletPayment']);
     });
 
 
