@@ -48,7 +48,7 @@ class PaymentController extends Controller
 
             if ($request->get('status') == 'paid' &&
                 $request->get('currency') == 'SAR' &&
-                intval($request->get('currency')) / 100 == intval($requestPaymentObj->amount)
+                intval($request->get('amount')) / 100 == intval(floatval($requestPaymentObj->amount))
             ){
 
                 if ($requestPaymentObj->order_id != null){
