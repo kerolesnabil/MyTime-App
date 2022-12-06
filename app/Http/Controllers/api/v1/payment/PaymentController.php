@@ -94,8 +94,6 @@ class PaymentController extends Controller
         }
     }
 
-
-
     public function chargeWalletPayment(Request $request)
     {
         $user['user']=Auth::user();
