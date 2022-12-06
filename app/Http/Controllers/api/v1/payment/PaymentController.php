@@ -45,6 +45,9 @@ class PaymentController extends Controller
             $requestPaymentDataWillUpdate['request_body'] = $request->all();
             RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
 
+            Log::info($request->get('status') ." ------- ". $request->get('currency') );
+
+            Log::info($request->get('status') == 'paid' && $request->get('currency') == 'SAR');
 
             if ($request->get('status') == 'paid' &&
                 $request->get('currency') == 'SAR'
