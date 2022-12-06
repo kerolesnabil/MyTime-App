@@ -141,7 +141,7 @@ class PaymentController extends Controller
             // refund money
             $paymentObj = app(IPayment::class);
             $paymentObj->refundOrderMoney($requestObj->payment_id);
-            
+
             // change order (is_paid) col
             Order::changeOrderPaidCol($orderObj->order_id, 0);
 
@@ -180,7 +180,7 @@ class PaymentController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        $data['amount']                     = floatval($request->get('amount')) * 100;
+        $data['amount']                     = intval(floatval($request->get('amount')) * 100);
         $data['currency']                   = 'SAR';
         $data['description']                = 'charge wallet';
         $data['callback_url']               = url('moyasar-callback');
