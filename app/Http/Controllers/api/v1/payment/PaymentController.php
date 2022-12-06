@@ -45,10 +45,11 @@ class PaymentController extends Controller
             $requestPaymentDataWillUpdate['request_body'] = $request->all();
             RequestPaymentTransaction::updateRequestPaymentTransaction($requestPaymentObj->id, $requestPaymentDataWillUpdate);
 
+            $data = json_decode($request->all(), true);
 
-            if ($request->get('status') == 'paid' &&
-                $request->get('currency') == 'SAR' &&
-                intval($request->get('amount')) / 100 == intval(floatval($requestPaymentObj->amount))
+            if ($data['status'] == 'paid' &&
+                $data['currency'] == 'SAR' &&
+                intval($data['amount']) / 100 == $requestPaymentObj->amount
             ){
 
                 if ($requestPaymentObj->order_id != null){
