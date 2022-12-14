@@ -26,11 +26,11 @@
 
                 </div>
 
-                <div class="box-body">
+                <div class="table-responsive">
 
                     @if (count($services) > 0)
 
-                        <table class="table table-responsive table_with_buttons_without_paging">
+                        <table class="table table_with_buttons_without_paging">
 
                             <thead class="bg-black">
                             <tr style="font-size: 17px">

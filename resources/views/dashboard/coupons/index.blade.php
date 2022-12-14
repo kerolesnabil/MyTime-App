@@ -34,7 +34,7 @@
 
                 </div><!-- end of box header -->
 
-                <div class="box-body">
+                <div class="table-responsive">
 
                     <?php
                         $activeBtn = __("site.activeBtn");
@@ -43,7 +43,7 @@
 
                     @if (count($coupons) > 0)
 
-                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+                        <table class="table table_with_buttons_without_paging table-hover">
 
                             <thead class="bg-black">
                             <tr style="font-size: 18px">

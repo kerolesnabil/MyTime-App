@@ -23,11 +23,11 @@
                     <h3 class="box-title" style="margin-bottom: 15px;  color: #605ca8; ">@lang('site_coupon.used_coupon_users')</h3>
                 </div><!-- end of box header -->
 
-                <div class="box-body">
+                <div class="table-responsive">
 
                     @if (count($data) > 0)
 
-                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+                        <table class="table table_with_buttons_without_paging table-hover">
 
                             <thead class="bg-black">
                             <tr style="font-size: 18px">

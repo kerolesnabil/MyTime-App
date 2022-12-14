@@ -18,7 +18,7 @@
 
             <div class="box box-primary">
 
-                <div class="box-body">
+                <div class="table-responsive">
                     <i class="fa fa-file-text-o" aria-hidden="true" style="font-size: 24px; display: inline"> <span style=" font-weight: bold;color: #0B90C4">@lang('site.report')</span></i>
                     <hr>
 
