@@ -15,7 +15,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "mcamara/laravel-localization": "^1.7",
-        "oscarafdev/migrations-generator": "^2.0"
+        "moyasar/moyasar": "^1.1",
+        "oscarafdev/migrations-generator": "^2.0",
+        "snapappointments/bootstrap-select": "^1.13"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

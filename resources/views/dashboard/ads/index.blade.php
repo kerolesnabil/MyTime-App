@@ -26,11 +26,11 @@
 
                 </div>
 
-                <div class="box-body">
+                <div class="table-responsive">
 
                     @if ($ads->total() > 0)
 
-                        <table class="table table-responsive table_with_buttons_without_paging table-hover">
+                        <table class="table table_with_buttons_without_paging table-hover">
 
                             <thead class="bg-black">
 

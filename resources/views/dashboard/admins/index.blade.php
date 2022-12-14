@@ -29,16 +29,17 @@
 
                 </div><!-- end of box header -->
 
-                <div class="box-body">
+                <?php
+                    $activeBtn = __("site.activeBtn");
+                    $deactivateBtn = __("site.deactivateBtn");
+                ?>
 
-                    <?php
-                        $activeBtn = __("site.activeBtn");
-                        $deactivateBtn = __("site.deactivateBtn");
-                    ?>
+
+                <div class="table-responsive">
 
                     @if (count($admins) > 0)
 
-                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+                        <table class="table table_with_buttons_without_paging table-hover">
 
                             <thead class="bg-black">
                             <tr style="font-weight: bold; font-size: 18px">

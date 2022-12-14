@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1131aad5961031072f9bf232694029c",
+    "content-hash": "ec5d5701c02174c7829f73a5325b9db3",
     "packages": [
         {
             "name": "alkoumi/carbon-date-translator",
@@ -2963,6 +2963,94 @@
             "time": "2022-07-24T11:55:47+00:00"
         },
         {
+            "name": "moyasar/moyasar",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moyasar/moyasar-php.git",
+                "reference": "0a0f1cf71fff9b0fa161aea3404959a5f01d42ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moyasar/moyasar-php/zipball/0a0f1cf71fff9b0fa161aea3404959a5f01d42ff",
+                "reference": "0a0f1cf71fff9b0fa161aea3404959a5f01d42ff",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
+                "guzzlehttp/psr7": "^2.1.1",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2.4",
+                "phpunit/phpunit": "^8.5.19|^9.5.8"
+            },
+            "suggest": {
+                "laravel/framework": "Allows Moyasar payment services to be auto injected into current app container"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Payment": "Moyasar\\Facades\\Payment",
+                        "Invoice": "Moyasar\\Facades\\Invoice"
+                    },
+                    "providers": [
+                        "Moyasar\\Providers\\LaravelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Moyasar\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ali Alhoshaiyan",
+                    "email": "alialhoshaiyan@gmail.com"
+                },
+                {
+                    "name": "Sohib H Algotimel",
+                    "email": "s@sgh.sa",
+                    "homepage": "https://sgh.sa"
+                },
+                {
+                    "name": "Moyasar Development Team",
+                    "email": "developers@moyasar.com",
+                    "homepage": "https://moyasar.com/"
+                }
+            ],
+            "description": "PHP/Laravel wrapper library for Moyasar payment services",
+            "keywords": [
+                "Moyasar",
+                "apple",
+                "capture",
+                "card",
+                "credit",
+                "invoice",
+                "laravel",
+                "mada",
+                "master",
+                "pay",
+                "payment",
+                "refund",
+                "sadad",
+                "visa",
+                "void"
+            ],
+            "support": {
+                "issues": "https://github.com/moyasar/moyasar-php/issues",
+                "source": "https://github.com/moyasar/moyasar-php/tree/v1.1.1"
+            },
+            "time": "2022-03-30T09:01:26+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "2.61.0",
             "source": {
@@ -4532,6 +4620,66 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "snapappointments/bootstrap-select",
+            "version": "v1.13.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snapappointments/bootstrap-select.git",
+                "reference": "6c4c75f61e69ca54d5ab557a2b90ffdccf1c63cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snapappointments/bootstrap-select/zipball/6c4c75f61e69ca54d5ab557a2b90ffdccf1c63cd",
+                "reference": "6c4c75f61e69ca54d5ab557a2b90ffdccf1c63cd",
+                "shasum": ""
+            },
+            "suggest": {
+                "components/jquery": "1.9.1 - 3",
+                "twbs/bootstrap": ">=3.0.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Casey Holzer",
+                    "homepage": "https://github.com/caseyjhol"
+                },
+                {
+                    "name": "Silvio Moreto",
+                    "homepage": "https://github.com/silviomoreto"
+                },
+                {
+                    "name": "SnapAppointments, LLC",
+                    "homepage": "https://snapappointments.com"
+                }
+            ],
+            "description": "The jQuery plugin that brings select elements into the 21st century with intuitive multiselection, searching, and much more. Now with Bootstrap 4 support.",
+            "homepage": "https://developer.snapappointments.com/bootstrap-select",
+            "keywords": [
+                "bootstrap",
+                "dropdown",
+                "form",
+                "javascript",
+                "jquery",
+                "replacement",
+                "select"
+            ],
+            "support": {
+                "issues": "https://github.com/snapappointments/bootstrap-select/issues",
+                "source": "https://github.com/snapappointments/bootstrap-select/tree/v1.13.18"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/caseyjhol",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-06-26T18:04:14+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -9451,5 +9599,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

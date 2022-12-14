@@ -24,11 +24,11 @@
 
                 </div><!-- end of box header -->
 
-                <div class="box-body">
+                <div class="table-responsive">
 
                     @if ($users->count() > 0)
 
-                        <table class="table display table-responsive table_with_buttons_without_paging table-hover">
+                        <table class="table table_with_buttons_without_paging table-hover">
 
                             <thead class="bg-black">
                             <tr>
