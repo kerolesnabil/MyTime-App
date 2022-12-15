@@ -31,14 +31,7 @@ $(function (){
         dt_pdf_btn = $('.dt_pdf_btn').val();
     }
 
-    /*pdfMake.fonts = {
-        Arial: {
-            normal: 'arial.ttf',
-            bold: 'arialbd.ttf',
-            italics: 'ariali.ttf',
-            bolditalics: 'arialbi.ttf'
-        }
-    };*/
+
 
 
     var buttonsList = [
@@ -73,7 +66,7 @@ $(function (){
                 },
                 className: 'btn btn-success'
             },*/
-            {
+            /*{
                 text : dt_pdf_btn,
                 extend: 'pdfHtml5',
                 exportOptions: {
@@ -83,7 +76,7 @@ $(function (){
                 className: 'btn bg-purple glyphicon glyphicon-file print-btn',
                 charset: 'UTF-8',
                 bom: true
-            },
+            },*/
         ];
 
 
