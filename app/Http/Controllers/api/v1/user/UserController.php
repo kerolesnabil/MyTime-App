@@ -130,7 +130,7 @@ class UserController extends Controller
             "user_name"    => "required|string",
             "user_email"   => "required|string|email",
             "user_address" => "required|string",
-            "user_img"     => "images|mimes:jpg,jpeg,png|max:10240",
+            "user_img"     => "mimes:jpg,jpeg,png|max:10240",
         ];
 
         $validator = Validator::make($request->all(), $rules);

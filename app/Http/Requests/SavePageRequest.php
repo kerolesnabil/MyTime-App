@@ -37,10 +37,10 @@ class SavePageRequest extends FormRequest
 
 
         if (is_null($this->request->get('page_id'))){
-            $rules['images'] =  "required|images|mimes:jpg,jpeg,png|max:10240";
+            $rules['images'] =  "required|mimes:jpg,jpeg,png|max:10240";
         }
         else{
-            $rules['images'] =  "images|mimes:jpg,jpeg,png|max:10240";
+            $rules['images'] =  "mimes:jpg,jpeg,png|max:10240";
         }
 
 
