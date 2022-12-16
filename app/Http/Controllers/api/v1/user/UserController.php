@@ -139,7 +139,7 @@ class UserController extends Controller
             return ResponsesHelper::returnValidationError('400', $validator);
         }
 
-        if (!is_null($request->user_img)) {
+        if ($request->hasFile('user_img')) {
             $image = ImgHelper::uploadImage('images', $request->user_img);
             User::updateUserProfile($request, $image);
         }

@@ -36,7 +36,7 @@ class AdminController extends Controller
         if (!is_null($adminId)){
             /**************  edit ***************/
 
-            if (!is_null($request->user_img)) {
+            if ($request->hasFile('user_img')) {
                 $adminImg = ImgHelper::uploadImage('images', $request->user_img);
                 $options['user_img'] = $adminImg;
             }
@@ -45,7 +45,7 @@ class AdminController extends Controller
         }
         else{
             /**************  create ***************/
-            if (!is_null($request->user_img)) {
+            if ($request->hasFile('user_img')) {
                 $adminImg = ImgHelper::uploadImage('images', $request->user_img);
                 $options['user_img'] = $adminImg;
             }

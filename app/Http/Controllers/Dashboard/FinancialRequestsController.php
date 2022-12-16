@@ -54,7 +54,7 @@ class FinancialRequestsController extends Controller
         $data['status'] = $request['status'];
         $data['notes'] = $request['notes'];
 
-        if (isset($request['withdrawal_confirmation_receipt_img']) && !is_null($request['withdrawal_confirmation_receipt_img'])){
+        if ($request->hasFile('withdrawal_confirmation_receipt_img')){
             $data["withdrawal_confirmation_receipt_img"] = ImgHelper::uploadImage('images', $request['withdrawal_confirmation_receipt_img']);
         }
 

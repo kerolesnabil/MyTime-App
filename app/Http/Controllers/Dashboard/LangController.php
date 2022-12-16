@@ -35,7 +35,7 @@ class LangController extends Controller
         if (!is_null($langId)){
             /**************  edit ***************/
             $data['lang_id'] = $langId;
-            if (!is_null($request->lang_img)) {
+            if ($request->hasFile('lang_img')) {
                 $pageImg = ImgHelper::uploadImage('images', $request->lang_img);
                 Lang::updateLangData($data, $pageImg);
             }
