@@ -24,7 +24,7 @@ class FinancialTransactionController extends Controller
         }
         $rules= [
             "amount"              => "required|integer",
-            "deposit_receipt_img" => "images|mimes:jpg,jpeg,png|max:3072",
+            "deposit_receipt_img" => "mimes:jpg,jpeg,png|max:3072",
         ];
 
         $validator = Validator::make($request->all(), $rules);
