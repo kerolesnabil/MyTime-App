@@ -135,7 +135,7 @@ class AdController extends Controller
 
         $ad = Ad::saveAd($dataArr);
 
-        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('site_add_wait.save_ad_waiting'));
+        return ResponsesHelper::returnData((isset($id)? (int)$id: $ad->ad_id),'200',__('site_ad.save_ad_waiting'));
 
     }
 
