@@ -22,7 +22,7 @@ class UpdateFinancialReqRequest extends FormRequest
         $rules =  [
             "notes"                               => "string",
             "status"                              => "required",
-            'withdrawal_confirmation_receipt_img' => "images|mimes:jpg,jpeg,png|max:3072"
+            'withdrawal_confirmation_receipt_img' => "mimes:jpg,jpeg,png|max:3072"
 
         ];
 

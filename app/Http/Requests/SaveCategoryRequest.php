@@ -40,10 +40,10 @@ class SaveCategoryRequest extends FormRequest
 
 
         if (is_null($this->request->get('cat_id'))){
-            $rules['cat_img'] =  "required|image|mimes:jpg,jpeg,png|max:10240";
+            $rules['cat_img'] =  "required|mimes:jpg,jpeg,png|max:10240";
         }
         else{
-            $rules['cat_img'] =  "image|mimes:jpg,jpeg,png|max:10240";
+            $rules['cat_img'] =  "mimes:jpg,jpeg,png|max:10240";
         }
 
 
