@@ -77,7 +77,7 @@ class AdController extends Controller
             }
             $dataArr['ad_id'] = $id;
 
-            if(isset($request->ad_img) && !is_null($request->ad_img))
+            if($request->hasFile('ad_img'))
             {
                 $img=explode('/',$ad->ad_img);
                 ImgHelper::deleteImage('images', $img[4]);

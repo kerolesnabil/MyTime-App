@@ -35,7 +35,7 @@ class CategoryController extends Controller
         if (!is_null($catId)){
             /**************  edit ***************/
             $data['cat_id'] = $catId;
-            if (!is_null($request->cat_img)) {
+            if ($request->hasFile('cat_img')) {
                 $catImg = ImgHelper::uploadImage('images', $request->cat_img);
                 Category::updateCategoryData($data, $catImg);
             }

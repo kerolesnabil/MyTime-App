@@ -35,7 +35,7 @@ class PageController extends Controller
         if (!is_null($pageId)){
             /**************  edit ***************/
             $data['page_id'] = $pageId;
-            if (!is_null($request->img)) {
+            if ($request->hasFile('img')) {
                 $pageImg = ImgHelper::uploadImage('images', $request->img);
                 Page::updatePageData($data, $pageImg);
             }

@@ -243,7 +243,7 @@ class VendorController extends Controller
 
         VendorDetail::updateVendorDetails($data);
 
-        if (!is_null($request->vendor_logo)) {
+        if ($request->hasFile('vendor_logo')) {
             $image = ImgHelper::uploadImage('images', $request->vendor_logo);
             User::updateUserProfile($data, $image);
         }
