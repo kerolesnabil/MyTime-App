@@ -169,7 +169,7 @@
                             </tbody>
 
                         </table>
-                        {!! $orders->links() !!}
+                            {!! $orders->links("pagination::bootstrap-4") !!}
 
 
                         <p>

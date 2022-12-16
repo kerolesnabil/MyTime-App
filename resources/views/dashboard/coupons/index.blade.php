@@ -113,6 +113,7 @@
 
                         </table>
 
+                        {!! $coupons->links("pagination::bootstrap-4") !!}
                     @else
 
                         <h2>@lang('site.no_data_found')</h2>

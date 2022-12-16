@@ -81,7 +81,7 @@
                             </tbody>
 
                         </table><!-- end of table -->
-                    {!! $users->links() !!}
+                        {!! $users->links("pagination::bootstrap-4") !!}
 
                         {{ $users->appends(request()->query())->links() }}
 

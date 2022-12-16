@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Helpers\ImgHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditVendorAppProfitRequest;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Service;
@@ -18,18 +19,20 @@ class VendorController extends Controller
     public function index(Request $request)
     {
 
-        $vendors = User::getUsersByType('vendor', $request->all());
+        $attrs['paginate'] = 10;
+        $vendors = User::getUsersByType('vendor', array_merge($request->all(), $attrs));
 
         $orders = Order::getAllOrders([]);
 
-        foreach ($vendors as $vendor){
 
-
+        foreach ($vendors->items() as $vendor){
             $vendor['total_orders'] = $orders->where('vendor_id','=',$vendor->user_id)->count();
-            $vendor['done_orders'] = $orders->where('vendor_id','=',$vendor->user_id)
+            $vendor['done_orders']  = $orders->where('vendor_id','=',$vendor->user_id)
                                      ->where('order_status','=','done')->count();
 
         }
+
+
         return view('dashboard.vendors.index')->with(['vendors'=> $vendors]);
     }
 
@@ -143,5 +146,25 @@ class VendorController extends Controller
         }
 
         return $data;
+    }
+
+
+    public function editVendorAppProfit(Request $request , $vendorId)
+    {
+        $appProfit = $request->get('vendor_app_profit_percentage');
+        VendorDetail::updateVendorAppProfit($vendorId, $appProfit);
+        session()->flash('success', __('site.saved_successfully'));
+        return redirect(route('vendor.index'));
+    }
+
+
+    public function getVendorAppProfit(Request $request, $vendorId)
+    {
+        $vendorData = User::getUsersByType('vendor');
+        $vendorData  = collect($vendorData)->where('user_id','=', $vendorId)->first();
+
+        return view('dashboard.vendors.edit_vendor_app_profit')->with([
+            'vendor'          => $vendorData,
+        ]);
     }
 }

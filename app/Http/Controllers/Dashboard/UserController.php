@@ -11,7 +11,10 @@ class UserController extends Controller
 
     public function index()
     {
-        $users= User::getUsersByType('user', []);
+        $attrs['paginate'] = 10;
+        $users= User::getUsersByType('user', $attrs);
+
+
         return view('dashboard.users.index')->with(['users'=>$users]);
     }
 

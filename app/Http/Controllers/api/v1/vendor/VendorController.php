@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\VerificationServices;
 use App\Models\Order;
 use App\Models\OrderReview;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\VendorDetail;
 use Illuminate\Http\Request;
@@ -83,14 +84,19 @@ class VendorController extends Controller
             'vendor_end_time'                    => 'required|date_format:H:i:s|after:time_start',
             'vendor_commercial_registration_num' => 'required|string',
             'vendor_tax_num'                     => 'required|string',
-            'vendor_logo'                        => 'required|images|mimes:jpg,jpeg,png|max:10240'
+            'vendor_logo'                        => "required|mimes:jpg,jpeg,png|max:10240"
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
+
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
+
+
+
+
         $image = ImgHelper::uploadImage('images', $request->vendor_logo);
 
 

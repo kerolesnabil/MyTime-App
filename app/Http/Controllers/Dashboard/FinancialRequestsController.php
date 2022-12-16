@@ -15,7 +15,8 @@ class FinancialRequestsController extends Controller
     public function showDepositRequests(Request $request)
     {
         $requestType = 'deposit';
-        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('deposit', $request->all());
+        $attr['paginate'] = 20;
+        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('deposit', array_merge($request->all(), $attr));
         return view('dashboard.financial_requests.show_financial_requests')->with(['requests' => $financial_requests, 'request_type' => $requestType]);
     }
 
@@ -23,7 +24,8 @@ class FinancialRequestsController extends Controller
     public function showWithdrawalRequests(Request $request)
     {
         $requestType = 'withdrawal';
-        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('withdrawal', $request->all());
+        $attr['paginate'] = 20;
+        $financial_requests =  FinancialRequests::getFinancialRequestsWithType('withdrawal', array_merge($request->all(), $attr));
         return view('dashboard.financial_requests.show_financial_requests')->with(['requests' => $financial_requests, 'request_type' => $requestType]);
     }
 

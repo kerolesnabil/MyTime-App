@@ -72,7 +72,15 @@ class FinancialRequests extends Model
                 $financialRequests = $financialRequests->where('financial_requests.user_id', '=', $attr['user_id']);
             }
 
-            $financialRequests = $financialRequests->orderBy('financial_requests.created_at','desc')->get();
+            $financialRequests = $financialRequests->orderBy('financial_requests.created_at','desc');
+
+            if(isset($attr['paginate']) && $attr['paginate'] != ''){
+                $financialRequests = $financialRequests->paginate($attr['paginate']);
+            }
+            else{
+                $financialRequests = $financialRequests->get();
+            }
+
             return $financialRequests;
     }
 

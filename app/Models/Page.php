@@ -15,7 +15,6 @@ class Page extends Model
     use HasFactory;
     use AbstractionModelTrait;
 
-
     protected $table = "pages";
     protected $primaryKey = "page_id";
     protected $guarded = ['page_id'];
@@ -23,7 +22,7 @@ class Page extends Model
     [
         'page_title',
         'page_content',
-        'images',
+        'img',
         'page_position',
         'show_in_user_app',
         'show_in_vendor_app',
@@ -41,7 +40,7 @@ class Page extends Model
                 'page_id',
                 self::getValueWithSpecificLang('page_title', app()->getLocale(),'page_title'),
                 self::getValueWithSpecificLang('page_content', app()->getLocale(),'page_content'),
-                'images'
+                'img'
             )
             ->where('is_active',1);
 
@@ -65,7 +64,7 @@ class Page extends Model
 
         foreach ($pages as $key => $page){
 
-            $pages[$key]["images"] = ImgHelper::returnImageLink($page["images"]);
+            $pages[$key]["img"] = ImgHelper::returnImageLink($page["img"]);
         }
 
         return $pages;
@@ -78,7 +77,7 @@ class Page extends Model
             (
                 'page_id',
                 self::getValueWithSpecificLang('page_title', app()->getLocale(),'page_title'),
-                'images',
+                'img',
                 'page_position',
                 'show_in_user_app',
                 'show_in_vendor_app',
@@ -94,7 +93,7 @@ class Page extends Model
                     'page_id',
                     'page_title',
                     'page_content',
-                    'images',
+                    'img',
                     'page_position',
                     'show_in_user_app',
                     'show_in_vendor_app',
@@ -103,7 +102,7 @@ class Page extends Model
                 ->where('page_id', '=', $pageId)
                 ->first();
 
-        $page["images"] = ImgHelper::returnImageLink($page["images"]);
+        $page["img"] = ImgHelper::returnImageLink($page["img"]);
         return $page;
     }
 
@@ -129,7 +128,7 @@ class Page extends Model
                     'show_in_vendor_app' => $data['show_in_vendor_app'],
                     'page_position'      => $data['page_position'],
                     'is_active'          => $data['is_active'],
-                    'images'                => $img,
+                    'img'                => $img,
                 ));
         }
 
@@ -145,9 +144,9 @@ class Page extends Model
             'show_in_vendor_app' => $data['show_in_vendor_app'],
             'page_position'      => $data['page_position'],
             'is_active'          => $data['is_active'],
-            'images'                => $data['images'],
-            'created_at'      => now(),
-            'updated_at'      => now(),
+            'img'                => $data['img'],
+            'created_at'         => now(),
+            'updated_at'         => now(),
         ]);
 
     }

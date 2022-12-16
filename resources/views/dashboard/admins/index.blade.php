@@ -82,9 +82,6 @@
                             </tbody>
 
                         </table><!-- end of table -->
-                    {!! $admins->links() !!}
-
-                        {{ $admins->appends(request()->query())->links() }}
 
                     @else
 

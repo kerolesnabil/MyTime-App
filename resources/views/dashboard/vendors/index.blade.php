@@ -70,6 +70,7 @@
                                 <th>@lang('site_vendor.vendor_address')</th>
                                 <th>@lang('site_vendor.vendor_total_orders')</th>
                                 <th>@lang('site_vendor.vendor_done_orders')</th>
+                                <th>@lang('site_vendor.vendor_app_profit_percentage')</th>
                                 <th>@lang('site_vendor.wallet')</th>
                                 <th>@lang('site_vendor.vendor_wallet_status')</th>
                                 <th style="text-align: center">@lang('site_vendor.vendor_is_active')</th>
@@ -79,21 +80,25 @@
 
                             <tbody>
 
-                            @foreach ($vendors as $index => $vendor)
+                            @foreach ($vendors->items() as $index => $vendor)
                                 <tr style="font-size: 17px">
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $vendor->user_name }}</td>
+                                    <td>{{ $vendor['user_name'] }}</td>
 
 
-                                    <td>@lang("site_vendor.vendor_type_$vendor->vendor_type")</td>
-                                    <td>{{ $vendor->user_phone }}</td>
-                                    <td>{{ $vendor->user_email }}</td>
-                                    <td>{{ $vendor->user_address }}</td>
-                                    <td>{{ $vendor->total_orders }}</td>
-                                    <td>{{ $vendor->done_orders }}</td>
+                                    <td>@lang("site_vendor.vendor_type_".$vendor['vendor_type'])</td>
+                                    <td>{{ $vendor['user_phone'] }}</td>
+                                    <td>{{ $vendor['user_email'] }}</td>
+                                    <td>{{ $vendor['user_address'] }}</td>
+                                    <td>{{ $vendor['total_orders'] }}</td>
+                                    <td>{{ $vendor['done_orders'] }}</td>
+                                    <td>{{
+                                            !empty($vendor['vendor_app_profit_percentage'])? $vendor['vendor_app_profit_percentage'] .' %' : ""
+                                        }}
+                                    </td>
                                     <?php
 
-                                        if ( $vendor->user_wallet < 0){
+                                        if ( $vendor['user_wallet'] < 0){
                                             $class = "bg-danger";
                                             $vendorWalletStatus = 'vendor_wallet_status_not_has';
                                         }
@@ -105,36 +110,37 @@
                                     ?>
 
                                     <td class="{{$class}}">
-                                        {{ $vendor->user_wallet }}
+                                        {{ $vendor['user_wallet'] }}
                                     </td>
                                     <td>
                                         @lang("site_vendor.$vendorWalletStatus")
                                     </td>
 
 
-                                    <td id="user_status_{{$vendor->user_id}}" style="text-align: center">
+                                    <td id="user_status_{{$vendor['user_id']}}" style="text-align: center">
                                         <?php
-                                            echo $vendor->user_is_active == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
+                                            echo $vendor['user_is_active'] == 1 ? '<i class="fa fa-check" style="font-size:18px;color:green"></i>' : '<i class="fa fa-times" style="font-size:18px;color:red"></i>';
                                         ?></td>
                                     <td>
-                                        <a style='font-size: 17px; margin: 1px' href="{{ route('vendor.show_vendor', $vendor->user_id) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
-                                        <a style='font-size: 17px; margin: 1px' href="{{ route('vendor.save_vendor_services', $vendor->user_id) }}" class="btn bg-purple btn-sm"><i class="fa  fa-plus"></i> @lang('site_vendor.add_vendor_services')</a>
-                                        <a style='font-size: 17px; margin: 1px' href="{{ route('transaction_log.index', 'user_id='.$vendor->user_id) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_log')</a>
-                                        <a style='font-size: 17px; margin: 1px' href="{{ route('financial_request.show_deposit_requests', 'user_id='.$vendor->user_id) }}" class="btn bg-purple btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_deposit_requests')</a>
-                                        <a style='font-size: 17px; margin: 1px' href="{{ route('financial_request.show_withdrawal_requests', 'user_id='.$vendor->user_id) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_withdraw_requests')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('vendor.show_vendor', $vendor['user_id']) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site.show')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('vendor.edit_vendor_app_profit', $vendor['user_id']) }}" class="btn bg-purple btn-sm"><i class="fa fa-edit"></i>  @lang('site_vendor.edit_vendor_app_profit_percentage')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('vendor.save_vendor_services', $vendor['user_id']) }}" class="btn bg-purple btn-sm"><i class="fa  fa-plus"></i> @lang('site_vendor.add_vendor_services')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('transaction_log.index', 'user_id='.$vendor['user_id']) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_log')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('financial_request.show_deposit_requests', 'user_id='.$vendor['user_id']) }}" class="btn bg-purple btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_deposit_requests')</a>
+                                        <a style='font-size: 17px; margin: 1px' href="{{ route('financial_request.show_withdrawal_requests', 'user_id='.$vendor['user_id']) }}" class="btn btn-success btn-sm"><i class="fa  fa-eye"></i> @lang('site_vendor.show_withdraw_requests')</a>
 
 
                                         <form  class="formData_activation" style="display: inline-block">
                                             {{ csrf_field() }}
-                                            <input type="hidden" name="user_id" value="{{$vendor->user_id}}">
+                                            <input type="hidden" name="user_id" value="{{$vendor['user_id']}}">
                                             <?php
-                                                echo $vendor->user_is_active == 1 ?
+                                                echo $vendor['user_is_active'] == 1 ?
                                                     "<button style='font-size: 17px; margin: 1px' type='submit' class='activation_btn btn btn-block danger btn-sm'><i class='fa fa-times'> $deactivateBtn</i></button>
-                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='false'>
+                                                     <input type='hidden' id= 'hidden_btn_".$vendor['user_id']." name='active_status' value='false'>
                                                     "
                                                     :
                                                     "<button style='font-size: 17px; margin: 1px' type='submit' class='activation_btn btn btn-info success btn-sm'><i class='fa fa-check'></i> $activeBtn</button>
-                                                     <input type='hidden' id= 'hidden_btn_$vendor->user_id' name='active_status' value='true'>
+                                                     <input type='hidden' id= 'hidden_btn_".$vendor['user_id']." name='active_status' value='true'>
                                                     ";
                                             ?>
                                         </form>
@@ -149,9 +155,10 @@
                             </tbody>
 
                         </table>
-                    {!! $vendors->links() !!}
 
-                        {{ $vendors->appends(request()->query())->links() }}
+
+                        {!!  $vendors->links("pagination::bootstrap-4") !!}
+
 
                     @else
 

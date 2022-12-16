@@ -32,6 +32,11 @@ return [
     'vendor_done_orders'                 => 'الطلبات التي تم الانتهاء منها',
     'vendor_commercial_registration_num' => 'رقم السجل التجاري',
     'vendor_tax_num'                     => 'الرقم الضريبي',
-    'add_vendor_services'                 => 'اضافة خدمات لمزود الخدمة'
+    'add_vendor_services'                => 'اضافة خدمات لمزود الخدمة',
+    'vendor_app_profit_percentage'       => 'نسبة ربح التطيبق',
+    'edit_vendor_app_profit_percentage'  => 'تعديل نسبة ربح التطيبق لمزود الخدمة',
+    'rule_vendor_app_profit_percentage.required' => 'نسبة ربح التطيبق لمزود الخدمة مطلوبة',
+    'rule_vendor_app_profit_percentage.numeric' => 'نسبة ربح التطيبق لمزود الخدمة يجب ان تكون رقم',
+
 
 ];

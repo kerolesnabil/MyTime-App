@@ -159,7 +159,7 @@ class User extends Authenticatable
         return $users;
     }
 
-    public static function getUsersByType($type, $attrs)
+    public static function getUsersByType($type, $attrs =[])
     {
         // $type => user || vendor || admin
 
@@ -179,7 +179,10 @@ class User extends Authenticatable
 
         if ($type == 'vendor'){
 
-            $users = $users->addSelect('vendor_details.vendor_type')->
+            $users = $users->addSelect(
+                'vendor_details.vendor_type',
+                'vendor_details.vendor_app_profit_percentage'
+            )->
             join('vendor_details', 'vendor_details.user_id', 'users.user_id');
         }
 
@@ -195,9 +198,15 @@ class User extends Authenticatable
             $users = $users->where('users.created_at','<=', $attrs['date_to']);
         }
 
+        if(isset($attrs['paginate']) && $attrs['paginate'] != ''){
+            $users = $users->paginate($attrs['paginate']);
+        }
+        else{
+            $users = $users->get();
+        }
 
 
-        return $users->paginate(15);
+        return $users;
     }
 
     public static function updateActivationStatus($userId, $status)
@@ -265,7 +274,7 @@ class User extends Authenticatable
                     'user_address as vendor_address',
                     'user_lat as vendor_lat',
                     'user_long as vendor_long',
-                    'user_img as vendor_img'
+                    'user_img as vendor_img',
                 )
                 ->where('user_id', $userId)
                 ->first();

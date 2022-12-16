@@ -47,9 +47,19 @@ class Order extends Model
 
     public static function createOrder($order)
     {
-        $appProfitObj        = Setting::getSettingByKey('app_profit_percentage', 'web');
-        $appProfitPercentage = floatval($appProfitObj['setting_value']);
-        $appProfitOfOrder    = OrderHelper::calculateOrderAppProfit($order['order_total_price'], $appProfitPercentage);
+
+        $vendorObj =  VendorDetail::getVendorDetailProfile($order['vendor_id']);
+
+        if (empty($vendorObj->vendor_app_profit_percentage)){
+            $appProfitObj        = Setting::getSettingByKey('app_profit_percentage', 'web');
+            $appProfitPercentage = floatval($appProfitObj['setting_value']);
+        }
+        else{
+            $appProfitPercentage = floatval($vendorObj->vendor_app_profit_percentage);
+        }
+
+        $appProfitOfOrder = OrderHelper::calculateOrderAppProfit($order['order_total_price'], $appProfitPercentage);
+
 
         return self::create([
             "user_id"                                 => $order['user_id'],
