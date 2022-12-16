@@ -160,13 +160,13 @@ class VendorController extends Controller
             'vendor_available_days'              => 'required|string',
             'vendor_start_time'                  => 'required|date_format:H:i',
             'vendor_end_time'                    => 'required|date_format:H:i|after:time_start',
-            'vendor_logo'                        => 'images|mimes:jpg,jpeg,png|max:10240',
+            'vendor_logo'                        => 'mimes:jpg,jpeg,png|max:10240',
             'vendor_address'                     => 'required',
             'vendor_description'                 => 'required|string',
             'vendor_commercial_registration_num' => 'required|string',
             'vendor_tax_num'                     => 'required|string',
             'slider_not_removed_images.*'        => 'string',
-            'slider_new_images.*'                => 'images|mimes:jpg,jpeg,png|max:10240',
+            'slider_new_images.*'                => 'mimes:jpg,jpeg,png|max:10240',
         ];
 
         $validator = Validator::make($request->all(), $rules);

@@ -59,7 +59,7 @@ class AdController extends Controller
 
             $rules= [
                 "ad_title" => "required|string",
-                "ad_img"   => "nullable|images|mimes:jpg,jpeg,png|max:3072",
+                "ad_img"   => "mimes:jpg,jpeg,png|max:3072",
             ];
 
             $validator = Validator::make($request->all(), $rules);
