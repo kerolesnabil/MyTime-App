@@ -37,19 +37,19 @@ class SaveAppImagesRequest extends FormRequest
         }
 
         if (isset($request->user_splash['setting_value'])){
-            $rules['user_splash_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
+            $rules['user_splash_img'] =  "mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->user_logo['setting_value'])){
-            $rules['user_logo_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
+            $rules['user_logo_img'] =  "mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->vendor_splash['setting_value'])){
-            $rules['vendor_splash_img'] =  "images|mimes:jpg,jpeg,png|max:10240";
+            $rules['vendor_splash_img'] =  "mimes:jpg,jpeg,png|max:10240";
         }
 
         if (isset($request->vendor_logo['setting_value'])){
-            $rules['vendor_logo_img'] =  "images|mimes:jpg,jpeg,png|max:2048";
+            $rules['vendor_logo_img'] =  "mimes:jpg,jpeg,png|max:2048";
         }
 
         return $rules;

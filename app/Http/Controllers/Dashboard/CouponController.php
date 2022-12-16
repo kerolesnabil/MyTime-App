@@ -15,7 +15,8 @@ class CouponController extends Controller
 
     public function index()
     {
-        $coupons = Coupon::getAllCoupons();
+        $attr['paginate'] = 20;
+        $coupons = Coupon::getAllCoupons($attr);
         return view('dashboard.coupons.index')->with(['coupons' => $coupons]);
     }
 

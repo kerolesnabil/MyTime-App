@@ -112,7 +112,7 @@ class Coupon extends Model
         return $couponData;
     }
 
-    public static function getAllCoupons()
+    public static function getAllCoupons($attrs = [])
     {
         $coupons =
             self::query()
@@ -127,10 +127,17 @@ class Coupon extends Model
                     'coupon_limited_num',
                     'coupon_used_times',
                     'is_active'
-                )->
-                get();
-        return $coupons;
+                );
 
+
+        if(isset($attrs['paginate']) && $attrs['paginate'] != ''){
+            $coupons = $coupons->paginate($attrs['paginate']);
+        }
+        else{
+            $coupons = $coupons->get();
+        }
+
+        return $coupons;
     }
 
 

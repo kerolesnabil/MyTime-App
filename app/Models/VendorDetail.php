@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Helpers\ArraysProcessHelper;
 use App\Helpers\ImgHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,12 +14,11 @@ class VendorDetail extends Model
 
     protected $table = 'vendor_details';
 
-    public $timestamps = false;
 
     protected $primaryKey = 'vendor_details_id';
 
     protected $fillable = [
-        'vendor_slider', 'vendor_description', 'vendor_tax_num',
+        'vendor_slider', 'vendor_description', 'vendor_tax_num', 'vendor_app_profit_percentage',
         'vendor_commercial_registration_num', 'vendor_end_time', 'vendor_start_time',
         'vendor_available_days', 'vendor_service_location', 'vendor_slider', 'user_id'
     ];
@@ -29,6 +27,9 @@ class VendorDetail extends Model
     public static function createUserDetails($user_id, $data)
     {
 
+        $appProfit  = Setting::getSettingByKey('app_profit_percentage', 'web');
+
+        // @TODO Mass3ood
         return self::create([
             'user_id'                            => $user_id,
             'vendor_type'                        => $data->vendor_type,
@@ -37,6 +38,7 @@ class VendorDetail extends Model
             'vendor_end_time'                    => $data->vendor_end_time,
             'vendor_commercial_registration_num' => $data->vendor_commercial_registration_num,
             'vendor_tax_num'                     => $data->vendor_tax_num,
+            'vendor_app_profit_percentage'       => $appProfit['setting_value'],
         ]);
 
     }
@@ -56,6 +58,7 @@ class VendorDetail extends Model
                     'vendor_details.vendor_commercial_registration_num',
                     'vendor_details.vendor_tax_num',
                     'vendor_details.vendor_description',
+                    'vendor_details.vendor_app_profit_percentage',
                     'users.user_img as vendor_logo',
                     'vendor_details.vendor_reviews_count',
                     DB::raw('vendor_details.vendor_reviews_sum / vendor_details.vendor_reviews_count as vendor_rate'),
@@ -195,7 +198,8 @@ class VendorDetail extends Model
                     'vendor_slider',
                     'vendor_description',
                     'vendor_commercial_registration_num',
-                    'vendor_tax_num'
+                    'vendor_tax_num',
+                    'vendor_app_profit_percentage'
                 )
                 ->where('vendor_details.user_id', '=', $vendorId)
                 ->groupBy('vendor_details.user_id')
@@ -285,6 +289,16 @@ class VendorDetail extends Model
                 ->first();
         return $report;
 
+    }
+
+
+    public static function updateVendorAppProfit($vendorId, $appProfit)
+    {
+
+        self::where('user_id', '=', $vendorId)
+            ->update(array(
+                'vendor_app_profit_percentage' => $appProfit,
+            ));
     }
 
 }

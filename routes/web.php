@@ -35,6 +35,8 @@ Route::group([
         Route::get('/show_new_vendors/{report_type}', 'VendorController@showNewVendors')->name('vendor.show_new_vendors');
         Route::post('save_vendor_services/{id}', 'VendorController@saveVendorServices')->name('vendor.save_vendor_services');
         Route::get('save_vendor_services/{id}', 'VendorController@saveVendorServices')->name('vendor.save_vendor_services');
+        Route::get('edit_vendor_app_profit/{id}', 'VendorController@getVendorAppProfit')->name('vendor.edit_vendor_app_profit');
+        Route::post('edit_vendor_app_profit/{id}', 'VendorController@editVendorAppProfit')->name('vendor.edit_vendor_app_profit');
 
     });
 

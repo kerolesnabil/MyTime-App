@@ -37,11 +37,9 @@ class MoyasarPaymemt implements IPayment
 
     public function refundOrderMoney($paymentId)
     {
-
         $paymentService = new \Moyasar\Providers\PaymentService();
         $payment = $paymentService->fetch($paymentId);
         $payment->refund();
-
     }
 
 

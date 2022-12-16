@@ -106,7 +106,7 @@
                             </tbody>
 
                         </table>
-                        {!! $ads->links() !!}
+                        {!! $ads->links("pagination::bootstrap-4") !!}
 
 
                         <p>
