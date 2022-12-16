@@ -92,7 +92,7 @@ class AdController extends Controller
                 "ad_days"               => "required|integer",
                 "ad_title"              => "required|string",
                 "ad_start_at"           => "required|date",
-                'ad_img'                => 'required|images|mimes:jpg,jpeg,png|max:3072',
+                'ad_img'                => 'required|mimes:jpg,jpeg,png|max:3072',
             ];
 
             $validator = Validator::make($request->all(), $rules);
