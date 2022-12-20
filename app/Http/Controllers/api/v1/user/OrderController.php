@@ -30,7 +30,6 @@ class OrderController extends Controller
 {
     use ItemsPrice;
 
-    public static $tax = "10";
 
     public function getListOrdersOfUser()
     {
@@ -170,7 +169,7 @@ class OrderController extends Controller
         $rules = [
             "payment_method_id"           => "required|numeric|exists:payment_methods,payment_method_id",
             "order_address"               => "string",
-            "order_phone"                 => "required|string|digits:9",
+            "order_phone"                 => "string|digits:9",
             "order_notes"                 => "required|string",
             "order_custom_date"           => "required|date",
             "order_custom_time"           => "required",
@@ -283,7 +282,6 @@ class OrderController extends Controller
 
         return $orderTotalData;
     }
-
 
     public function checkIfUserWalletIsEnoughToPayOrder($userId, $orderCost)
     {
