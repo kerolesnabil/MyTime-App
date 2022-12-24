@@ -49,7 +49,15 @@ class OrderController extends Controller
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"            => __("api.order_id_required"),
+                "order_id.numeric"             => __("api.order_id_numeric"),
+                "order_id.exists"              => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -74,15 +82,10 @@ class OrderController extends Controller
         $detailsOfOrder['main_order_details']['user_img'] = ImgHelper::returnImageLink($detailsOfOrder['main_order_details']['user_img']);
 
         $detailsOfOrder['order_items'] = OrderItem::getItemsOfOrderByOrderId($orderId);
-
         $detailsOfOrder['used_coupon'] = CouponUsed::getUsedCoupon($userId, $orderId)->getData();
 
-
-
         return ResponsesHelper::returnData($detailsOfOrder, '200','');
-
     }
-
 
     public function getOrderByKeyword(Request $request)
     {
@@ -94,7 +97,13 @@ class OrderController extends Controller
             "keyword" => "required",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "keyword.required"            => __("api.keyword_required"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -121,6 +130,5 @@ class OrderController extends Controller
 
 
     }
-
 
 }

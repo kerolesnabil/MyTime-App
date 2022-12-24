@@ -32,7 +32,21 @@ use RefundOrder;
 
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"     => __("api.order_id_required"),
+                "order_id.numeric"      => __("api.order_id_numeric"),
+                "order_id.exists"       => __("api.order_id_exists"),
+                "rate.required"         => __("api.rate_required"),
+                "rate.numeric"          => __("api.rate_numeric"),
+                "rate.min"              => __("api.rate_min"),
+                "rate.max"              => __("api.rate_max"),
+                "review_comment.string" => __("api.review_comment_string"),
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -68,10 +82,20 @@ use RefundOrder;
         $rules = [
             "order_id"          => "required|numeric|exists:orders,order_id",
             "payment_method_id" => "required|numeric|exists:payment_methods,payment_method_id",
-
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"          => __("api.order_id_required"),
+                "order_id.numeric"           => __("api.order_id_numeric"),
+                "order_id.exists"            => __("api.order_id_exists"),
+                "payment_method_id.required" => __("api.payment_method_id_required"),
+                "payment_method_id.numeric"  => __("api.payment_method_id_numeric"),
+                "payment_method_id.exists"   => __("api.payment_method_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -106,7 +130,15 @@ use RefundOrder;
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"     => __("api.order_id_required"),
+                "order_id.numeric"      => __("api.order_id_numeric"),
+                "order_id.exists"       => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -142,7 +174,15 @@ use RefundOrder;
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"     => __("api.order_id_required"),
+                "order_id.numeric"      => __("api.order_id_numeric"),
+                "order_id.exists"       => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -180,12 +220,25 @@ use RefundOrder;
         }
 
         $rules = [
-            "order_id"   => "required|numeric|exists:orders,order_id",
-            "date" => "required|date",
-            "time" => "required|date_format:H:i:s",
+            "order_id" => "required|numeric|exists:orders,order_id",
+            "date"     => "required|date",
+            "time"     => "required|date_format:H:i:s",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required" => __("api.order_id_required"),
+                "order_id.numeric"  => __("api.order_id_numeric"),
+                "order_id.exists"   => __("api.order_id_exists"),
+                "date.required"     => __("api.date_required"),
+                "date.date"         => __("api.date_should_date"),
+                "time.required"     => __("api.time_required"),
+                "time.date_format"  => __("api.time_date_format"),
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

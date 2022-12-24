@@ -64,7 +64,20 @@ class WishListController extends Controller
             "service_location"  => "required|string"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "vendor_service_id.required" => __("api.vendor_service_id_required"),
+                "vendor_service_id.numeric"  => __("api.vendor_service_id_numeric"),
+                "vendor_service_id.exists"   => __("api.vendor_service_id_exists"),
+                "vendor_id.required"         => __("api.vendor_id_required"),
+                "vendor_id.numeric"          => __("api.vendor_id_numeric"),
+                "vendor_id.exists"           => __("api.vendor_id_exists"),
+                "service_location.required"  => __("api.service_location_required"),
+                "service_location.string"    => __("api.service_location_string"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -103,7 +116,15 @@ class WishListController extends Controller
             "wish_list_item_id"  => "required|numeric|exists:wish_list,wish_list_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "wish_list_item_id.required"         => __("api.wish_list_item_id_required"),
+                "wish_list_item_id.numeric"          => __("api.wish_list_item_id_numeric"),
+                "wish_list_item_id.exists"           => __("api.wish_list_item_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

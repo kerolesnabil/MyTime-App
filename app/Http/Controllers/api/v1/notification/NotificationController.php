@@ -19,7 +19,16 @@ class NotificationController extends Controller
             "token"     =>  "required|string"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_id.required"    => __("api.user_id_required"),
+                "user_id.exists"      => __("api.user_id_exists"),
+                "token.required"      => __("api.token_required"),
+                "token.string" => __("api.token_should_string")
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -30,19 +39,15 @@ class NotificationController extends Controller
         if (!is_object($checkIfTokenUnique)){
             NotificationToken::createNotificationToken($request);
         }
-        
+
         return ResponsesHelper::returnSuccessMessage('','200');
     }
 
-
-
     public function showNotifications()
     {
-
         Notification::updateNotificationsIsSeenColByUserId(Auth::user()->user_id);
 
         $notifications = Notification::showNotificationsByUserId(Auth::user()->user_id);
         return ResponsesHelper::returnData($notifications,'200','');
-
     }
 }

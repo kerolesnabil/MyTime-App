@@ -36,7 +36,23 @@ class PriceServiceController extends Controller
             "order_items.*.service_count" => "required|numeric",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "service_type.required"                => __("api.service_type_required"),
+                "vendor_id.required"                   => __("api.vendor_id_required"),
+                "vendor_id.numeric"                    => __("api.vendor_id_numeric"),
+                "vendor_id.exists"                     => __("api.vendor_id_exists"),
+                "order_items.*.service_id.required"    => __("api.vendor_service_id_required"),
+                "order_items.*.service_id.numeric"     => __("api.vendor_service_id_numeric"),
+                "order_items.*.service_id.exists"      => __("api.vendor_service_id_exists"),
+                "order_items.*.service_id.distinct"    => __("api.service_id_distinct"),
+                "order_items.*.service_count.required" => __("api.service_quantity_required"),
+                "order_items.*.service_count.numeric"  => __("api.service_quantity_numeric"),
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

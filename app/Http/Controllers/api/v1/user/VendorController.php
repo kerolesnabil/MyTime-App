@@ -26,7 +26,15 @@ class VendorController extends Controller
             "vendor_id" => "required|numeric|exists:vendor_details,user_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "vendor_id.required"         => __("api.vendor_id_required"),
+                "vendor_id.numeric"          => __("api.vendor_id_numeric"),
+                "vendor_id.exists"           => __("api.vendor_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -54,7 +62,15 @@ class VendorController extends Controller
             "vendor_id" => "required|numeric|exists:vendor_details,user_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "vendor_id.required"         => __("api.vendor_id_required"),
+                "vendor_id.numeric"          => __("api.vendor_id_numeric"),
+                "vendor_id.exists"           => __("api.vendor_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -78,7 +94,17 @@ class VendorController extends Controller
             "service_type" => "required|string"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "vendor_id.required"    => __("api.vendor_id_required"),
+                "vendor_id.numeric"     => __("api.vendor_id_numeric"),
+                "vendor_id.exists"      => __("api.vendor_id_exists"),
+                "service_type.required" => __("api.service_type_required"),
+                "service_type.string"   => __("api.service_type_string"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -127,7 +153,19 @@ class VendorController extends Controller
             "vendor_id"    => "required|numeric|exists:vendor_details,user_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "cat_id.required"    => __("api.cat_id_required"),
+                "cat_id.numeric"     => __("api.cat_id_numeric"),
+                "cat_id.exists"      => __("api.cat_id_exists"),
+                "vendor_id.required" => __("api.vendor_id_required"),
+                "vendor_id.numeric"  => __("api.vendor_id_numeric"),
+                "vendor_id.exists"   => __("api.vendor_id_exists"),
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -157,13 +195,26 @@ class VendorController extends Controller
         $rules = [
             "cat_id"        => "required|numeric|exists:categories,cat_id",
             "vendor_id"     => "required|numeric|exists:vendor_details,user_id",
-            "service_type" => "required|string"
+            "service_type"  => "required|string"
         ];
 
         if (!$request->service_type == 'home' || !$request->service_type == 'salon'){
             return ResponsesHelper::returnError(400,__('api.service_location_must_be_salon_or_home'));
         }
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "cat_id.required"       => __("api.cat_id_required"),
+                "cat_id.numeric"        => __("api.cat_id_numeric"),
+                "cat_id.exists"         => __("api.cat_id_exists"),
+                "vendor_id.required"    => __("api.vendor_id_required"),
+                "vendor_id.numeric"     => __("api.vendor_id_numeric"),
+                "vendor_id.exists"      => __("api.vendor_id_exists"),
+                "service_type.required" => __("api.service_type_required"),
+                "service_type.string"   => __("api.service_type_string"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

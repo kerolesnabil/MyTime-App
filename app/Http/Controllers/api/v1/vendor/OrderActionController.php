@@ -33,7 +33,20 @@ class OrderActionController extends Controller
             "suggested_dates.*.time" => "required|date_format:H:i:s"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"                  => __("api.order_id_required"),
+                "order_id.numeric"                   => __("api.order_id_numeric"),
+                "order_id.exists"                    => __("api.order_id_exists"),
+                "reschedule_reason_msg.string"       => __("api.reschedule_reason_msg_string"),
+                "suggested_dates.*.date.date"        => __("api.suggested_dates_date_date"),
+                "suggested_dates.*.date.required"    => __("api.suggested_dates_date_required"),
+                "suggested_dates.*.time.date"        => __("api.suggested_dates_time_date"),
+                "suggested_dates.*.time.date_format" => __("api.suggested_dates_time_required"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -75,7 +88,18 @@ class OrderActionController extends Controller
             "rejection_reason_id" => "required|numeric|exists:order_rejections_reasons,rejection_reason_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"            => __("api.order_id_required"),
+                "order_id.numeric"             => __("api.order_id_numeric"),
+                "order_id.exists"              => __("api.order_id_exists"),
+                "rejection_reason_id.required" => __("api.rejection_reason_id_required"),
+                "rejection_reason_id.numeric"  => __("api.rejection_reason_id_numeric"),
+                "rejection_reason_id.exists"   => __("api.rejection_reason_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -108,9 +132,8 @@ class OrderActionController extends Controller
 
     public function acceptOrder(Request $request, $orderId)
     {
-
-        $vendor['vendor']=Auth::user();
-        if($vendor['vendor']->user_type!='vendor'){
+        $vendor['vendor'] = Auth::user();
+        if($vendor['vendor']->user_type != 'vendor'){
             return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
 
@@ -119,7 +142,15 @@ class OrderActionController extends Controller
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"            => __("api.order_id_required"),
+                "order_id.numeric"             => __("api.order_id_numeric"),
+                "order_id.exists"              => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnError('400', __('api.order_id_invalid'));
@@ -152,7 +183,15 @@ class OrderActionController extends Controller
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"            => __("api.order_id_required"),
+                "order_id.numeric"             => __("api.order_id_numeric"),
+                "order_id.exists"              => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

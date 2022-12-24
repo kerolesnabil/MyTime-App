@@ -66,7 +66,22 @@ class OrderCartController extends Controller
             "service_quantity"  => "required|numeric",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "vendor_id.required"         => __("api.vendor_id_required"),
+                "vendor_id.numeric"          => __("api.vendor_id_numeric"),
+                "vendor_id.exists"           => __("api.vendor_id_exists"),
+                "service_location.required"  => __("api.service_location_required"),
+                "service_location.string"    => __("api.service_location_string"),
+                "vendor_service_id.required" => __("api.vendor_service_id_required"),
+                "vendor_service_id.numeric"  => __("api.vendor_service_id_numeric"),
+                "vendor_service_id.exists"   => __("api.vendor_service_id_exists"),
+                "service_quantity.required"  => __("api.service_quantity_required"),
+                "service_quantity.numeric"   => __("api.service_quantity_numeric"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -121,7 +136,15 @@ class OrderCartController extends Controller
             "order_cart_item_id"  => "required|numeric|exists:order_carts,order_cart_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'order_cart_item_id.required' => __('api.order_cart_item_id_required'),
+                'order_cart_item_id.numeric'  => __('api.order_cart_item_id_numeric'),
+                'order_cart_item_id.exists'   => __('api.order_cart_item_id_exists')
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -162,7 +185,18 @@ class OrderCartController extends Controller
             "quantity"           => "required|numeric",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'order_cart_item_id.required' => __('api.order_cart_item_id_required'),
+                'order_cart_item_id.numeric'  => __('api.order_cart_item_id_numeric'),
+                'order_cart_item_id.exists'   => __('api.order_cart_item_id_exists'),
+                'quantity.required'           => __('api.service_quantity_required'),
+                'quantity.numeric'            => __('api.service_quantity_numeric'),
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

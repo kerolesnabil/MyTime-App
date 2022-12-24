@@ -59,7 +59,15 @@ class OrderController extends Controller
             "order_id" => "required|numeric|exists:orders,order_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "order_id.required"     => __("api.order_id_required"),
+                "order_id.numeric"      => __("api.order_id_numeric"),
+                "order_id.exists"       => __("api.order_id_exists"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -169,16 +177,34 @@ class OrderController extends Controller
         $rules = [
             "payment_method_id"           => "required|numeric|exists:payment_methods,payment_method_id",
             "order_address"               => "string",
-            "order_phone"                 => "string|digits:9",
-            "order_notes"                 => "required|string",
+            "order_phone"                 => "digits:9",
+            "order_notes"                 => "string",
             "order_custom_date"           => "required|date",
             "order_custom_time"           => "required",
-            "order_lat"                   => "numeric",
-            "order_long"                  => "numeric",
+            "order_lat"                   => "string",
+            "order_long"                  => "string",
             "coupon_code"                 => "string|exists:coupons,coupon_code",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "payment_method_id.required" => __("api.payment_method_id_required"),
+                "payment_method_id.numeric"  => __("api.payment_method_id_numeric"),
+                "payment_method_id.exists"   => __("api.payment_method_id_exists"),
+                "order_phone.digits"         => __("api.phone_is_9_digits"),
+                "order_address.string"       => __("api.order_address_string"),
+                "order_notes.string"         => __("api.order_notes_string"),
+                "order_custom_date.required" => __("api.order_custom_date_required"),
+                "order_custom_date.date"     => __("api.order_custom_date_date"),
+                "order_custom_time.required" => __("api.order_custom_time_required"),
+                "order_lat.string"          => __("api.order_lat_string"),
+                "order_long.string"         => __("api.order_long_string"),
+                "coupon_code.string"         => __("api.coupon_code_string"),
+                "coupon_code.exists"         => __("api.coupon_code_exists")
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -309,8 +335,6 @@ class OrderController extends Controller
 
     private function payOrderByWallet($orderData)
     {
-
-
 
         // decrease app profit from user wallet
         $arNotes = "تم سحب $orderData->order_total_price ريال سعودي قيمة تكلفة الطلب رقم ($orderData->order_id )";
