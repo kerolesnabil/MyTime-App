@@ -31,12 +31,10 @@ class SettingsController extends Controller
         $whatsAppNumber = Setting::getSettingByKey('whatsapp', 'api');
 
         if (is_null($whatsAppNumber)){
-            return $data =[];
+            return [];
         }
 
-        $data = $whatsAppNumber;
-
-        return $data;
+        return $whatsAppNumber;
     }
 
 

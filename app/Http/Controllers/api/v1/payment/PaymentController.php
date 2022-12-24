@@ -105,7 +105,15 @@ class PaymentController extends Controller
             "amount" => "required|numeric|min:1"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "amount.required" => __("api.amount_required"),
+                "amount.numeric"  => __("api.amount_numeric"),
+                "amount.min"      => __("api.amount_min"),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }

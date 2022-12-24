@@ -20,7 +20,14 @@ class PagesController extends Controller
             "type" => "required|string",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'page_type.required' => __('api.page_type_required'),
+                'page_type.string' => __('api.page_type_string'),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

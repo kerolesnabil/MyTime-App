@@ -21,11 +21,26 @@ class SupportMessagesController extends Controller
 
         $rules = [
             "name" => "required|string",
-            "phone" => "required|string|digits:9",
+            "phone" => "required|digits:9",
             "message" => "required|string",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "name_required" => __("api.name_required"),
+                "name_should_string" => __("api.name_should_string"),
+
+                'phone.required' => __('api.phone_is_required'),
+                'phone.digits'   => __('api.phone_is_9_digits'),
+
+                "message_required" => __("api.message_required"),
+                "message_string" => __("api.message_should_string"),
+
+
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

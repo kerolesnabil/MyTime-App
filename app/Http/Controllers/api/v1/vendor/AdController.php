@@ -44,25 +44,29 @@ class AdController extends Controller
     public function saveAd(Request $request,$id=null)
     {
 
-
         if(Auth::user()->user_type!='vendor'){
             return ResponsesHelper::returnError('400', trans('api.not_vendor'));
         }
 
         $request->request->add(['vendor_id'=>Auth::user()->user_id]);
-
         $dataArr = $request->all();
 
-
-
         if(!is_null($id)) {
-
-            $rules= [
+            $rules = [
                 "ad_title" => "required|string",
                 "ad_img"   => "mimes:jpg,jpeg,png|max:3072",
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make(
+                $request->all(),
+                $rules,
+                [
+                    "ad_title.required"     => __("api.ad_title_required"),
+                    "ad_title.string"      => __("api.ad_title_string"),
+                    "ad_img.mimes"        => __("api.ad_img_mimes"),
+                    "ad_img.max"          => __("api.ad_img_max"),
+                ]
+            );
             if ($validator->fails()) {
                 return ResponsesHelper::returnValidationError('400', $validator);
             }
@@ -71,7 +75,7 @@ class AdController extends Controller
             if (empty($ad)){
                 return ResponsesHelper::returnError('400',__('vendor.not_found'));
             }
-            if($ad->vendor_id!=Auth::user()->user_id)
+            if($ad->vendor_id != Auth::user()->user_id)
             {
                 return ResponsesHelper::returnError('400',__('vendor.This_ad_is_not_for_you'));
             }
@@ -82,20 +86,35 @@ class AdController extends Controller
                 $img=explode('/',$ad->ad_img);
                 ImgHelper::deleteImage('images', $img[4]);
                 $dataArr["ad_img"] = ImgHelper::uploadImage('images', $request->ad_img);
-
             }
 
         }
         else {
             $rules= [
                 "ad_at_location"        => "required",
-                "ad_days"               => "required|integer",
+                "ad_days"               => "required|integer|min:1",
                 "ad_title"              => "required|string",
                 "ad_start_at"           => "required|date",
                 'ad_img'                => 'required|mimes:jpg,jpeg,png|max:3072',
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make(
+                $request->all(),
+                $rules,
+                [
+                    "ad_at_location.required" => __("api.ad_at_location_required"),
+                    "ad_days.required"        => __("api.ad_days_required"),
+                    "ad_days.integer"         => __("api.ad_days_integer"),
+                    "ad_days.min"             => __("api.ad_days_min"),
+                    "ad_title.required"       => __("api.ad_title_required"),
+                    "ad_title.string"         => __("api.ad_title_string"),
+                    "ad_start_at.required"    => __("api.ad_start_at_required"),
+                    "ad_start_at.date"        => __("api.ad_start_at_date"),
+                    "ad_img.required"         => __("api.ad_img_required"),
+                    "ad_img.mimes"            => __("api.ad_img_mimes"),
+                    "ad_img.max"              => __("api.ad_img_max"),
+                ]
+            );
             if ($validator->fails()) {
                 return ResponsesHelper::returnValidationError('400', $validator);
             }
@@ -142,7 +161,6 @@ class AdController extends Controller
     public function getAd(Request $request,$id)
     {
 
-
         $ad = Ad::getAd($id);
 
         if (empty($ad)){
@@ -178,7 +196,7 @@ class AdController extends Controller
         }
 
 
-        $img=explode('/',$ad->ad_img);
+        $img = explode('/',$ad->ad_img);
         ImgHelper::deleteImage('images', $img[4]);
 
         Ad::deleteAd($id);

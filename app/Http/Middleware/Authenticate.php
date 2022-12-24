@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\ResponsesHelper;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -14,10 +15,16 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+
         if (!$request->expectsJson()) {
+
             if ($request->is('/dashboard*')){
                 return route('login');
             }
+
+            return ResponsesHelper::returnError(400, __('auth.unauthorized'));
         }
+
+        return ResponsesHelper::returnError(400, __('auth.unauthorized'));
     }
 }

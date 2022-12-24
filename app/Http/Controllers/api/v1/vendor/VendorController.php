@@ -87,7 +87,40 @@ class VendorController extends Controller
             'vendor_logo'                        => "required|mimes:jpg,jpeg,png|max:10240"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_name.required"                          => __("api.user_name_required"),
+                "user_name.string"                            => __("api.user_name_string"),
+                "user_address.string"                         => __("api.user_address_string"),
+                'user_phone.required'                         => __('api.phone_is_required'),
+                'user_phone.unique'                           => __('api.phone_unique'),
+                'user_phone.digits'                           => __('api.phone_is_9_digits'),
+                "user_email.string"                           => __("api.user_email_string"),
+                "user_email.email"                            => __("api.user_email_email"),
+                "user_date_of_birth.required"                 => __("api.user_date_of_birth_required"),
+                "user_date_of_birth.date"                     => __("api.user_date_of_birth_date"),
+                "user_lat.string"                             => __("api.order_lat_string"),
+                "user_long.string"                            => __("api.order_long_string"),
+                "vendor_type.required"                        => __("api.vendor_type_required"),
+                "vendor_type.string"                          => __("api.vendor_type_string"),
+                "vendor_available_days.required"              => __("api.vendor_available_days_required"),
+                "vendor_available_days.string"                => __("api.vendor_available_days_string"),
+                "vendor_start_time.required"                  => __("api.vendor_start_time_required"),
+                "vendor_start_time.date_format"               => __("api.vendor_start_time_date_format"),
+                "vendor_end_time.required"                    => __("api.vendor_end_time_required"),
+                "vendor_end_time.date_format"                 => __("api.vendor_end_time_date_format"),
+                "vendor_end_time.after"                       => __("api.vendor_end_time_after"),
+                "vendor_commercial_registration_num.required" => __("api.vendor_commercial_registration_num_required"),
+                "vendor_commercial_registration_num.string"   => __("api.vendor_commercial_registration_num_string"),
+                "vendor_tax_num.required"                     => __("api.vendor_tax_num_required"),
+                "vendor_tax_num.string"                       => __("api.vendor_tax_num_string"),
+                "vendor_logo.required"                        => __("api.vendor_logo_required"),
+                "vendor_logo.mimes"                           => __("api.vendor_logo_mimes"),
+                "vendor_logo.max"                             => __("api.vendor_logo_max"),
+            ]
+        );
 
 
         if ($validator->fails()) {
@@ -166,10 +199,49 @@ class VendorController extends Controller
             'vendor_commercial_registration_num' => 'required|string',
             'vendor_tax_num'                     => 'required|string',
             'slider_not_removed_images.*'        => 'string',
-            'slider_new_images.*'                => 'mimes:jpg,jpeg,png|max:10240',
+            'slider_new_images.*'                => 'mimes:jpg,jpeg,png|max:3072',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_name.required"                          => __("api.user_name_required"),
+                "user_name.string"                            => __("api.user_name_string"),
+                "user_address.string"                         => __("api.user_address_string"),
+                'user_phone.required'                         => __('api.phone_is_required'),
+                'user_phone.unique'                           => __('api.phone_unique'),
+                'user_phone.digits'                           => __('api.phone_is_9_digits'),
+                "user_email.string"                           => __("api.user_email_string"),
+                "user_email.email"                            => __("api.user_email_email"),
+                "user_date_of_birth.required"                 => __("api.user_date_of_birth_required"),
+                "user_date_of_birth.date"                     => __("api.user_date_of_birth_date"),
+                "user_lat.string"                             => __("api.order_lat_string"),
+                "user_long.string"                            => __("api.order_long_string"),
+                "vendor_type.required"                        => __("api.vendor_type_required"),
+                "vendor_type.string"                          => __("api.vendor_type_string"),
+                "vendor_available_days.required"              => __("api.vendor_available_days_required"),
+                "vendor_available_days.string"                => __("api.vendor_available_days_string"),
+                "vendor_start_time.required"                  => __("api.vendor_start_time_required"),
+                "vendor_start_time.date_format"               => __("api.vendor_start_time_date_format"),
+                "vendor_end_time.required"                    => __("api.vendor_end_time_required"),
+                "vendor_end_time.date_format"                 => __("api.vendor_end_time_date_format"),
+                "vendor_end_time.after"                       => __("api.vendor_end_time_after"),
+                "vendor_commercial_registration_num.required" => __("api.vendor_commercial_registration_num_required"),
+                "vendor_commercial_registration_num.string"   => __("api.vendor_commercial_registration_num_string"),
+                "vendor_tax_num.required"                     => __("api.vendor_tax_num_required"),
+                "vendor_tax_num.string"                       => __("api.vendor_tax_num_string"),
+                "vendor_logo.required"                        => __("api.vendor_logo_required"),
+                "vendor_logo.mimes"                           => __("api.vendor_logo_mimes"),
+                "vendor_logo.max"                             => __("api.vendor_logo_max"),
+                "vendor_address.required"                     => __("api.vendor_address_required"),
+                "vendor_description.required"                 => __("api.vendor_description_required"),
+                "vendor_description.string"                   => __("api.vendor_description_string"),
+                "slider_not_removed_images.*.string"          => __("api.slider_not_removed_images_string"),
+                "slider_new_images.*.mimes"                   => __("api.slider_new_images_mimes"),
+                "slider_new_images.*.max"                     => __("api.slider_new_images_max"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -256,7 +328,6 @@ class VendorController extends Controller
 
     }
 
-
     public function getVendorReport(Request $request)
     {
         $vendor['vendor']=Auth::user();
@@ -270,7 +341,16 @@ class VendorController extends Controller
 
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "report_time_type.required" => __("api.report_time_type_required"),
+                "report_time_type.string"   => __("api.report_time_type_string"),
+                "report_name_type.required" => __("api.report_name_type_required"),
+                "report_name_type.string"   => __("api.report_name_type_string"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

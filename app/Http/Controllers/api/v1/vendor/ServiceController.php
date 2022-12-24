@@ -41,7 +41,7 @@ class ServiceController extends Controller
     public function getMainCategoriesOfServices(Request $request)
     {
         $user=Auth::user();
-        if( $user->user_type!='vendor')
+        if( $user->user_type != 'vendor')
         {
             return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
@@ -55,7 +55,7 @@ class ServiceController extends Controller
     public function getSubCategoriesOfServices(Request $request, $parenId)
     {
         $user=Auth::user();
-        if( $user->user_type!='vendor')
+        if( $user->user_type != 'vendor')
         {
             return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
@@ -63,9 +63,17 @@ class ServiceController extends Controller
         $request->request->add(['parent_id' => $parenId]);
         $rules = [
             "parent_id"=> "required|exists:categories,cat_id",
-
         ];
-        $validator = Validator::make($request->all(), $rules);
+
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "parent_id.required"            => __("api.parent_id_required"),
+                "parent_id.numeric"             => __("api.parent_id_numeric"),
+                "parent_id.exists"              => __("api.parent_id_exists"),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -94,10 +102,18 @@ class ServiceController extends Controller
 
         $request->request->add(['cat_id' => $catId]);
         $rules = [
-            "cat_id"=> "required|exists:categories,cat_id",
-
+            "cat_id"=> "required|numeric|exists:categories,cat_id",
         ];
-        $validator = Validator::make($request->all(), $rules);
+
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'cat_id.required'         => __('api.cat_id_required'),
+                'cat_id.numeric'          => __('api.cat_id_numeric'),
+                'cat_id.exists'           => __('api.cat_id_exists'),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -137,7 +153,24 @@ class ServiceController extends Controller
             "service_price_at_home"             => "numeric|required",
             "service_discount_price_at_home"    => "numeric|nullable",
         ];
-        $validator = Validator::make($request->all(), $rules);
+
+
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "service_id.required"                     => __("api.service_id_required"),
+                "service_id.numeric"                      => __("api.service_id_numeric"),
+                "service_id.exists"                       => __("api.service_id_exists"),
+                "service_title.string"                    => __("api.service_title_string"),
+                "service_price_at_salon.numeric"          => __("api.service_price_at_salon_numeric"),
+                "service_discount_price_at_salon.numeric" => __("api.service_discount_price_at_salon_numeric"),
+                "service_price_at_home.required"          => __("api.service_price_at_home_required"),
+                "service_price_at_home.numeric"           => __("api.service_price_at_home_numeric"),
+                "service_discount_price_at_home.required" => __("api.service_discount_price_at_home_required"),
+                "service_discount_price_at_home.numeric"  => __("api.service_discount_price_at_home_numeric"),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -220,7 +253,6 @@ class ServiceController extends Controller
         }
 
         $rules = [
-            "services_ids"                    => "required|array",
             "services_ids.*"                  => "required|exists:vendor_services,vendor_service_id",
             "service_price_at_salon"          => "nullable|numeric",
             "service_discount_price_at_salon" => "nullable|numeric",
@@ -232,12 +264,27 @@ class ServiceController extends Controller
         if(isset($packageId))
         {
             $request->request->add(['package_id' => $packageId]);
-            $rules['package_id'] = "required|exists:services,service_id";
+            $rules['package_id'] = "required|numeric|exists:services,service_id";
         }
 
 
-        $validator = Validator::make($request->all(), $rules,
-            ["services_ids.*.exists"   => __("api.services_ids_not_exists"),]
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "services_ids.*.exists"                   => __("api.services_ids_not_exists"),
+                "services_ids.*.required"                 => __("api.services_ids_required"),
+                "service_price_at_salon.numeric"          => __("api.package_price_at_salon_numeric"),
+                "service_discount_price_at_salon.numeric" => __("api.package_discount_price_at_salon_numeric"),
+                "service_price_at_home.required"          => __("api.package_price_at_home_required"),
+                "service_price_at_home.numeric"           => __("api.package_price_at_home_numeric"),
+                "service_discount_price_at_home.required" => __("api.package_discount_price_at_home_required"),
+                "service_discount_price_at_home.numeric"  => __("api.package_discount_price_at_home_numeric"),
+                "name_package.required"                   => __("api.name_package_required"),
+                "package_id.required"                     => __("api.package_id_required"),
+                "package_id.numeric"                      => __("api.package_id_numeric"),
+                "package_id.exists"                       => __("api.package_id_exists"),
+            ]
         );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -268,7 +315,15 @@ class ServiceController extends Controller
         $rules=[
             'package_id' =>"required|exists:services,service_id"
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "package_id.required" => __("api.package_id_required"),
+                "package_id.numeric"  => __("api.package_id_numeric"),
+                "package_id.exists"   => __("api.package_id_exists"),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -311,7 +366,14 @@ class ServiceController extends Controller
             "package_id" => "required|exists:services,service_id|exists:vendor_services,service_id",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(), $rules,
+            [
+                "package_id.required"            => __("api.package_id_required"),
+                "package_id.numeric"             => __("api.package_id_numeric"),
+                "package_id.exists"              => __("api.package_id_exists"),
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }
@@ -376,7 +438,18 @@ class ServiceController extends Controller
             "sub_cat_name"  => "string",
             "service_name"  => "required|string",
         ];
-        $validator = Validator::make($request->all(), $rules);
+
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "main_cat_name.required" => __("api.main_cat_name_required"),
+                "main_cat_name.string"   => __("api.main_cat_name_string"),
+                "sub_cat_name.string"    => __("api.sub_cat_name_string"),
+                "service_name.required"  => __("api.service_name_required"),
+                "service_name.string"    => __("api.service_name_string")
+            ]
+        );
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
         }

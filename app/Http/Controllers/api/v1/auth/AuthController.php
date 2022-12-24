@@ -33,8 +33,8 @@ class AuthController extends Controller
             $request->all(),
             $rules,
             [
-                "user_phone.required" => __("phone_is_required"),
-                "user_phone.exists"   => __("you_should_register"),
+                "user_phone.required" => __("api.phone_is_required"),
+                "user_phone.exists"   => __("api.you_should_register"),
             ]
         );
 
@@ -66,7 +66,17 @@ class AuthController extends Controller
             "user_phone" => "required|exists:users,user_phone|digits:9",
             'code'       => 'required|exists:verification_codes,code',
         ];
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'user_phone.required' => __('api.phone_is_required'),
+                'user_phone.exists'   => __('api.phone_exists'),
+                'user_phone.digits'   => __('api.phone_is_9_digits'),
+                'code.required'       => __('api.code_is_required'),
+                'code.exists'         => __('api.code_exists'),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);

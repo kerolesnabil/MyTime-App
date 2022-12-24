@@ -37,13 +37,26 @@ class UserController extends Controller
     {
 
         $rules = [
-            "user_lat"        => "required|numeric",
-            "user_long"       => "required|numeric",
+            "user_lat"        => "required|string",
+            "user_long"       => "required|string",
             "service_type"    => "required|string",
             "filter_cat_id"   => "string"
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_lat.required"     => __("api.order_lat_required"),
+                "user_lat.string"       => __("api.order_lat_string"),
+                "user_long.required"    => __("api.order_long_required"),
+                "user_long.string"      => __("api.order_long_string"),
+                "service_type.required" => __("api.service_type_required"),
+                "service_type.string"   => __("api.service_type_string"),
+                "filter_cat_id.string"   => __("api.filter_cat_id_string"),
+            ]
+
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -71,14 +84,31 @@ class UserController extends Controller
         $rules = [
             "user_name"          => "required|string",
             "user_address"       => "string",
-            "user_phone"         => "required|string|unique:users,user_phone|digits:9",
+            "user_phone"         => "required|unique:users,user_phone|digits:9",
             "user_email"         => "string|email",
             "user_date_of_birth" => "required|date",
             "user_lat"           => "string",
             "user_long"          => "string",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_name.required"          => __("api.user_name_required"),
+                "user_name.string"            => __("api.user_name_string"),
+                "user_address.string"         => __("api.user_address_string"),
+                'user_phone.required'         => __('api.phone_is_required'),
+                'user_phone.unique'           => __('api.phone_unique'),
+                'user_phone.digits'           => __('api.phone_is_9_digits'),
+                "user_email.string"           => __("api.user_email_string"),
+                "user_email.email"            => __("api.user_email_email"),
+                "user_date_of_birth.required" => __("api.user_date_of_birth_required"),
+                "user_date_of_birth.date"     => __("api.user_date_of_birth_date"),
+                "user_lat.string"             => __("api.order_lat_string"),
+                "user_long.string"            => __("api.order_long_string"),
+            ]
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
@@ -128,12 +158,25 @@ class UserController extends Controller
         $request->request->add(['user_id' => $user['user']->user_id]);
         $rules = [
             "user_name"    => "required|string",
-            "user_email"   => "required|string|email",
             "user_address" => "required|string",
+            "user_email"   => "required|email",
             "user_img"     => "mimes:jpg,jpeg,png|max:10240",
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                "user_name.required"    => __("api.user_name_required"),
+                "user_name.string"      => __("api.user_name_string"),
+                'user_address.required' => __('api.user_address_required'),
+                "user_address.string"   => __("api.user_address_string"),
+                "user_email.string"     => __("api.user_email_string"),
+                "user_email.email"      => __("api.user_email_email"),
+                "user_img.mimes"        => __("api.user_img_mimes"),
+                "user_img.max"          => __("api.user_img_max"),
+            ],
+        );
 
         if ($validator->fails()) {
             return ResponsesHelper::returnValidationError('400', $validator);
