@@ -220,7 +220,7 @@ return [
     "report_time_type_string"                          => 'نوع التقرير يجب ان يكون نص',
     "report_name_type_required"                        => 'اسم التقرير مطلوب',
     "report_name_type_string"                          => 'اسم التقرير يجب ان يكون نص',
-
+    "unauth"                                           => 'يرجي تسجيل الدخول',
 
 ];
 
