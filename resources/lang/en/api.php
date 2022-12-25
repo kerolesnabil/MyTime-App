@@ -219,6 +219,6 @@ return [
     "report_time_type_string"                          => 'Report type should be text',
     "report_name_type_required"                        => 'Report name is required',
     "report_name_type_string"                          => 'The name of the report should be text',
-
+    "unauth"                                           => 'Please login',
 
 ];

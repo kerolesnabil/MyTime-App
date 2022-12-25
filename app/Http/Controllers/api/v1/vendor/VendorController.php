@@ -12,6 +12,7 @@ use App\Models\OrderReview;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\VendorDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -162,19 +163,28 @@ class VendorController extends Controller
 
         $vendorDetailsData = collect(VendorDetail::getVendorDetailProfile($vendor['vendor']->user_id))->toArray();
 
+        $workDays = $vendorDetailsData['vendor_available_days'];
+
+        $workDays = explode( ',' , strtolower(trim($workDays, "[]")));
+
+        foreach ($workDays as $day)
+        {
+            $data[] = trim(trim($day, "'"), " '");
+        }
 
         $userProfile['vendor_name']                        = $vendor['vendor']->user_name;
         $userProfile['vendor_email']                       = $vendor['vendor']->user_email;
         $userProfile['vendor_phone']                       = $vendor['vendor']->user_phone;
         $userProfile['vendor_address']                     = $vendor['vendor']->user_address;
         $userProfile['vendor_logo']                        = ImgHelper::returnImageLink($vendor['vendor']->user_img);
-        $userProfile['vendor_available_days']              = $vendorDetailsData['vendor_available_days'];
-        $userProfile['vendor_start_time']                  = $vendorDetailsData['vendor_start_time'];
-        $userProfile['vendor_end_time']                    = $vendorDetailsData['vendor_end_time'];
+        $userProfile['vendor_work_days']                   = $data;
+        $userProfile['vendor_start_time']                  = date('H:i', strtotime($vendorDetailsData['vendor_start_time']));
+        $userProfile['vendor_end_time']                    = date('H:i', strtotime($vendorDetailsData['vendor_end_time']));
         $userProfile['vendor_slider']                      = $vendorDetailsData['vendor_slider'];
         $userProfile['vendor_description']                 = $vendorDetailsData['vendor_description'];
         $userProfile['vendor_commercial_registration_num'] = $vendorDetailsData['vendor_commercial_registration_num'];
         $userProfile['vendor_tax_num']                     = $vendorDetailsData['vendor_tax_num'];
+
 
         return ResponsesHelper::returnData($userProfile, '200', '');
     }

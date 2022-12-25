@@ -15,16 +15,14 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-
-        if (!$request->expectsJson()) {
-
-            if ($request->is('/dashboard*')){
-                return route('login');
-            }
-
+        if ($request->expectsJson()) {
             return ResponsesHelper::returnError(400, __('auth.unauthorized'));
         }
+        else
+        {
+            return route('login');
+        }
 
-        return ResponsesHelper::returnError(400, __('auth.unauthorized'));
+
     }
 }
