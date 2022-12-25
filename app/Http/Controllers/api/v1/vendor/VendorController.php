@@ -185,8 +185,6 @@ class VendorController extends Controller
         if($vendor['vendor']->user_type!='vendor'){
             return ResponsesHelper::returnError('400',__('api.not_vendor'));
         }
-
-
         $rules = [
             'vendor_name'                        => 'required|string',
             'vendor_email'                       => 'required|string|email',
@@ -196,8 +194,6 @@ class VendorController extends Controller
             'vendor_logo'                        => 'mimes:jpg,jpeg,png|max:10240',
             'vendor_address'                     => 'required',
             'vendor_description'                 => 'required|string',
-            'vendor_commercial_registration_num' => 'required|string',
-            'vendor_tax_num'                     => 'required|string',
             'slider_not_removed_images.*'        => 'string',
             'slider_new_images.*'                => 'mimes:jpg,jpeg,png|max:3072',
         ];
@@ -227,10 +223,6 @@ class VendorController extends Controller
                 "vendor_end_time.required"                    => __("api.vendor_end_time_required"),
                 "vendor_end_time.date_format"                 => __("api.vendor_end_time_date_format"),
                 "vendor_end_time.after"                       => __("api.vendor_end_time_after"),
-                "vendor_commercial_registration_num.required" => __("api.vendor_commercial_registration_num_required"),
-                "vendor_commercial_registration_num.string"   => __("api.vendor_commercial_registration_num_string"),
-                "vendor_tax_num.required"                     => __("api.vendor_tax_num_required"),
-                "vendor_tax_num.string"                       => __("api.vendor_tax_num_string"),
                 "vendor_logo.required"                        => __("api.vendor_logo_required"),
                 "vendor_logo.mimes"                           => __("api.vendor_logo_mimes"),
                 "vendor_logo.max"                             => __("api.vendor_logo_max"),
@@ -306,8 +298,6 @@ class VendorController extends Controller
         $data['vendor_end_time']                    = $request->vendor_end_time;
         $data['user_address']                       = $request->vendor_address;
         $data['vendor_description']                 = $request->vendor_description;
-        $data['vendor_commercial_registration_num'] = $request->vendor_commercial_registration_num;
-        $data['vendor_tax_num']                     = $request->vendor_tax_num;
         $data['vendor_slider']                      = $allImages;
 
         $data = (object) $data;

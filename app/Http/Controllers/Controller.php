@@ -15,7 +15,7 @@ class Controller extends BaseController
     public function __construct()
     {
 
-    /*    dispatch(new sendPush([
+        /*dispatch(new sendPush([
             'data'     => [
                 "title"        => "order stauts",
                 "body"         => "your order is done",
@@ -27,9 +27,9 @@ class Controller extends BaseController
             'userIds'  => [1],
             'toApp'    => "user",
             'allowLog' => true,
-        ]));
+        ]));*/
 
-        dispatch(new sendPush([
+        /*dispatch(new sendPush([
             'data'     => [
                 "title"        => "new order is reuqiest",
                 "body"         => "your order is done",

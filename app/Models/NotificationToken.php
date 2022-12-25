@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class NotificationToken extends Model
 {
@@ -13,7 +14,7 @@ class NotificationToken extends Model
     protected $primaryKey='not_token_id';
 
     protected $fillable=[
-        'user_id','token','device_type','app_version_id'
+        'user_id','token', 'device_type', 'app_version_id'
     ];
 
     public static function createNotificationToken($data)
@@ -33,9 +34,14 @@ class NotificationToken extends Model
                 'token'
             )
             ->where('token', $token)->first();
-
     }
 
 
+    public static function getTokensByUsersIds($usersIds)
+    {
+        return self::query()->
+            whereIn('user_id', $usersIds)->
+            get();
+    }
 
 }
