@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Jobs;
+namespace App\jobs;
 
-use App\models\push_tokens\push_tokens_m;
-use App\models\push_tokens\user_push_notifications_m;
-use Carbon\Carbon;
+use App\Models\NotificationToken;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -33,8 +31,8 @@ class sendPush implements ShouldQueue
             "title"        => $params["title"],
             "body"         => $params["body"] ?? $params["title"],
             "extraPayload" => [
-                "type" => "general",
-                "url"  => url("/" . ($params["url"] ?? "")),
+                "type" => $params['extraPayload']['type'] ?? "general",
+                "url"  => $params['extraPayload']['id'] ?? "",
             ],
         ];
 
@@ -46,9 +44,7 @@ class sendPush implements ShouldQueue
             return $params["tokens"];
         }
 
-        // @TODO Mass3ood query get token by user id
-        return push_tokens_m::getUsersTokens($params["userIds"])->all();
-
+        return collect(NotificationToken::getTokensByUsersIds($params["userIds"]))->pluck('token')->toArray();
     }
 
     public function __construct($params)

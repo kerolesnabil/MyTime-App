@@ -218,8 +218,8 @@ class VendorDetail extends Model
     public static function updateVendorDetails($data)
     {
 
-        self::where('user_id', '=', $data->user_id)
-            ->update(array(
+        self::where('user_id', '=', $data->user_id)->
+            update(array(
                 'vendor_available_days' => $data->vendor_available_days,
                 'vendor_start_time'     => $data->vendor_start_time,
                 'vendor_end_time'       => $data->vendor_end_time,
@@ -231,7 +231,7 @@ class VendorDetail extends Model
     public static function countVendorsByType($vendorType)
     {
         // $vendorType => salon or specialist
-        return count(self::where('vendor_type', '=', $vendorType)->get());
+        return count(self::query()->where('vendor_type', '=', $vendorType)->get()->toArray());
 
     }
 
@@ -254,7 +254,6 @@ class VendorDetail extends Model
 
     public static function getVendorReport($vendorId, $reportTimeType, $reportNameType)
     {
-
 
         $to   = Carbon::now()->format('Y-m-d H:i:s');
         if ($reportTimeType == 'weekly'){
@@ -294,7 +293,6 @@ class VendorDetail extends Model
 
     public static function updateVendorAppProfit($vendorId, $appProfit)
     {
-
         self::where('user_id', '=', $vendorId)
             ->update(array(
                 'vendor_app_profit_percentage' => $appProfit,
