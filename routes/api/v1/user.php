@@ -20,7 +20,7 @@ Route::group([
     Route::get('/get-user-recent-data', [\App\Http\Controllers\api\v1\user\RecentDataController::class, 'getRecentData']);
 
 
-    Route::group(['middleware' => ['auth:api']] ,function () {
+    Route::group([] ,function () {
 
         Route::get('/get-payment-methods', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'getPaymentMethods']);
         Route::post('/refund-order', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'refundOrderCost']);

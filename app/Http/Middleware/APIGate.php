@@ -36,9 +36,9 @@ class APIGate
             app()->setlocale($request->header('Accept-Language'));
         }
 
-        if($request->header('Accept') !== 'application/json')
+        if($request->header('Accept') != 'application/json')
         {
-            $request->headers->set("Accept", "application/json");
+            return ResponsesHelper::returnError('400','Accept in header must be application/json');
         }
 
 
