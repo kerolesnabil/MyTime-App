@@ -6,6 +6,7 @@ use App\Http\Middleware\Authenticate;
 
 Route::group([
     'prefix' => 'auth',
+    'middleware' => ['APIGate'],
 ], function () {
 
     Route::post('/sendOTP',[\App\Http\Controllers\api\v1\auth\AuthController::class,'sendOTP']);
@@ -14,7 +15,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => ['auth:api'],
+    'middleware' => ['auth:api', 'APIGate'],
 ], function () {
 
     Route::post('notification/save-notification-token', [\App\Http\Controllers\api\v1\notification\NotificationController::class,'saveNotificationToken']);

@@ -99,6 +99,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+
         $request->user()->token()->revoke();
 
         return ResponsesHelper::returnSuccessMessage(__('api.logged_out_successfully'), '200');

@@ -7,6 +7,7 @@ use App\Http\Middleware\Authenticate;
 
 Route::group([
     'prefix'     => 'user',
+    'middleware' => ['APIGate']
 ], function () {
 
     Route::post('/register', [\App\Http\Controllers\api\v1\user\UserController::class, 'register']);
@@ -20,12 +21,12 @@ Route::group([
     Route::get('/get-user-recent-data', [\App\Http\Controllers\api\v1\user\RecentDataController::class, 'getRecentData']);
 
 
-    Route::group([] ,function () {
+    Route::group([
+        'middleware' => ['auth:api', 'APIGate']
+    ] ,function () {
 
         Route::get('/get-payment-methods', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'getPaymentMethods']);
         Route::post('/refund-order', [\App\Http\Controllers\api\v1\payment\PaymentController::class, 'refundOrderCost']);
-
-
 
         Route::get('/wish-list', [\App\Http\Controllers\api\v1\user\WishListController::class, 'showWishListOfUser']);
         Route::post('/wish-list', [\App\Http\Controllers\api\v1\user\WishListController::class, 'addServiceToWishListOfUser']);
