@@ -40,7 +40,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
 
             Route::group([
-                'middleware' => ['api', 'APIGate'],
                 'namespace'  => "{$this->namespace}",
                 "prefix"     => "api/v1",
             ], function ($router) {

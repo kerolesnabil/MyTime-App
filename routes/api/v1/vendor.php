@@ -8,7 +8,7 @@ Route::post('vendor/register', [\App\Http\Controllers\api\v1\vendor\VendorContro
 
 
 Route::group([
-    'middleware' => ['auth:api'],
+    'middleware' => ['auth:api', 'APIGate'],
     'prefix' => 'vendor',
 ], function () {
 
